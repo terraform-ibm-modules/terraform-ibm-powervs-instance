@@ -1,16 +1,6 @@
 {
   "path": ".",
   "variables": {
-    "ibmcloud_api_key": {
-      "name": "ibmcloud_api_key",
-      "type": "string",
-      "description": "The IBM Cloud platform API key needed to deploy IAM enabled resources.",
-      "sensitive": true,
-      "pos": {
-        "filename": "variables.tf",
-        "line": 97
-      }
-    },
     "pi_boot_image_storage_tier": {
       "name": "pi_boot_image_storage_tier",
       "type": "string",
@@ -197,7 +187,43 @@
       "computed": true
     }
   },
-  "outputs": {},
+  "outputs": {
+    "instance_mgmt_ip": {
+      "name": "instance_mgmt_ip",
+      "description": "IP address of the management network interface of IBM PowerVS instance.",
+      "value": "data.ibm_pi_instance_ip.instance_mgmt_ip_ds.ip",
+      "pos": {
+        "filename": "outputs.tf",
+        "line": 11
+      },
+      "type": "TypeString"
+    },
+    "instance_private_ips": {
+      "name": "instance_private_ips",
+      "description": "All private IP addresses (as a list) of IBM PowerVS instance.",
+      "pos": {
+        "filename": "outputs.tf",
+        "line": 1
+      }
+    },
+    "instance_private_ips_info": {
+      "name": "instance_private_ips_info",
+      "description": "Complete info about all private IP addresses of IBM PowerVS instance.",
+      "value": "data.ibm_pi_network.pi_subnets_ds",
+      "pos": {
+        "filename": "outputs.tf",
+        "line": 6
+      }
+    },
+    "instance_wwns": {
+      "name": "instance_wwns",
+      "description": "Unique volume IDs (wwns) of all volumes attached to IBM PowerVS instance.",
+      "pos": {
+        "filename": "outputs.tf",
+        "line": 16
+      }
+    }
+  },
   "required_core": [
     "\u003e= 1.3, \u003c 1.5"
   ],
@@ -207,11 +233,6 @@
       "version_constraints": [
         "\u003e=1.49.0"
       ]
-    }
-  },
-  "provider_configs": {
-    "ibm": {
-      "name": "ibm"
     }
   },
   "managed_resources": {
@@ -233,7 +254,7 @@
       },
       "pos": {
         "filename": "main.tf",
-        "line": 92
+        "line": 40
       }
     },
     "ibm_pi_volume.create_volume": {
@@ -248,7 +269,7 @@
       },
       "pos": {
         "filename": "main.tf",
-        "line": 141
+        "line": 89
       }
     },
     "ibm_pi_volume_attach.instance_volumes_attach": {
@@ -260,7 +281,7 @@
       },
       "pos": {
         "filename": "main.tf",
-        "line": 159
+        "line": 107
       }
     }
   },
@@ -277,7 +298,7 @@
       },
       "pos": {
         "filename": "main.tf",
-        "line": 77
+        "line": 25
       }
     },
     "data.ibm_pi_instance.instance_ips_ds": {
@@ -289,7 +310,7 @@
       },
       "pos": {
         "filename": "main.tf",
-        "line": 179
+        "line": 127
       }
     },
     "data.ibm_pi_instance_ip.instance_mgmt_ip_ds": {
@@ -304,7 +325,7 @@
       },
       "pos": {
         "filename": "main.tf",
-        "line": 172
+        "line": 120
       }
     },
     "data.ibm_pi_key.key_ds": {
@@ -319,7 +340,7 @@
       },
       "pos": {
         "filename": "main.tf",
-        "line": 72
+        "line": 20
       }
     },
     "data.ibm_pi_network.pi_subnets_ds": {
@@ -335,7 +356,7 @@
       },
       "pos": {
         "filename": "main.tf",
-        "line": 82
+        "line": 30
       }
     },
     "data.ibm_resource_group.resource_group_ds": {
@@ -350,7 +371,7 @@
       },
       "pos": {
         "filename": "main.tf",
-        "line": 61
+        "line": 9
       }
     },
     "data.ibm_resource_instance.pi_workspace_ds": {
@@ -366,7 +387,7 @@
       },
       "pos": {
         "filename": "main.tf",
-        "line": 65
+        "line": 13
       }
     }
   },
