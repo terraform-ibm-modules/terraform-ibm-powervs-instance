@@ -102,7 +102,6 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_pi_boot_image_storage_tier"></a> [pi\_boot\_image\_storage\_tier](#input\_pi\_boot\_image\_storage\_tier) | Storage tier for boot OS image. Supported values are 'tier1' and 'tier3'. | `string` | n/a | yes |
 | <a name="input_pi_cpu_proc_type"></a> [pi\_cpu\_proc\_type](#input\_pi\_cpu\_proc\_type) | Dedicated or shared processors | `string` | `null` | no |
 | <a name="input_pi_instance_name"></a> [pi\_instance\_name](#input\_pi\_instance\_name) | Name of instance which will be created | `string` | n/a | yes |
 | <a name="input_pi_memory_size"></a> [pi\_memory\_size](#input\_pi\_memory\_size) | Amount of memory | `string` | `null` | no |

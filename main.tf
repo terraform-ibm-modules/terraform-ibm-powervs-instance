@@ -3,7 +3,8 @@
 #####################################################
 
 locals {
-  pi_workspace_type = "power-iaas"
+  pi_workspace_type          = "power-iaas"
+  pi_boot_image_storage_tier = var.pi_sap_profile_id == null ? "tier3" : "tier1"
 }
 
 data "ibm_resource_group" "resource_group_ds" {
@@ -49,7 +50,7 @@ resource "ibm_pi_instance" "instance" {
   pi_key_pair_name         = data.ibm_pi_key.key_ds.id
   pi_health_status         = "OK"
   pi_storage_pool_affinity = false
-  pi_storage_type          = var.pi_boot_image_storage_tier
+  pi_storage_type          = local.pi_boot_image_storage_tier
 
   dynamic "pi_network" {
     for_each = tolist(data.ibm_pi_network.pi_subnets_ds[*].id)

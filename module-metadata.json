@@ -1,27 +1,13 @@
 {
   "path": ".",
   "variables": {
-    "pi_boot_image_storage_tier": {
-      "name": "pi_boot_image_storage_tier",
-      "type": "string",
-      "description": "Storage tier for boot OS image. Supported values are 'tier1' and 'tier3'.",
-      "required": true,
-      "source": [
-        "ibm_pi_instance.instance.pi_storage_type"
-      ],
-      "pos": {
-        "filename": "variables.tf",
-        "line": 39
-      },
-      "computed": true
-    },
     "pi_cpu_proc_type": {
       "name": "pi_cpu_proc_type",
       "type": "string",
       "description": "Dedicated or shared processors",
       "pos": {
         "filename": "variables.tf",
-        "line": 61
+        "line": 56
       }
     },
     "pi_instance_name": {
@@ -44,7 +30,7 @@
       "description": "Amount of memory",
       "pos": {
         "filename": "variables.tf",
-        "line": 73
+        "line": 68
       }
     },
     "pi_networks": {
@@ -59,7 +45,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 44
+        "line": 39
       }
     },
     "pi_number_of_processors": {
@@ -68,7 +54,7 @@
       "description": "Number of processors",
       "pos": {
         "filename": "variables.tf",
-        "line": 67
+        "line": 62
       }
     },
     "pi_os_image_name": {
@@ -116,7 +102,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 49
+        "line": 44
       },
       "computed": true
     },
@@ -126,7 +112,7 @@
       "description": "Processor type e980/s922/e1080/s1022",
       "pos": {
         "filename": "variables.tf",
-        "line": 55
+        "line": 50
       }
     },
     "pi_sshkey_name": {
@@ -155,7 +141,7 @@
       },
       "pos": {
         "filename": "variables.tf",
-        "line": 79
+        "line": 74
       }
     },
     "pi_workspace_name": {
@@ -246,7 +232,6 @@
         "pi_proc_type": "pi_sap_profile_id",
         "pi_processors": "pi_sap_profile_id",
         "pi_sap_profile_id": "pi_sap_profile_id",
-        "pi_storage_type": "pi_boot_image_storage_tier",
         "pi_sys_type": "pi_sap_profile_id"
       },
       "provider": {
@@ -254,7 +239,7 @@
       },
       "pos": {
         "filename": "main.tf",
-        "line": 40
+        "line": 41
       }
     },
     "ibm_pi_volume.create_volume": {
@@ -269,7 +254,7 @@
       },
       "pos": {
         "filename": "main.tf",
-        "line": 89
+        "line": 90
       }
     },
     "ibm_pi_volume_attach.instance_volumes_attach": {
@@ -281,7 +266,7 @@
       },
       "pos": {
         "filename": "main.tf",
-        "line": 107
+        "line": 108
       }
     }
   },
@@ -298,7 +283,7 @@
       },
       "pos": {
         "filename": "main.tf",
-        "line": 25
+        "line": 26
       }
     },
     "data.ibm_pi_instance.instance_ips_ds": {
@@ -310,7 +295,7 @@
       },
       "pos": {
         "filename": "main.tf",
-        "line": 127
+        "line": 128
       }
     },
     "data.ibm_pi_instance_ip.instance_mgmt_ip_ds": {
@@ -325,7 +310,7 @@
       },
       "pos": {
         "filename": "main.tf",
-        "line": 120
+        "line": 121
       }
     },
     "data.ibm_pi_key.key_ds": {
@@ -340,7 +325,7 @@
       },
       "pos": {
         "filename": "main.tf",
-        "line": 20
+        "line": 21
       }
     },
     "data.ibm_pi_network.pi_subnets_ds": {
@@ -356,7 +341,7 @@
       },
       "pos": {
         "filename": "main.tf",
-        "line": 30
+        "line": 31
       }
     },
     "data.ibm_resource_group.resource_group_ds": {
@@ -371,7 +356,7 @@
       },
       "pos": {
         "filename": "main.tf",
-        "line": 9
+        "line": 10
       }
     },
     "data.ibm_resource_instance.pi_workspace_ds": {
@@ -387,7 +372,7 @@
       },
       "pos": {
         "filename": "main.tf",
-        "line": 13
+        "line": 14
       }
     }
   },

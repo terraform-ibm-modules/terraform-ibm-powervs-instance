@@ -36,11 +36,6 @@ variable "pi_os_image_name" {
   type        = string
 }
 
-variable "pi_boot_image_storage_tier" {
-  description = "Storage tier for boot OS image. Supported values are 'tier1' and 'tier3'."
-  type        = string
-}
-
 variable "pi_networks" {
   description = "Existing list of subnets name to be attached to an instance. First network has to be a management network."
   type        = list(any)
