@@ -16,8 +16,7 @@
       "description": "Name of instance which will be created",
       "required": true,
       "source": [
-        "ibm_pi_instance.instance.pi_instance_name",
-        "ibm_pi_volume.create_volume.pi_volume_name"
+        "ibm_pi_instance.instance.pi_instance_name"
       ],
       "pos": {
         "filename": "variables.tf",
@@ -36,7 +35,7 @@
     "pi_networks": {
       "name": "pi_networks",
       "type": "list(any)",
-      "description": "Existing list of subnets name to be attached to an instance. First network has to be a management network.",
+      "description": "Existing list of subnets name to be attached to an instance. First network has to be a management network",
       "required": true,
       "source": [
         "data.ibm_pi_instance_ip.instance_mgmt_ip_ds.pi_network_name",
@@ -73,7 +72,7 @@
     "pi_resource_group_name": {
       "name": "pi_resource_group_name",
       "type": "string",
-      "description": "Existing IBM Cloud resource group name.",
+      "description": "Existing IBM Cloud resource group name",
       "required": true,
       "source": [
         "data.ibm_resource_group.resource_group_ds.name"
@@ -130,15 +129,17 @@
     },
     "pi_storage_config": {
       "name": "pi_storage_config",
-      "type": "object({\n    names      = string\n    disks_size = string\n    counts     = string\n    tiers      = string\n    paths      = string\n  })",
-      "description": "Custom File systems to be created and attached to PowerVS instance for SAP HANA. 'disk_sizes' are in GB. 'count' specify over how many storage volumes the file system will be striped. 'tiers' specifies the storage tier in PowerVS workspace. For creating multiple file systems, specify multiple entries in each parameter in the structure. E.g., for creating 2 file systems, specify 2 names, 2 disk sizes, 2 counts, 2 tiers and 2 paths.",
-      "default": {
-        "counts": "",
-        "disks_size": "",
-        "names": "",
-        "paths": "",
-        "tiers": ""
-      },
+      "type": "list(object({\n    name  = string\n    size  = string\n    count = string\n    tier  = string\n    mount = string\n  }))",
+      "description": "File systems to be created and attached to PowerVS instance. 'size' is in GB. 'count' specify over how many storage volumes the file system will be striped. 'tier' specifies the storage tier in PowerVS workspace, 'mount' specifies the mount point on the OS.",
+      "default": [
+        {
+          "count": "2",
+          "mount": "/data",
+          "name": "data",
+          "size": "100",
+          "tier": "tier1"
+        }
+      ],
       "pos": {
         "filename": "variables.tf",
         "line": 74
@@ -147,7 +148,7 @@
     "pi_workspace_name": {
       "name": "pi_workspace_name",
       "type": "string",
-      "description": "Existing Name of the PowerVS workspace.",
+      "description": "Existing Name of the PowerVS workspace",
       "required": true,
       "source": [
         "data.ibm_resource_instance.pi_workspace_ds.name"
@@ -201,9 +202,9 @@
         "line": 6
       }
     },
-    "instance_wwns": {
-      "name": "instance_wwns",
-      "description": "Unique volume IDs (wwns) of all volumes attached to IBM PowerVS instance.",
+    "storage_configuration": {
+      "name": "storage_configuration",
+      "description": "Storage configuration of PowerVS instance",
       "pos": {
         "filename": "outputs.tf",
         "line": 16
@@ -246,15 +247,12 @@
       "mode": "managed",
       "type": "ibm_pi_volume",
       "name": "create_volume",
-      "attributes": {
-        "pi_volume_name": "pi_instance_name"
-      },
       "provider": {
         "name": "ibm"
       },
       "pos": {
         "filename": "main.tf",
-        "line": 90
+        "line": 85
       }
     },
     "ibm_pi_volume_attach.instance_volumes_attach": {
@@ -266,7 +264,7 @@
       },
       "pos": {
         "filename": "main.tf",
-        "line": 108
+        "line": 104
       }
     }
   },
@@ -295,7 +293,7 @@
       },
       "pos": {
         "filename": "main.tf",
-        "line": 128
+        "line": 136
       }
     },
     "data.ibm_pi_instance_ip.instance_mgmt_ip_ds": {
@@ -310,7 +308,7 @@
       },
       "pos": {
         "filename": "main.tf",
-        "line": 121
+        "line": 129
       }
     },
     "data.ibm_pi_key.key_ds": {

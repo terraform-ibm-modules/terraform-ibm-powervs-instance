@@ -13,8 +13,15 @@ output "instance_mgmt_ip" {
   value       = data.ibm_pi_instance_ip.instance_mgmt_ip_ds.ip
 }
 
-output "instance_wwns" {
-  description = "Unique volume IDs (wwns) of all volumes attached to IBM PowerVS instance."
+output "storage_configuration" {
+  description = "Storage configuration of PowerVS instance"
   depends_on  = [ibm_pi_volume.create_volume]
-  value       = ibm_pi_volume.create_volume[*].wwn
+  value = [for index, vol in var.pi_storage_config :
+    {
+      name  = vol.name
+      size  = vol.size
+      tier  = vol.tier
+      mount = vol.mount
+      wwns  = [for wwn in local.instance_wwn_by_fs[vol.name] : lower(wwn)]
+  }]
 }

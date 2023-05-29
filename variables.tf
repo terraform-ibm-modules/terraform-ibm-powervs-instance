@@ -8,12 +8,12 @@ variable "pi_zone" {
 }
 
 variable "pi_resource_group_name" {
-  description = "Existing IBM Cloud resource group name."
+  description = "Existing IBM Cloud resource group name"
   type        = string
 }
 
 variable "pi_workspace_name" {
-  description = "Existing Name of the PowerVS workspace."
+  description = "Existing Name of the PowerVS workspace"
   type        = string
 }
 
@@ -27,7 +27,7 @@ variable "pi_instance_name" {
   type        = string
   validation {
     condition     = length(var.pi_instance_name) <= 13
-    error_message = "Maximum length of Instance name must be less or equal to 13 characters only."
+    error_message = "Maximum length of Instance name must be less or equal to 13 characters only"
   }
 }
 
@@ -37,7 +37,7 @@ variable "pi_os_image_name" {
 }
 
 variable "pi_networks" {
-  description = "Existing list of subnets name to be attached to an instance. First network has to be a management network."
+  description = "Existing list of subnets name to be attached to an instance. First network has to be a management network"
   type        = list(any)
 }
 
@@ -72,19 +72,17 @@ variable "pi_memory_size" {
 }
 
 variable "pi_storage_config" {
-  description = "Custom File systems to be created and attached to PowerVS instance for SAP HANA. 'disk_sizes' are in GB. 'count' specify over how many storage volumes the file system will be striped. 'tiers' specifies the storage tier in PowerVS workspace. For creating multiple file systems, specify multiple entries in each parameter in the structure. E.g., for creating 2 file systems, specify 2 names, 2 disk sizes, 2 counts, 2 tiers and 2 paths."
-  type = object({
-    names      = string
-    disks_size = string
-    counts     = string
-    tiers      = string
-    paths      = string
-  })
-  default = {
-    names      = ""
-    disks_size = ""
-    counts     = ""
-    tiers      = ""
-    paths      = ""
-  }
+  description = "File systems to be created and attached to PowerVS instance. 'size' is in GB. 'count' specify over how many storage volumes the file system will be striped. 'tier' specifies the storage tier in PowerVS workspace, 'mount' specifies the mount point on the OS."
+  type = list(object({
+    name  = string
+    size  = string
+    count = string
+    tier  = string
+    mount = string
+  }))
+  default = [
+    {
+      name = "data", size = "100", count = "2", tier = "tier1", mount = "/data"
+    }
+  ]
 }

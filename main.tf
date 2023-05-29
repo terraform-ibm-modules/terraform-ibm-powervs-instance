@@ -60,39 +60,35 @@ resource "ibm_pi_instance" "instance" {
   }
 
   timeouts {
-    create = "45m"
+    create = "50m"
   }
 
-}
-
-#####################################################
-# Create Disks mapping variables
-#####################################################
-
-locals {
-  disks_counts   = length(var.pi_storage_config["counts"]) > 0 ? [for x in(split(",", var.pi_storage_config["counts"])) : tonumber(trimspace(x))] : null
-  disks_size_tmp = length(var.pi_storage_config["counts"]) > 0 ? [for disk_size in split(",", var.pi_storage_config["disks_size"]) : tonumber(trimspace(disk_size))] : null
-  disks_size     = length(var.pi_storage_config["counts"]) > 0 ? flatten([for idx, disk_count in local.disks_counts : [for i in range(disk_count) : local.disks_size_tmp[idx]]]) : null
-
-  tier_types_tmp = length(var.pi_storage_config["counts"]) > 0 ? [for tier_type in split(",", var.pi_storage_config["tiers"]) : trimspace(tier_type)] : null
-  tiers_type     = length(var.pi_storage_config["counts"]) > 0 ? flatten([for idx, disk_count in local.disks_counts : [for i in range(disk_count) : local.tier_types_tmp[idx]]]) : null
-
-  disks_name_tmp = length(var.pi_storage_config["counts"]) > 0 ? [for disk_name in split(",", var.pi_storage_config["names"]) : trimspace(disk_name)] : null
-  disks_name     = length(var.pi_storage_config["counts"]) > 0 ? flatten([for idx, disk_count in local.disks_counts : [for i in range(disk_count) : local.disks_name_tmp[idx]]]) : null
-
-  disks_number = length(var.pi_storage_config["counts"]) > 0 ? sum([for x in(split(",", var.pi_storage_config["counts"])) : tonumber(trimspace(x))]) : 0
 }
 
 #####################################################
 # Create Volumes
 #####################################################
 
+locals {
+  volume_list = flatten([
+    for vol in var.pi_storage_config : [
+      for i in range(1, vol.count + 1) : {
+        name  = "${vol.name}-${i}"
+        size  = vol.size
+        tier  = vol.tier
+        mount = vol.mount
+      }
+    ]
+  ])
+}
+
 resource "ibm_pi_volume" "create_volume" {
-  depends_on           = [ibm_pi_instance.instance]
-  count                = local.disks_number
-  pi_volume_size       = local.disks_size[count.index - (local.disks_number * floor(count.index / local.disks_number))]
-  pi_volume_name       = "${var.pi_instance_name}-${local.disks_name[count.index - (local.disks_number * floor(count.index / local.disks_number))]}-volume${count.index + 1}"
-  pi_volume_type       = local.tiers_type[count.index - (local.disks_number * floor(count.index / local.disks_number))]
+  depends_on = [ibm_pi_instance.instance]
+  count      = length(local.volume_list)
+
+  pi_volume_name       = local.volume_list[count.index].name
+  pi_volume_size       = local.volume_list[count.index].size
+  pi_volume_type       = local.volume_list[count.index].tier
   pi_volume_shareable  = false
   pi_cloud_instance_id = data.ibm_resource_instance.pi_workspace_ds.guid
 
@@ -107,7 +103,7 @@ resource "ibm_pi_volume" "create_volume" {
 
 resource "ibm_pi_volume_attach" "instance_volumes_attach" {
   depends_on           = [ibm_pi_volume.create_volume, ibm_pi_instance.instance]
-  count                = local.disks_number
+  count                = length(local.volume_list)
   pi_cloud_instance_id = data.ibm_resource_instance.pi_workspace_ds.guid
   pi_volume_id         = ibm_pi_volume.create_volume[count.index].volume_id
   pi_instance_id       = ibm_pi_instance.instance.instance_id
@@ -115,6 +111,18 @@ resource "ibm_pi_volume_attach" "instance_volumes_attach" {
   timeouts {
     create = "50m"
     delete = "50m"
+  }
+}
+
+#####################################################
+# For Outputs
+#####################################################
+
+locals {
+
+  fs_pattern = join("|", [for vol in var.pi_storage_config : vol.name])
+  instance_wwn_by_fs = { for vol in ibm_pi_volume.create_volume :
+    regex(local.fs_pattern, vol.pi_volume_name) => vol.wwn...
   }
 }
 
