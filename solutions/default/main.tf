@@ -65,7 +65,7 @@ provider "ibm" {
 locals {
   powervs_workspace_name = "${var.prefix}-${var.powervs_zone}-${var.powervs_workspace_name}"
   powervs_sshkey_name    = "${var.prefix}-${var.powervs_zone}-${var.powervs_sshkey_name}"
-  powervs_instance_name  = "${var.prefix}-${var.powervs_instance_name}"
+  powervs_instance_name  = var.powervs_instance_name
 }
 
 # Security Notice
