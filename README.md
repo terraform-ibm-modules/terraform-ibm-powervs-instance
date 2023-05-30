@@ -67,7 +67,9 @@ You need the following permissions to run this module.
 <!-- BEGIN EXAMPLES HOOK -->
 ## Examples
 
-- [ Basic Power Virtual Server Module Example](solutions/default)
+- [ Default example](examples/default)
+- [ Example that uses existing resources](examples/existing-resources)
+- [ Non default example](examples/non-default)
 <!-- END EXAMPLES HOOK -->
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
