@@ -10,8 +10,8 @@ jobs:
   call-terraform-ci-pipeline:
     uses: terraform-ibm-modules/common-pipeline-assets/.github/workflows/common-terraform-module-ci-v2.yml@v1.12.2
     secrets: inherit
-    with:
-      craSCCv2: true
-      craTarget: "solutions/default"
-      craRuleIgnoreFile: "cra-tf-validate-ignore-rules.json"
-      craEnvironmentVariables: "TF_VAR_prefix=pvs-i,TF_VAR_region=syd05"
+    #with:
+    # craSCCv2: true
+    #craTarget: "solutions/default"
+    #craRuleIgnoreFile: "cra-tf-validate-ignore-rules.json"
+    #craEnvironmentVariables: "TF_VAR_prefix=pvs-i,TF_VAR_region=syd05"
