@@ -44,7 +44,7 @@ func setupOptions(t *testing.T, prefix string) *testhelper.TestOptions {
 func TestRunDefaultExample(t *testing.T) {
 	t.Parallel()
 
-	options := setupOptions(t, "power-sap")
+	options := setupOptions(t, "pi")
 
 	output, err := options.RunTestConsistency()
 	assert.Nil(t, err, "This should not have errored")
