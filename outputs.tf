@@ -1,10 +1,27 @@
-##############################################################################
-# Outputs
-##############################################################################
+output "instance_private_ips" {
+  description = "All private IP addresses (as a list) of IBM PowerVS instance."
+  value       = join(", ", [for ip in data.ibm_pi_instance.instance_ips_ds.networks[*].ip : format("%s", ip)])
+}
 
-#output "myoutput" {
-#  description = "Description of my output"
-#  value       = "value"
-#}
+output "instance_private_ips_info" {
+  description = "Complete info about all private IP addresses of IBM PowerVS instance."
+  value       = data.ibm_pi_network.pi_subnets_ds
+}
 
-##############################################################################
+output "instance_mgmt_ip" {
+  description = "IP address of the management network interface of IBM PowerVS instance."
+  value       = data.ibm_pi_instance_ip.instance_mgmt_ip_ds.ip
+}
+
+output "storage_configuration" {
+  description = "Storage configuration of PowerVS instance"
+  depends_on  = [ibm_pi_volume.create_volume]
+  value = [for index, vol in var.pi_storage_config :
+    {
+      name  = vol.name
+      size  = vol.size
+      tier  = vol.tier
+      mount = vol.mount
+      wwns  = [for wwn in local.instance_wwn_by_fs[vol.name] : lower(wwn)]
+  }]
+}

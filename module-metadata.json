@@ -1,12 +1,378 @@
 {
   "path": ".",
-  "variables": {},
-  "outputs": {},
+  "variables": {
+    "pi_cpu_proc_type": {
+      "name": "pi_cpu_proc_type",
+      "type": "string",
+      "description": "Dedicated or shared processors",
+      "pos": {
+        "filename": "variables.tf",
+        "line": 56
+      }
+    },
+    "pi_instance_name": {
+      "name": "pi_instance_name",
+      "type": "string",
+      "description": "Name of instance which will be created",
+      "required": true,
+      "source": [
+        "ibm_pi_instance.instance.pi_instance_name"
+      ],
+      "pos": {
+        "filename": "variables.tf",
+        "line": 25
+      }
+    },
+    "pi_memory_size": {
+      "name": "pi_memory_size",
+      "type": "string",
+      "description": "Amount of memory",
+      "pos": {
+        "filename": "variables.tf",
+        "line": 68
+      }
+    },
+    "pi_networks": {
+      "name": "pi_networks",
+      "type": "list(any)",
+      "description": "Existing list of subnets name to be attached to an instance. First network has to be a management network",
+      "required": true,
+      "source": [
+        "data.ibm_pi_instance_ip.instance_mgmt_ip_ds.pi_network_name",
+        "data.ibm_pi_network.pi_subnets_ds.count",
+        "data.ibm_pi_network.pi_subnets_ds.pi_network_name"
+      ],
+      "pos": {
+        "filename": "variables.tf",
+        "line": 39
+      }
+    },
+    "pi_number_of_processors": {
+      "name": "pi_number_of_processors",
+      "type": "string",
+      "description": "Number of processors",
+      "pos": {
+        "filename": "variables.tf",
+        "line": 62
+      }
+    },
+    "pi_os_image_name": {
+      "name": "pi_os_image_name",
+      "type": "string",
+      "description": "Image Name for PowerVS Instance",
+      "required": true,
+      "source": [
+        "data.ibm_pi_image.image_ds.pi_image_name"
+      ],
+      "pos": {
+        "filename": "variables.tf",
+        "line": 34
+      }
+    },
+    "pi_resource_group_name": {
+      "name": "pi_resource_group_name",
+      "type": "string",
+      "description": "Existing IBM Cloud resource group name",
+      "required": true,
+      "source": [
+        "data.ibm_resource_group.resource_group_ds.name"
+      ],
+      "pos": {
+        "filename": "variables.tf",
+        "line": 10
+      },
+      "cloud_data_type": "resource_group",
+      "computed": true,
+      "cloud_data_range": [
+        "resolved_to:name"
+      ]
+    },
+    "pi_sap_profile_id": {
+      "name": "pi_sap_profile_id",
+      "type": "string",
+      "description": "SAP HANA profile to use. Must be one of the supported profiles. See [here](https://cloud.ibm.com/docs/sap?topic=sap-hana-iaas-offerings-profiles-power-vs). If this is mentioned then pi_server_type, pi_cpu_proc_type, pi_number_of_processors and pi_memory_size will not be taken into account",
+      "default": "ush1-4x128",
+      "source": [
+        "ibm_pi_instance.instance.pi_memory",
+        "ibm_pi_instance.instance.pi_proc_type",
+        "ibm_pi_instance.instance.pi_processors",
+        "ibm_pi_instance.instance.pi_sap_profile_id",
+        "ibm_pi_instance.instance.pi_sys_type"
+      ],
+      "pos": {
+        "filename": "variables.tf",
+        "line": 44
+      },
+      "computed": true
+    },
+    "pi_server_type": {
+      "name": "pi_server_type",
+      "type": "string",
+      "description": "Processor type e980/s922/e1080/s1022",
+      "pos": {
+        "filename": "variables.tf",
+        "line": 50
+      }
+    },
+    "pi_sshkey_name": {
+      "name": "pi_sshkey_name",
+      "type": "string",
+      "description": "Existing PowerVs SSH key name",
+      "required": true,
+      "source": [
+        "data.ibm_pi_key.key_ds.pi_key_name"
+      ],
+      "pos": {
+        "filename": "variables.tf",
+        "line": 20
+      }
+    },
+    "pi_storage_config": {
+      "name": "pi_storage_config",
+      "type": "list(object({\n    name  = string\n    size  = string\n    count = string\n    tier  = string\n    mount = string\n  }))",
+      "description": "File systems to be created and attached to PowerVS instance. 'size' is in GB. 'count' specify over how many storage volumes the file system will be striped. 'tier' specifies the storage tier in PowerVS workspace, 'mount' specifies the mount point on the OS.",
+      "default": [
+        {
+          "count": "2",
+          "mount": "/data",
+          "name": "data",
+          "size": "100",
+          "tier": "tier1"
+        }
+      ],
+      "pos": {
+        "filename": "variables.tf",
+        "line": 74
+      }
+    },
+    "pi_workspace_name": {
+      "name": "pi_workspace_name",
+      "type": "string",
+      "description": "Existing Name of the PowerVS workspace",
+      "required": true,
+      "source": [
+        "data.ibm_resource_instance.pi_workspace_ds.name"
+      ],
+      "pos": {
+        "filename": "variables.tf",
+        "line": 15
+      }
+    },
+    "pi_zone": {
+      "name": "pi_zone",
+      "type": "string",
+      "description": "IBM Cloud PowerVS zone.",
+      "required": true,
+      "source": [
+        "data.ibm_resource_instance.pi_workspace_ds.location"
+      ],
+      "pos": {
+        "filename": "variables.tf",
+        "line": 1
+      },
+      "cloud_data_type": "region",
+      "computed": true
+    }
+  },
+  "outputs": {
+    "instance_mgmt_ip": {
+      "name": "instance_mgmt_ip",
+      "description": "IP address of the management network interface of IBM PowerVS instance.",
+      "value": "data.ibm_pi_instance_ip.instance_mgmt_ip_ds.ip",
+      "pos": {
+        "filename": "outputs.tf",
+        "line": 11
+      },
+      "type": "TypeString"
+    },
+    "instance_private_ips": {
+      "name": "instance_private_ips",
+      "description": "All private IP addresses (as a list) of IBM PowerVS instance.",
+      "pos": {
+        "filename": "outputs.tf",
+        "line": 1
+      }
+    },
+    "instance_private_ips_info": {
+      "name": "instance_private_ips_info",
+      "description": "Complete info about all private IP addresses of IBM PowerVS instance.",
+      "value": "data.ibm_pi_network.pi_subnets_ds",
+      "pos": {
+        "filename": "outputs.tf",
+        "line": 6
+      }
+    },
+    "storage_configuration": {
+      "name": "storage_configuration",
+      "description": "Storage configuration of PowerVS instance",
+      "pos": {
+        "filename": "outputs.tf",
+        "line": 16
+      }
+    }
+  },
   "required_core": [
-    "\u003e= 1.0.0"
+    "\u003e= 1.3, \u003c 1.5"
   ],
-  "required_providers": {},
-  "managed_resources": {},
-  "data_resources": {},
+  "required_providers": {
+    "ibm": {
+      "source": "IBM-Cloud/ibm",
+      "version_constraints": [
+        "\u003e=1.49.0"
+      ]
+    }
+  },
+  "managed_resources": {
+    "ibm_pi_instance.instance": {
+      "mode": "managed",
+      "type": "ibm_pi_instance",
+      "name": "instance",
+      "attributes": {
+        "pi_instance_name": "pi_instance_name",
+        "pi_memory": "pi_sap_profile_id",
+        "pi_proc_type": "pi_sap_profile_id",
+        "pi_processors": "pi_sap_profile_id",
+        "pi_sap_profile_id": "pi_sap_profile_id",
+        "pi_sys_type": "pi_sap_profile_id"
+      },
+      "provider": {
+        "name": "ibm"
+      },
+      "pos": {
+        "filename": "main.tf",
+        "line": 41
+      }
+    },
+    "ibm_pi_volume.create_volume": {
+      "mode": "managed",
+      "type": "ibm_pi_volume",
+      "name": "create_volume",
+      "provider": {
+        "name": "ibm"
+      },
+      "pos": {
+        "filename": "main.tf",
+        "line": 85
+      }
+    },
+    "ibm_pi_volume_attach.instance_volumes_attach": {
+      "mode": "managed",
+      "type": "ibm_pi_volume_attach",
+      "name": "instance_volumes_attach",
+      "provider": {
+        "name": "ibm"
+      },
+      "pos": {
+        "filename": "main.tf",
+        "line": 104
+      }
+    }
+  },
+  "data_resources": {
+    "data.ibm_pi_image.image_ds": {
+      "mode": "data",
+      "type": "ibm_pi_image",
+      "name": "image_ds",
+      "attributes": {
+        "pi_image_name": "pi_os_image_name"
+      },
+      "provider": {
+        "name": "ibm"
+      },
+      "pos": {
+        "filename": "main.tf",
+        "line": 26
+      }
+    },
+    "data.ibm_pi_instance.instance_ips_ds": {
+      "mode": "data",
+      "type": "ibm_pi_instance",
+      "name": "instance_ips_ds",
+      "provider": {
+        "name": "ibm"
+      },
+      "pos": {
+        "filename": "main.tf",
+        "line": 136
+      }
+    },
+    "data.ibm_pi_instance_ip.instance_mgmt_ip_ds": {
+      "mode": "data",
+      "type": "ibm_pi_instance_ip",
+      "name": "instance_mgmt_ip_ds",
+      "attributes": {
+        "pi_network_name": "pi_networks"
+      },
+      "provider": {
+        "name": "ibm"
+      },
+      "pos": {
+        "filename": "main.tf",
+        "line": 129
+      }
+    },
+    "data.ibm_pi_key.key_ds": {
+      "mode": "data",
+      "type": "ibm_pi_key",
+      "name": "key_ds",
+      "attributes": {
+        "pi_key_name": "pi_sshkey_name"
+      },
+      "provider": {
+        "name": "ibm"
+      },
+      "pos": {
+        "filename": "main.tf",
+        "line": 21
+      }
+    },
+    "data.ibm_pi_network.pi_subnets_ds": {
+      "mode": "data",
+      "type": "ibm_pi_network",
+      "name": "pi_subnets_ds",
+      "attributes": {
+        "count": "pi_networks",
+        "pi_network_name": "pi_networks"
+      },
+      "provider": {
+        "name": "ibm"
+      },
+      "pos": {
+        "filename": "main.tf",
+        "line": 31
+      }
+    },
+    "data.ibm_resource_group.resource_group_ds": {
+      "mode": "data",
+      "type": "ibm_resource_group",
+      "name": "resource_group_ds",
+      "attributes": {
+        "name": "pi_resource_group_name"
+      },
+      "provider": {
+        "name": "ibm"
+      },
+      "pos": {
+        "filename": "main.tf",
+        "line": 10
+      }
+    },
+    "data.ibm_resource_instance.pi_workspace_ds": {
+      "mode": "data",
+      "type": "ibm_resource_instance",
+      "name": "pi_workspace_ds",
+      "attributes": {
+        "location": "pi_zone",
+        "name": "pi_workspace_name"
+      },
+      "provider": {
+        "name": "ibm"
+      },
+      "pos": {
+        "filename": "main.tf",
+        "line": 14
+      }
+    }
+  },
   "module_calls": {}
 }
