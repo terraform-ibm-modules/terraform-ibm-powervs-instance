@@ -1,6 +1,6 @@
 <!-- BEGIN MODULE HOOK -->
 
-# IBM Power Virtual Server with VPC landing zone module
+# IBM Power Virtual Server instance module
 
 [![Graduated (Supported)](https://img.shields.io/badge/status-Graduated%20(Supported)-brightgreen?style=plastic)](https://terraform-ibm-modules.github.io/documentation/#/badge-status)
 [![build status](https://github.com/terraform-ibm-modules/terraform-ibm-powervs-instance/actions/workflows/ci.yml/badge.svg)](https://github.com/terraform-ibm-modules/terraform-ibm-powervs-instance/actions/workflows/ci.yml)
