@@ -24,7 +24,7 @@ variable "resource_group" {
 variable "prefix" {
   description = "Prefix for resources which will be created."
   type        = string
-  default     = "pvs"
+  default     = "pi"
 }
 
 variable "powervs_workspace_name" {
@@ -93,7 +93,7 @@ variable "cloud_connection" {
 variable "powervs_instance_name" {
   description = "Name of instance which will be created"
   type        = string
-  default     = "pvs-rhel"
+  default     = "test"
 }
 
 variable "powervs_os_image_name" {
