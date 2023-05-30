@@ -93,7 +93,7 @@ variable "cloud_connection" {
 variable "powervs_instance_name" {
   description = "Name of instance which will be created"
   type        = string
-  default     = "test"
+  default     = "p"
 }
 
 variable "powervs_os_image_name" {
