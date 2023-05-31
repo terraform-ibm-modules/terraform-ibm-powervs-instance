@@ -16,7 +16,8 @@
       "description": "Name of instance which will be created",
       "required": true,
       "source": [
-        "ibm_pi_instance.instance.pi_instance_name"
+        "ibm_pi_instance.instance.pi_instance_name",
+        "ibm_pi_volume.create_volume.pi_volume_name"
       ],
       "pos": {
         "filename": "variables.tf",
@@ -247,6 +248,9 @@
       "mode": "managed",
       "type": "ibm_pi_volume",
       "name": "create_volume",
+      "attributes": {
+        "pi_volume_name": "pi_instance_name"
+      },
       "provider": {
         "name": "ibm"
       },
