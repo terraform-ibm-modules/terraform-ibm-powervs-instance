@@ -109,7 +109,7 @@ variable "powervs_sap_profile_id" {
 }
 
 variable "powervs_storage_config" {
-  description = "Custom File systems to be created and attached to PowerVS instance for SAP HANA. 'disk_size' is in GB. 'count' specify over how many storage volumes the file system will be striped. 'tier' specifies the storage tier in PowerVS workspace"
+  description = "Custom File systems to be created and attached to PowerVS instance. 'disk_size' is in GB. 'count' specify over how many storage volumes the file system will be striped. 'tier' specifies the storage tier in PowerVS workspace. 'mount' specifies the mount point on the OS."
   type = list(object({
     name  = string
     size  = string
@@ -119,13 +119,13 @@ variable "powervs_storage_config" {
   }))
   default = [
     {
-      name = "hanadata", size = "100", count = "2", tier = "tier1", mount = "/data"
+      name = "data", size = "100", count = "2", tier = "tier1", mount = "/data"
     },
     {
-      name = "hanalog", size = "20", count = "4", tier = "tier3", mount = "/log"
+      name = "log", size = "20", count = "2", tier = "tier3", mount = "/log"
     },
     {
-      name = "hanashaared", size = "20", count = "1", tier = "tier1", mount = "/shared"
+      name = "shared", size = "20", count = "1", tier = "tier1", mount = "/shared"
     },
   ]
 }
