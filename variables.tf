@@ -48,25 +48,25 @@ variable "pi_sap_profile_id" {
 }
 
 variable "pi_server_type" {
-  description = "Processor type e980/s922/e1080/s1022"
+  description = "Processor type e980/s922/e1080/s1022. Required when not creating SAP instances. Conflicts with pi_sap_profile_id"
   type        = string
   default     = null
 }
 
 variable "pi_cpu_proc_type" {
-  description = "Dedicated or shared processors"
+  description = "Dedicated or shared processors. Required when not creating SAP instances. Conflicts with pi_sap_profile_id"
   type        = string
   default     = null
 }
 
 variable "pi_number_of_processors" {
-  description = "Number of processors"
+  description = "Number of processors. Required when not creating SAP instances. Conflicts with pi_sap_profile_id"
   type        = string
   default     = null
 }
 
 variable "pi_memory_size" {
-  description = "Amount of memory"
+  description = "Amount of memory. Required when not creating SAP instances. Conflicts with pi_sap_profile_id"
   type        = string
   default     = null
 }
