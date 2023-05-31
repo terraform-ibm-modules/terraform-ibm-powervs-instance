@@ -86,7 +86,7 @@ resource "ibm_pi_volume" "create_volume" {
   depends_on = [ibm_pi_instance.instance]
   count      = length(local.volume_list)
 
-  pi_volume_name       = local.volume_list[count.index].name
+  pi_volume_name       = "${var.pi_instance_name}-${local.volume_list[count.index].name}"
   pi_volume_size       = local.volume_list[count.index].size
   pi_volume_type       = local.volume_list[count.index].tier
   pi_volume_shareable  = false
