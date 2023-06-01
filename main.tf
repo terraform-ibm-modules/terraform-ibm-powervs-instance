@@ -1,140 +1,49 @@
-#####################################################
-# PowerVs Instance Create Configuration
-#####################################################
+module "pi_instance" {
 
-locals {
-  pi_workspace_type          = "power-iaas"
-  pi_boot_image_storage_tier = var.pi_sap_profile_id == null ? "tier3" : "tier1"
-}
+  source = "./submodules/pi_instance"
 
-data "ibm_resource_group" "resource_group_ds" {
-  name = var.pi_resource_group_name
-}
-
-data "ibm_resource_instance" "pi_workspace_ds" {
-  name              = var.pi_workspace_name
-  service           = local.pi_workspace_type
-  location          = var.pi_zone
-  resource_group_id = data.ibm_resource_group.resource_group_ds.id
-}
-
-data "ibm_pi_key" "key_ds" {
-  pi_cloud_instance_id = data.ibm_resource_instance.pi_workspace_ds.guid
-  pi_key_name          = var.pi_sshkey_name
-}
-
-data "ibm_pi_image" "image_ds" {
-  pi_image_name        = var.pi_os_image_name
-  pi_cloud_instance_id = data.ibm_resource_instance.pi_workspace_ds.guid
-}
-
-data "ibm_pi_network" "pi_subnets_ds" {
-  count                = length(var.pi_networks)
-  pi_cloud_instance_id = data.ibm_resource_instance.pi_workspace_ds.guid
-  pi_network_name      = var.pi_networks[count.index]
-}
-
-#####################################################
-# Create PowerVs Instance
-#####################################################
-
-resource "ibm_pi_instance" "instance" {
-  pi_cloud_instance_id     = data.ibm_resource_instance.pi_workspace_ds.guid
-  pi_instance_name         = var.pi_instance_name
-  pi_image_id              = data.ibm_pi_image.image_ds.id
-  pi_sap_profile_id        = var.pi_sap_profile_id == null ? null : var.pi_sap_profile_id
-  pi_processors            = var.pi_sap_profile_id != null ? null : var.pi_number_of_processors
-  pi_memory                = var.pi_sap_profile_id != null ? null : var.pi_memory_size
-  pi_sys_type              = var.pi_sap_profile_id != null ? null : var.pi_server_type
-  pi_proc_type             = var.pi_sap_profile_id != null ? null : var.pi_cpu_proc_type
-  pi_key_pair_name         = data.ibm_pi_key.key_ds.id
-  pi_health_status         = "OK"
-  pi_storage_pool_affinity = false
-  pi_storage_type          = local.pi_boot_image_storage_tier
-
-  dynamic "pi_network" {
-    for_each = tolist(data.ibm_pi_network.pi_subnets_ds[*].id)
-    content {
-      network_id = pi_network.value
-    }
-  }
-
-  timeouts {
-    create = "50m"
-  }
+  pi_zone                 = var.pi_zone
+  pi_resource_group_name  = var.pi_resource_group_name
+  pi_workspace_name       = var.pi_workspace_name
+  pi_sshkey_name          = var.pi_sshkey_name
+  pi_instance_name        = var.pi_instance_name
+  pi_os_image_name        = var.pi_os_image_name
+  pi_networks             = var.pi_networks
+  pi_sap_profile_id       = var.pi_sap_profile_id
+  pi_server_type          = var.pi_server_type
+  pi_cpu_proc_type        = var.pi_cpu_proc_type
+  pi_number_of_processors = var.pi_number_of_processors
+  pi_memory_size          = var.pi_memory_size
+  pi_storage_config       = var.pi_storage_config
 
 }
 
 #####################################################
-# Create Volumes
+# Enable instance initialization for Linux only
 #####################################################
 
 locals {
-  volume_list = flatten([
-    for vol in var.pi_storage_config : [
-      for i in range(1, vol.count + 1) : {
-        name  = "${vol.name}-${i}"
-        size  = vol.size
-        tier  = vol.tier
-        mount = vol.mount
-      }
-    ]
-  ])
+  os_distribution  = length(regexall(".*RHEL.*", var.pi_os_image_name)) > 0 || length(regexall(".*SLES.*", var.pi_os_image_name)) > 0 ? "linux" : "aix"
+  pi_instance_init = var.pi_instance_init["enable"] && local.os_distribution == "linux" ? true : false
 }
-
-resource "ibm_pi_volume" "create_volume" {
-  depends_on = [ibm_pi_instance.instance]
-  count      = length(local.volume_list)
-
-  pi_volume_name       = "${var.pi_instance_name}-${local.volume_list[count.index].name}"
-  pi_volume_size       = local.volume_list[count.index].size
-  pi_volume_type       = local.volume_list[count.index].tier
-  pi_volume_shareable  = false
-  pi_cloud_instance_id = data.ibm_resource_instance.pi_workspace_ds.guid
-
-  timeouts {
-    create = "15m"
-  }
-}
-
-#####################################################
-# Attach Volumes to the Instance
-#####################################################
-
-resource "ibm_pi_volume_attach" "instance_volumes_attach" {
-  depends_on           = [ibm_pi_volume.create_volume, ibm_pi_instance.instance]
-  count                = length(local.volume_list)
-  pi_cloud_instance_id = data.ibm_resource_instance.pi_workspace_ds.guid
-  pi_volume_id         = ibm_pi_volume.create_volume[count.index].volume_id
-  pi_instance_id       = ibm_pi_instance.instance.instance_id
-
-  timeouts {
-    create = "50m"
-    delete = "50m"
-  }
-}
-
-#####################################################
-# For Outputs
-#####################################################
 
 locals {
-
-  fs_pattern = join("|", [for vol in var.pi_storage_config : vol.name])
-  instance_wwn_by_fs = { for vol in ibm_pi_volume.create_volume :
-    regex(local.fs_pattern, vol.pi_volume_name) => vol.wwn...
+  pi_proxy_settings = {
+    enable                = var.pi_proxy_settings != null && var.pi_proxy_settings.proxy_host_or_ip_port != "" ? true : false
+    proxy_host_or_ip_port = var.pi_proxy_settings.proxy_host_or_ip_port
+    no_proxy_hosts        = var.pi_proxy_settings.no_proxy_hosts
   }
 }
 
-data "ibm_pi_instance_ip" "instance_mgmt_ip_ds" {
-  depends_on           = [ibm_pi_instance.instance]
-  pi_network_name      = var.pi_networks[0]
-  pi_instance_name     = ibm_pi_instance.instance.pi_instance_name
-  pi_cloud_instance_id = data.ibm_resource_instance.pi_workspace_ds.guid
-}
+module "pi_instance_init" {
 
-data "ibm_pi_instance" "instance_ips_ds" {
-  depends_on           = [ibm_pi_instance.instance]
-  pi_instance_name     = ibm_pi_instance.instance.pi_instance_name
-  pi_cloud_instance_id = data.ibm_resource_instance.pi_workspace_ds.guid
+  source     = "./submodules/pi_instance_init"
+  depends_on = [module.pi_instance]
+  count      = local.pi_instance_init ? 1 : 0
+
+  access_host_or_ip = var.pi_instance_init.access_host_or_ip
+  target_server_ip  = module.pi_instance.pi_instance_mgmt_ip
+  ssh_private_key   = var.pi_instance_init.ssh_private_key
+  pi_proxy_settings = local.pi_proxy_settings
+  pi_storage_config = module.pi_instance.pi_storage_configuration
 }

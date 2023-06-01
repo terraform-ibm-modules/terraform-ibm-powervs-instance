@@ -135,4 +135,5 @@ module "powervs_instance" {
   pi_networks            = local.additional_networks
   pi_sap_profile_id      = var.powervs_sap_profile_id
   pi_storage_config      = var.powervs_storage_config
+  pi_instance_init       = var.pi_instance_init
 }

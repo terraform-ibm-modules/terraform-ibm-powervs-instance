@@ -86,31 +86,3 @@ variable "pi_storage_config" {
     }
   ]
 }
-
-#####################################################
-# PowerVS Instance Initialization
-#####################################################
-
-variable "pi_instance_init" {
-  description = "Setup Proxy client and create filesystems on OS. Supported for LINUX distribution only. 'access_host_or_ip' Public IP of Bastion Host"
-  type = object({
-    enable            = bool
-    access_host_or_ip = string
-    ssh_private_key   = string
-  })
-}
-
-
-variable "pi_proxy_settings" {
-  description = "Configures a PowerVS instance to have internet access by setting proxy on it. E.g., 10.10.10.4:3128 <ip:port>"
-  type = object(
-    {
-      proxy_host_or_ip_port = string
-      no_proxy_hosts        = string
-    }
-  )
-  default = {
-    proxy_host_or_ip_port = ""
-    no_proxy_hosts        = "161.0.0.0/8,10.0.0.0/8"
-  }
-}
