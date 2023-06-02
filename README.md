@@ -33,7 +33,7 @@ module "pi_instance" {
   pi_workspace_name       = var.pi_workspace_name
   pi_sshkey_name          = var.pi_sshkey_name
   pi_instance_name        = var.pi_instance_name
-  pi_os_image_name        = var.pi_share_image_name
+  pi_os_image_name        = var.pi_os_image_name
   pi_networks             = var.pi_networks
   pi_sap_profile_id       = var.pi_sap_profile_id
   pi_server_type          = var.pi_server_type
@@ -65,9 +65,9 @@ You need the following permissions to run this module.
 
 <!-- END MODULE HOOK -->
 <!-- BEGIN EXAMPLES HOOK -->
-## Solutions
+## Examples
 
-- [ Basic Power Virtual Server Module Example](solutions/default)
+- [Examples](examples)
 <!-- END EXAMPLES HOOK -->
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
