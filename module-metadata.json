@@ -270,7 +270,7 @@
   "module_calls": {
     "pi_instance": {
       "name": "pi_instance",
-      "source": "./submodules/pi_instance",
+      "source": "./modules/pi_instance",
       "attributes": {
         "pi_cpu_proc_type": "pi_cpu_proc_type",
         "pi_instance_name": "pi_instance_name",
@@ -303,7 +303,7 @@
             "name": "ibm"
           },
           "pos": {
-            "filename": "submodules/pi_instance/main.tf",
+            "filename": "modules/pi_instance/main.tf",
             "line": 41
           }
         },
@@ -318,7 +318,7 @@
             "name": "ibm"
           },
           "pos": {
-            "filename": "submodules/pi_instance/main.tf",
+            "filename": "modules/pi_instance/main.tf",
             "line": 85
           }
         },
@@ -330,7 +330,7 @@
             "name": "ibm"
           },
           "pos": {
-            "filename": "submodules/pi_instance/main.tf",
+            "filename": "modules/pi_instance/main.tf",
             "line": 104
           }
         }
@@ -347,7 +347,7 @@
             "name": "ibm"
           },
           "pos": {
-            "filename": "submodules/pi_instance/main.tf",
+            "filename": "modules/pi_instance/main.tf",
             "line": 26
           }
         },
@@ -359,7 +359,7 @@
             "name": "ibm"
           },
           "pos": {
-            "filename": "submodules/pi_instance/main.tf",
+            "filename": "modules/pi_instance/main.tf",
             "line": 136
           }
         },
@@ -374,7 +374,7 @@
             "name": "ibm"
           },
           "pos": {
-            "filename": "submodules/pi_instance/main.tf",
+            "filename": "modules/pi_instance/main.tf",
             "line": 129
           }
         },
@@ -389,7 +389,7 @@
             "name": "ibm"
           },
           "pos": {
-            "filename": "submodules/pi_instance/main.tf",
+            "filename": "modules/pi_instance/main.tf",
             "line": 21
           }
         },
@@ -405,7 +405,7 @@
             "name": "ibm"
           },
           "pos": {
-            "filename": "submodules/pi_instance/main.tf",
+            "filename": "modules/pi_instance/main.tf",
             "line": 31
           }
         },
@@ -420,7 +420,7 @@
             "name": "ibm"
           },
           "pos": {
-            "filename": "submodules/pi_instance/main.tf",
+            "filename": "modules/pi_instance/main.tf",
             "line": 10
           }
         },
@@ -436,7 +436,7 @@
             "name": "ibm"
           },
           "pos": {
-            "filename": "submodules/pi_instance/main.tf",
+            "filename": "modules/pi_instance/main.tf",
             "line": 14
           }
         }
@@ -447,7 +447,7 @@
           "description": "IP address of the management network interface of IBM PowerVS instance.",
           "value": "data.ibm_pi_instance_ip.instance_mgmt_ip_ds.ip",
           "pos": {
-            "filename": "submodules/pi_instance/outputs.tf",
+            "filename": "modules/pi_instance/outputs.tf",
             "line": 11
           },
           "type": "TypeString"
@@ -456,7 +456,7 @@
           "name": "pi_instance_private_ips",
           "description": "All private IP addresses (as a list) of IBM PowerVS instance.",
           "pos": {
-            "filename": "submodules/pi_instance/outputs.tf",
+            "filename": "modules/pi_instance/outputs.tf",
             "line": 1
           }
         },
@@ -465,7 +465,7 @@
           "description": "Complete info about all private IP addresses of IBM PowerVS instance.",
           "value": "data.ibm_pi_network.pi_subnets_ds",
           "pos": {
-            "filename": "submodules/pi_instance/outputs.tf",
+            "filename": "modules/pi_instance/outputs.tf",
             "line": 6
           }
         },
@@ -473,7 +473,7 @@
           "name": "pi_storage_configuration",
           "description": "Storage configuration of PowerVS instance",
           "pos": {
-            "filename": "submodules/pi_instance/outputs.tf",
+            "filename": "modules/pi_instance/outputs.tf",
             "line": 16
           }
         }
@@ -485,7 +485,7 @@
     },
     "pi_instance_init": {
       "name": "pi_instance_init",
-      "source": "./submodules/pi_instance_init",
+      "source": "./modules/pi_instance_init",
       "attributes": {
         "access_host_or_ip": "pi_instance_init",
         "ssh_private_key": "pi_instance_init"
@@ -502,7 +502,7 @@
             "name": "null"
           },
           "pos": {
-            "filename": "submodules/pi_instance_init/main.tf",
+            "filename": "modules/pi_instance_init/main.tf",
             "line": 175
           }
         },
@@ -517,7 +517,7 @@
             "name": "null"
           },
           "pos": {
-            "filename": "submodules/pi_instance_init/main.tf",
+            "filename": "modules/pi_instance_init/main.tf",
             "line": 129
           }
         },
@@ -532,7 +532,7 @@
             "name": "null"
           },
           "pos": {
-            "filename": "submodules/pi_instance_init/main.tf",
+            "filename": "modules/pi_instance_init/main.tf",
             "line": 26
           }
         },
@@ -547,7 +547,7 @@
             "name": "null"
           },
           "pos": {
-            "filename": "submodules/pi_instance_init/main.tf",
+            "filename": "modules/pi_instance_init/main.tf",
             "line": 75
           }
         },
@@ -559,7 +559,7 @@
             "name": "time"
           },
           "pos": {
-            "filename": "submodules/pi_instance_init/main.tf",
+            "filename": "modules/pi_instance_init/main.tf",
             "line": 118
           }
         }

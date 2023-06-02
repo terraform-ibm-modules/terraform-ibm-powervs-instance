@@ -67,9 +67,10 @@ You need the following permissions to run this module.
 
 <!-- END MODULE HOOK -->
 <!-- BEGIN EXAMPLES HOOK -->
-## Solutions
+## Examples
 
-- [ Basic Power Virtual Server Module Example](solutions/single-instance)
+- [ Basic Power Virtual Server Module Example](examples/default)
+- [ Basic Power Virtual Server Module Example](examples/single-instance)
 <!-- END EXAMPLES HOOK -->
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
@@ -83,8 +84,8 @@ You need the following permissions to run this module.
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_pi_instance"></a> [pi\_instance](#module\_pi\_instance) | ./submodules/pi_instance | n/a |
-| <a name="module_pi_instance_init"></a> [pi\_instance\_init](#module\_pi\_instance\_init) | ./submodules/pi_instance_init | n/a |
+| <a name="module_pi_instance"></a> [pi\_instance](#module\_pi\_instance) | ./modules/pi_instance | n/a |
+| <a name="module_pi_instance_init"></a> [pi\_instance\_init](#module\_pi\_instance\_init) | ./modules/pi_instance_init | n/a |
 
 ## Resources
 

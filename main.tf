@@ -1,6 +1,6 @@
 module "pi_instance" {
 
-  source = "./submodules/pi_instance"
+  source = "./modules/pi_instance"
 
   pi_zone                 = var.pi_zone
   pi_resource_group_name  = var.pi_resource_group_name
@@ -37,7 +37,7 @@ locals {
 
 module "pi_instance_init" {
 
-  source     = "./submodules/pi_instance_init"
+  source     = "./modules/pi_instance_init"
   depends_on = [module.pi_instance]
   count      = local.pi_instance_init ? 1 : 0
 
