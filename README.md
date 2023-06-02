@@ -33,7 +33,7 @@ module "pi_instance" {
   pi_workspace_name       = var.pi_workspace_name
   pi_sshkey_name          = var.pi_sshkey_name
   pi_instance_name        = var.pi_instance_name
-  pi_os_image_name        = var.pi_share_image_name
+  pi_os_image_name        = var.pi_os_image_name
   pi_networks             = var.pi_networks
   pi_sap_profile_id       = var.pi_sap_profile_id
   pi_server_type          = var.pi_server_type
@@ -41,6 +41,8 @@ module "pi_instance" {
   pi_number_of_processors = var.pi_number_of_processors
   pi_memory_size          = var.pi_memory_size
   pi_storage_config       = var.pi_storage_config
+  pi_instance_init        = var.pi_instance_init
+  pi_proxy_settings       = var.pi_proxy_settings
 
 }
 ```
@@ -67,7 +69,7 @@ You need the following permissions to run this module.
 <!-- BEGIN EXAMPLES HOOK -->
 ## Solutions
 
-- [ Basic Power Virtual Server Module Example](solutions/default)
+- [ Basic Power Virtual Server Module Example](solutions/single_instance)
 <!-- END EXAMPLES HOOK -->
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
