@@ -34,6 +34,7 @@ module "pi_instance" {
   pi_sshkey_name          = var.pi_sshkey_name
   pi_instance_name        = var.pi_instance_name
   pi_os_image_name        = var.pi_os_image_name
+  pi_os_image_name        = var.pi_os_image_name
   pi_networks             = var.pi_networks
   pi_sap_profile_id       = var.pi_sap_profile_id
   pi_server_type          = var.pi_server_type
