@@ -1,4 +1,4 @@
-# Basic PowerVS Infrastructure with a Power Virtual server Example
+# Basic PowerVS Infrastructure with a Power Virtual server Instance Example
 
 This example illustrates how to use the `powervs-instance` module.
 It provisions the following infrastructure:
