@@ -13,6 +13,7 @@ The PowerVS instance module automates the following tasks:
 - Creates an IBM® Power Virtual Server Instance.
 - Creates Volumes and Attaches it to the instance.
 - Attaches existing private subnets to the instance.
+- Optional Instance Initialization for linux images only (Configure proxy settings and create files systems).
 
 For more information about IBM Power Virtual Server see the [getting started](https://cloud.ibm.com/docs/power-iaas?topic=power-iaas-getting-started) IBM Cloud docs.
 
