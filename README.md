@@ -69,7 +69,7 @@ You need the following permissions to run this module.
 <!-- BEGIN EXAMPLES HOOK -->
 ## Solutions
 
-- [ Basic Power Virtual Server Module Example](solutions/single_instance)
+- [ Basic Power Virtual Server Module Example](solutions/single-instance)
 <!-- END EXAMPLES HOOK -->
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
