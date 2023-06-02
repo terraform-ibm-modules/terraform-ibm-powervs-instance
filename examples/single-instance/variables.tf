@@ -8,6 +8,10 @@ variable "ibmcloud_api_key" {
 variable "powervs_zone" {
   description = "IBM Cloud PowerVS zone."
   type        = string
+  validation {
+    condition     = contains(["syd04", "syd05", "eu-de-1", "eu-de-2", "lon04", "lon06", "tok04", "us-east", "us-south", "dal12", "dal13", "tor01", "osa21", "sao01", "sao04", "mon01", "wdc04", "wdc06", "wdc07"], var.powervs_zone)
+    error_message = "Only Following DC values are supported :  syd04, syd05, eu-de-1, eu-de-2, lon04, lon06, tok04, us-east, us-south, dal12, dal13, tor01, osa21, sao01, sao04, mon01, wdc04, wdc06, wdc07"
+  }
 }
 
 variable "resource_group_name" {
@@ -91,8 +95,4 @@ variable "powervs_proxy_settings" {
       no_proxy_hosts        = string
     }
   )
-  default = {
-    proxy_host_or_ip_port = ""
-    no_proxy_hosts        = "161.0.0.0/8,10.0.0.0/8"
-  }
 }
