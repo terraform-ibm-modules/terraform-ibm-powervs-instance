@@ -78,6 +78,10 @@ variable "powervs_storage_config" {
   ]
 }
 
+#####################################################
+# PowerVS Instance Initialization Optional parameters.
+#####################################################
+
 variable "powervs_instance_init" {
   description = "Setup Proxy client and create filesystems on OS. Supported for LINUX distribution only."
   type = object({
@@ -88,11 +92,15 @@ variable "powervs_instance_init" {
 }
 
 variable "powervs_proxy_settings" {
-  description = "Configures a PowerVS instance to have internet access by setting proxy on it. E.g., 10.10.10.4:3128 <ip:port>"
+  description = "Configures a PowerVS instance to have internet access by setting proxy on it. E.g., 10.10.10.4:3128 <ip:port>. Requires 'powervs_instance_init' variable to be set."
   type = object(
     {
       proxy_host_or_ip_port = string
       no_proxy_hosts        = string
     }
   )
+  default = {
+    proxy_host_or_ip_port = "<ip:port>" #10.30.10.4:3128
+    no_proxy_hosts        = "161.0.0.0/8,10.0.0.0/8"
+  }
 }

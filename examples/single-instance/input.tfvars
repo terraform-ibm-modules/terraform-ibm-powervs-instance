@@ -12,6 +12,7 @@ powervs_instance_init = {
 EOF
 }
 
+## Optional. Requires powervs_instance_init to be enabled
 powervs_proxy_settings = {
   proxy_host_or_ip_port = "<ip:port>" #10.30.10.4:3128
   no_proxy_hosts        = "161.0.0.0/8,10.0.0.0/8"
