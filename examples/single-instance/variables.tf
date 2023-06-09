@@ -100,7 +100,7 @@ variable "powervs_proxy_settings" {
     }
   )
   default = {
-    proxy_host_or_ip_port = "<ip:port>" #10.30.10.4:3128
+    proxy_host_or_ip_port = "<ip:port>"
     no_proxy_hosts        = "161.0.0.0/8,10.0.0.0/8"
   }
 }
