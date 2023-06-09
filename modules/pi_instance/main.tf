@@ -70,7 +70,9 @@ resource "ibm_pi_instance" "instance" {
 #####################################################
 
 locals {
-  volume_list = flatten([
+
+  create_volumes = var.pi_storage_config != null ? var.pi_storage_config[0].count != "" ? true : false : false
+  volume_list = local.create_volumes ? flatten([
     for vol in var.pi_storage_config : [
       for i in range(1, vol.count + 1) : {
         name  = "${vol.name}-${i}"
@@ -79,7 +81,7 @@ locals {
         mount = vol.mount
       }
     ]
-  ])
+  ]) : []
 }
 
 resource "ibm_pi_volume" "create_volume" {
@@ -120,7 +122,7 @@ resource "ibm_pi_volume_attach" "instance_volumes_attach" {
 
 locals {
 
-  fs_pattern = join("|", [for vol in var.pi_storage_config : vol.name])
+  fs_pattern = local.create_volumes ? join("|", [for vol in var.pi_storage_config : vol.name]) : ""
   instance_wwn_by_fs = { for vol in ibm_pi_volume.create_volume :
     regex(local.fs_pattern, vol.pi_volume_name) => vol.wwn...
   }

@@ -16,13 +16,15 @@ output "pi_instance_mgmt_ip" {
 output "pi_storage_configuration" {
   description = "Storage configuration of PowerVS instance"
   depends_on  = [ibm_pi_volume.create_volume]
-  value = [for index, vol in var.pi_storage_config :
+  value = local.create_volumes ? [for index, vol in var.pi_storage_config :
     {
       name  = vol.name
       size  = vol.size
       tier  = vol.tier
       count = vol.count
       mount = vol.mount
-      wwns  = join(", ", [for wwn in local.instance_wwn_by_fs[vol.name] : lower(wwn)])
+      wwns  = [for wwn in local.instance_wwn_by_fs[vol.name] : lower(wwn)]
+      }] : [{
+      name = "", size = "", count = "", tier = "", mount = "", wwns = []
   }]
 }
