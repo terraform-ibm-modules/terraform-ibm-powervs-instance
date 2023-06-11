@@ -499,6 +499,9 @@
           "mode": "managed",
           "type": "null_resource",
           "name": "configure_os",
+          "attributes": {
+            "count": "pi_storage_config"
+          },
           "provider": {
             "name": "null"
           },

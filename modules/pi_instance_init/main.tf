@@ -174,6 +174,7 @@ resource "null_resource" "pi_install_packages" {
 
 resource "null_resource" "configure_os" {
   depends_on = [null_resource.pi_install_packages]
+  count      = var.pi_storage_config != null ? var.pi_storage_config[0].count != "" ? 1 : 0 : 0
 
   connection {
     type         = "ssh"
@@ -214,5 +215,4 @@ EOF
       local.dst_ansible_configure_os_path
     ]
   }
-
 }

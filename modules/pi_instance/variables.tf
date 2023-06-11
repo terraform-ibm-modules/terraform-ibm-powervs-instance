@@ -85,4 +85,14 @@ variable "pi_storage_config" {
       name = "data", size = "100", count = "2", tier = "tier1", mount = "/data"
     }
   ]
+  validation {
+    condition = var.pi_storage_config != null ? (
+      alltrue([for config in var.pi_storage_config : (
+        (config.name != "" && config.count != "" && config.tier != "" && config.mount != "") || (config.name == "" && config.count == "" && config.tier == "" && config.mount == "")
+      )])
+    ) : var.pi_storage_config == null ? true : false
+    error_message = "One of the storage config has invalid value, probably an empty string"
+  }
+
+
 }
