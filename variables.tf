@@ -102,7 +102,7 @@ variable "pi_instance_init" {
 
 
 variable "pi_proxy_settings" {
-  description = "Configures a PowerVS instance to have internet access by setting proxy on it. E.g., 10.10.10.4:3128 <ip:port>"
+  description = "Configures a PowerVS instance to have internet access by setting proxy on it. E.g., 10.10.10.4:3128 <ip:port>. Requires 'pi_instance_init' variable to be set."
   type = object(
     {
       proxy_host_or_ip_port = string
