@@ -39,8 +39,6 @@ locals {
 
 }
 
-
-
 module "pi_instance_init" {
 
   source     = "./modules/pi_instance_init"
