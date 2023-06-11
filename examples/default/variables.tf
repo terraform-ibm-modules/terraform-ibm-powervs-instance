@@ -112,6 +112,30 @@ variable "powervs_sap_profile_id" {
   default     = "ush1-4x128"
 }
 
+variable "powervs_server_type" {
+  description = "Processor type e980/s922/e1080/s1022. Required when not creating SAP instances. Conflicts with pi_sap_profile_id"
+  type        = string
+  default     = null
+}
+
+variable "powervs_cpu_proc_type" {
+  description = "Dedicated or shared processors. Required when not creating SAP instances. Conflicts with pi_sap_profile_id"
+  type        = string
+  default     = null
+}
+
+variable "powervs_number_of_processors" {
+  description = "Number of processors. Required when not creating SAP instances. Conflicts with pi_sap_profile_id"
+  type        = string
+  default     = null
+}
+
+variable "powervs_memory_size" {
+  description = "Amount of memory. Required when not creating SAP instances. Conflicts with pi_sap_profile_id"
+  type        = string
+  default     = null
+}
+
 variable "powervs_storage_config" {
   description = "Custom File systems to be created and attached to PowerVS instance. 'disk_size' is in GB. 'count' specify over how many storage volumes the file system will be striped. 'tier' specifies the storage tier in PowerVS workspace. 'mount' specifies the mount point on the OS."
   type = list(object({
