@@ -23,23 +23,29 @@ module "pi_instance" {
 #####################################################
 
 locals {
-  os_distribution  = length(regexall(".*RHEL.*", var.pi_os_image_name)) > 0 || length(regexall(".*SLES.*", var.pi_os_image_name)) > 0 ? "linux" : "aix"
-  pi_instance_init = var.pi_instance_init["enable"] && local.os_distribution == "linux" ? true : false
-}
+  os_distribution = length(regexall(".*RHEL.*", var.pi_os_image_name)) > 0 || length(regexall(".*SLES.*", var.pi_os_image_name)) > 0 ? "linux" : "aix"
 
-locals {
+  pi_instance_init            = var.pi_instance_init != null ? local.os_distribution == "linux" && var.pi_instance_init["enable"] && var.pi_instance_init.access_host_or_ip != "" && var.pi_instance_init.access_host_or_ip != null && var.pi_instance_init.ssh_private_key != "" && var.pi_instance_init.ssh_private_key != null ? true : false : false
+  pi_instance_init_validation = local.pi_instance_init ? true : var.pi_instance_init != null ? !var.pi_instance_init["enable"] ? true : false : false
+  pi_instance_init_msg        = "pi_instance_init.enable is set to true, but pi_instance_init.access_host_or_ip or pi_instance_init.ssh_private_key has empty or null values."
+  # tflint-ignore: terraform_unused_declarations
+  pi_instance_init_chk = regex("^${local.pi_instance_init_msg}$", (local.pi_instance_init_validation ? local.pi_instance_init_msg : ""))
+
   pi_proxy_settings = {
     enable                = var.pi_proxy_settings != null ? var.pi_proxy_settings.proxy_host_or_ip_port != "" ? true : false : false
     proxy_host_or_ip_port = var.pi_proxy_settings != null ? var.pi_proxy_settings.proxy_host_or_ip_port != "" ? var.pi_proxy_settings.proxy_host_or_ip_port : "" : ""
     no_proxy_hosts        = var.pi_proxy_settings != null ? var.pi_proxy_settings.no_proxy_hosts != "" ? var.pi_proxy_settings.no_proxy_hosts : "" : ""
   }
+
 }
+
+
 
 module "pi_instance_init" {
 
   source     = "./modules/pi_instance_init"
   depends_on = [module.pi_instance]
-  count      = local.pi_instance_init ? 1 : 0
+  count      = local.pi_instance_init && local.pi_instance_init_validation ? 1 : 0
 
   access_host_or_ip = var.pi_instance_init.access_host_or_ip
   target_server_ip  = module.pi_instance.pi_instance_mgmt_ip
