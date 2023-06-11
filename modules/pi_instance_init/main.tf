@@ -14,8 +14,9 @@ locals {
   src_install_packages_tpl_path = "${local.scr_scripts_dir}/install_packages.sh.tftpl"
   dst_install_packages_path     = "${local.dst_scripts_dir}/install_packages.sh"
 
-  ansible_configure_os_playbook_name = "powervs-rhel.yml"
+  ansible_configure_os_playbook_name = "power-linux-configure.yml"
   src_ansible_exec_tpl_path          = "${local.scr_scripts_dir}/ansible_exec.sh.tftpl"
+  dst_ansible_configure_os_path      = "${local.dst_scripts_dir}/configure_os.sh"
   dst_ansible_vars_configure_os_path = "${local.dst_scripts_dir}/ansible_configure_os.yml"
 }
 
@@ -25,7 +26,7 @@ locals {
 
 resource "null_resource" "pi_proxy_settings" {
 
-  count = var.pi_proxy_settings != null && var.pi_proxy_settings["enable"] ? 1 : 0
+  count = var.pi_proxy_settings != null ? var.pi_proxy_settings["enable"] ? 1 : 0 : 0
 
   connection {
     type         = "ssh"
@@ -74,7 +75,7 @@ resource "null_resource" "pi_proxy_settings" {
 
 resource "null_resource" "pi_update_os" {
   depends_on = [null_resource.pi_proxy_settings]
-  count      = var.pi_proxy_settings != null && var.pi_proxy_settings["enable"] ? 1 : 0
+  count      = var.pi_proxy_settings != null ? var.pi_proxy_settings["enable"] ? 1 : 0 : 0
 
   connection {
     type         = "ssh"
@@ -128,7 +129,6 @@ resource "time_sleep" "pi_wait_for_reboot" {
 
 resource "null_resource" "pi_install_packages" {
   depends_on = [time_sleep.pi_wait_for_reboot]
-  count      = var.pi_proxy_settings != null && var.pi_proxy_settings["enable"] ? 1 : 0
 
   connection {
     type         = "ssh"
@@ -174,7 +174,6 @@ resource "null_resource" "pi_install_packages" {
 
 resource "null_resource" "configure_os" {
   depends_on = [null_resource.pi_install_packages]
-  count      = var.pi_proxy_settings != null && var.pi_proxy_settings["enable"] ? 1 : 0
 
   connection {
     type         = "ssh"
@@ -197,7 +196,7 @@ EOF
 
   ####### Copy Template file to target host ############
   provisioner "file" {
-    destination = "${local.dst_scripts_dir}/configure_os.sh"
+    destination = local.dst_ansible_configure_os_path
     content = templatefile(
       local.src_ansible_exec_tpl_path,
       {
@@ -208,11 +207,11 @@ EOF
     )
   }
 
-  ####  Execute ansible roles: prepare_sles/rhel_sap, powervs_fs_creation and powervs_swap_creation  ####
+  ####  Execute ansible roles: To create fielsystems  ####
   provisioner "remote-exec" {
     inline = [
-      "chmod +x ${local.dst_scripts_dir}/configure_os.sh",
-      "${local.dst_scripts_dir}/configure_os.sh"
+      "chmod +x ${local.dst_ansible_configure_os_path}",
+      local.dst_ansible_configure_os_path
     ]
   }
 

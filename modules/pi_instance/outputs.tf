@@ -23,8 +23,8 @@ output "pi_storage_configuration" {
       tier  = vol.tier
       count = vol.count
       mount = vol.mount
-      wwns  = [for wwn in local.instance_wwn_by_fs[vol.name] : lower(wwn)]
+      wwns  = join(",", [for wwn in local.instance_wwn_by_fs[vol.name] : lower(wwn)])
       }] : [{
-      name = "", size = "", count = "", tier = "", mount = "", wwns = []
+      name = "", size = "", count = "", tier = "", mount = "", wwns = ""
   }]
 }

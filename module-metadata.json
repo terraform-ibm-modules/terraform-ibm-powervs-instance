@@ -15,9 +15,13 @@
     },
     "pi_instance_init": {
       "name": "pi_instance_init",
-      "type": "object({\n    enable            = bool\n    access_host_or_ip = string\n    ssh_private_key   = string\n  })",
+      "type": "object(\n    {\n      enable            = bool\n      access_host_or_ip = string\n      ssh_private_key   = string\n    }\n  )",
       "description": "Setup Proxy client and create filesystems on OS. Supported for LINUX distribution only. 'access_host_or_ip' Public IP of Bastion Host",
-      "required": true,
+      "default": {
+        "access_host_or_ip": "",
+        "enable": false,
+        "ssh_private_key": ""
+      },
       "source": [
         "module.pi_instance_init",
         "module.pi_instance_init"
@@ -101,7 +105,7 @@
       },
       "pos": {
         "filename": "variables.tf",
-        "line": 104
+        "line": 113
       }
     },
     "pi_resource_group_name": {
@@ -495,9 +499,6 @@
           "mode": "managed",
           "type": "null_resource",
           "name": "configure_os",
-          "attributes": {
-            "count": "pi_proxy_settings"
-          },
           "provider": {
             "name": "null"
           },
@@ -510,15 +511,12 @@
           "mode": "managed",
           "type": "null_resource",
           "name": "pi_install_packages",
-          "attributes": {
-            "count": "pi_proxy_settings"
-          },
           "provider": {
             "name": "null"
           },
           "pos": {
             "filename": "modules/pi_instance_init/main.tf",
-            "line": 129
+            "line": 130
           }
         },
         "null_resource.pi_proxy_settings": {
@@ -533,7 +531,7 @@
           },
           "pos": {
             "filename": "modules/pi_instance_init/main.tf",
-            "line": 26
+            "line": 27
           }
         },
         "null_resource.pi_update_os": {
@@ -548,7 +546,7 @@
           },
           "pos": {
             "filename": "modules/pi_instance_init/main.tf",
-            "line": 75
+            "line": 76
           }
         },
         "time_sleep.pi_wait_for_reboot": {
@@ -560,7 +558,7 @@
           },
           "pos": {
             "filename": "modules/pi_instance_init/main.tf",
-            "line": 118
+            "line": 119
           }
         }
       },

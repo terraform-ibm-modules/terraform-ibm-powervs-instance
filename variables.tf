@@ -93,11 +93,20 @@ variable "pi_storage_config" {
 
 variable "pi_instance_init" {
   description = "Setup Proxy client and create filesystems on OS. Supported for LINUX distribution only. 'access_host_or_ip' Public IP of Bastion Host"
-  type = object({
-    enable            = bool
-    access_host_or_ip = string
-    ssh_private_key   = string
-  })
+  type = object(
+    {
+      enable            = bool
+      access_host_or_ip = string
+      ssh_private_key   = string
+    }
+  )
+
+  default = {
+    enable            = false
+    access_host_or_ip = ""
+    ssh_private_key   = <<-EOF
+EOF
+  }
 }
 
 

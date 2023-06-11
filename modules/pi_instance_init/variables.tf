@@ -33,6 +33,6 @@ variable "pi_storage_config" {
     count = string
     tier  = string
     mount = string
-    wwns  = list(string)
+    wwns  = string
   }))
 }
