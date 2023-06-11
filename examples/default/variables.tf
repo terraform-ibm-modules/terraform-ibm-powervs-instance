@@ -107,7 +107,7 @@ variable "powervs_os_image_name" {
 }
 
 variable "powervs_sap_profile_id" {
-  description = "SAP HANA profile to use. Must be one of the supported profiles. See [here](https://cloud.ibm.com/docs/sap?topic=sap-hana-iaas-offerings-profiles-power-vs). If this is mentioned then powervs_server_type, powervs_cpu_proc_type, powervs_number_of_processors and powervs_memory_size will not be taken into account"
+  description = "SAP Profile ID for the amount of cores and memory. Must be one of the supported profiles. See [here](https://cloud.ibm.com/docs/sap?topic=sap-hana-iaas-offerings-profiles-power-vs). Required only when creating SAP instances. If this is mentioned then pi_server_type, pi_cpu_proc_type, pi_number_of_processors and pi_memory_size will not be taken into account"
   type        = string
   default     = "ush1-4x128"
 }
