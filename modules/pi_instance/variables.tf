@@ -2,8 +2,8 @@ variable "pi_zone" {
   description = "IBM Cloud PowerVS zone."
   type        = string
   validation {
-    condition     = contains(["syd04", "syd05", "eu-de-1", "eu-de-2", "lon04", "lon06", "us-east", "us-south", "dal10", "dal12", "tok04", "osa21", "sao01", "mon01", "tor01"], var.pi_zone)
-    error_message = "Only Following DC values are supported : syd04, syd05, eu-de-1, eu-de-2, lon04, lon06, us-east, us-south, dal10, dal12, tok04, osa21, sao01, mon01, tor01"
+    condition     = contains(["syd04", "syd05", "eu-de-1", "eu-de-2", "lon04", "lon06", "tok04", "us-east", "us-south", "dal12", "dal13", "tor01", "osa21", "sao01", "sao04", "mon01", "wdc04", "wdc06", "wdc07"], var.pi_zone)
+    error_message = "Only Following DC values are supported :  syd04, syd05, eu-de-1, eu-de-2, lon04, lon06, tok04, us-east, us-south, dal12, dal13, tor01, osa21, sao01, sao04, mon01, wdc04, wdc06, wdc07"
   }
 }
 
@@ -42,7 +42,7 @@ variable "pi_networks" {
 }
 
 variable "pi_sap_profile_id" {
-  description = "SAP Profile ID for the amount of cores and memory. Must be one of the supported profiles. See [here](https://cloud.ibm.com/docs/sap?topic=sap-hana-iaas-offerings-profiles-power-vs). Required only when creating SAP instances. If this is mentioned then pi_server_type, pi_cpu_proc_type, pi_number_of_processors and pi_memory_size will not be taken into account"
+  description = "SAP HANA profile to use. Must be one of the supported profiles. See [here](https://cloud.ibm.com/docs/sap?topic=sap-hana-iaas-offerings-profiles-power-vs). If this is mentioned then pi_server_type, pi_cpu_proc_type, pi_number_of_processors and pi_memory_size will not be taken into account"
   type        = string
   default     = "ush1-4x128"
 }
@@ -85,57 +85,14 @@ variable "pi_storage_config" {
       name = "data", size = "100", count = "2", tier = "tier1", mount = "/data"
     }
   ]
-}
-
-#####################################################
-# PowerVS Instance Initialization
-#####################################################
-
-variable "pi_instance_init" {
-  description = "Setup Proxy client and create filesystems on OS. Supported for LINUX distribution only. 'access_host_or_ip' Public IP of Bastion Host"
-  type = object(
-    {
-      enable            = bool
-      access_host_or_ip = string
-      ssh_private_key   = string
-    }
-  )
-
-  default = {
-    enable            = false
-    access_host_or_ip = ""
-    ssh_private_key   = <<-EOF
-EOF
+  validation {
+    condition = var.pi_storage_config != null ? (
+      alltrue([for config in var.pi_storage_config : (
+        (config.name != "" && config.count != "" && config.tier != "" && config.mount != "") || (config.name == "" && config.count == "" && config.tier == "" && config.mount == "")
+      )])
+    ) : var.pi_storage_config == null ? true : false
+    error_message = "One of the storage config has invalid value, probably an empty string"
   }
-}
 
-variable "pi_proxy_settings" {
-  description = "Configures a PowerVS instance to have internet access by setting proxy on it. E.g., 10.10.10.4:3128 <ip:port>. Requires 'pi_instance_init' variable to be set."
-  type = object(
-    {
-      proxy_host_or_ip_port = string
-      no_proxy_hosts        = string
-    }
-  )
-  default = {
-    proxy_host_or_ip_port = ""
-    no_proxy_hosts        = "161.0.0.0/8,10.0.0.0/8"
-  }
-}
 
-variable "pi_network_services_config" {
-  description = "Configures network services NTP, NFS and DNS on PowerVS instance"
-  type = object(
-    {
-      nfs = object({ enable = bool, nfs_server_path = string, nfs_client_path = string })
-      dns = object({ enable = bool, dns_server_ip = string })
-      ntp = object({ enable = bool, ntp_server_ip = string })
-    }
-  )
-
-  default = {
-    nfs = { enable = false, nfs_server_path = "", nfs_client_path = "" }
-    dns = { enable = false, dns_server_ip = "" }
-    ntp = { enable = false, ntp_server_ip = "" }
-  }
 }

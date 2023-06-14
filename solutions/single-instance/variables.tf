@@ -8,86 +8,25 @@ variable "ibmcloud_api_key" {
 variable "powervs_zone" {
   description = "IBM Cloud PowerVS zone."
   type        = string
-  default     = "lon06"
   validation {
     condition     = contains(["syd04", "syd05", "eu-de-1", "eu-de-2", "lon04", "lon06", "us-east", "us-south", "dal10", "dal12", "tok04", "osa21", "sao01", "mon01", "tor01"], var.powervs_zone)
     error_message = "Only Following DC values are supported : syd04, syd05, eu-de-1, eu-de-2, lon04, lon06, us-east, us-south, dal10, dal12, tok04, osa21, sao01, mon01, tor01"
   }
 }
 
-#####################################################
-# PowerVS Infrastructure Parameters
-#####################################################
-
-variable "resource_group" {
+variable "resource_group_name" {
   type        = string
-  description = "Existing IBM Cloud resource group name. If null, a new resource group will be created."
-  default     = null
-}
-
-variable "prefix" {
-  description = "Prefix for resources which will be created."
-  type        = string
-  default     = "pi"
+  description = "Existing IBM Cloud resource group name."
 }
 
 variable "powervs_workspace_name" {
   description = "Name of the PowerVS Workspace to create"
   type        = string
-  default     = "power-workspace"
 }
 
 variable "powervs_sshkey_name" {
   description = "Name of the PowerVS SSH key to create"
   type        = string
-  default     = "ssh-key-pvs"
-}
-
-variable "powervs_management_network" {
-  description = "Name of the IBM Cloud PowerVS management subnet and CIDR to create"
-  type = object({
-    name = string
-    cidr = string
-  })
-  default = {
-    name = "mgmt_net"
-    cidr = "10.51.0.0/24"
-  }
-}
-
-variable "powervs_backup_network" {
-  description = "Name of the IBM Cloud PowerVS backup network and CIDR to create"
-  type = object({
-    name = string
-    cidr = string
-  })
-  default = {
-    name = "bkp_net"
-    cidr = "10.52.0.0/24"
-  }
-}
-
-variable "transit_gateway_name" {
-  description = "Name of the existing transit gateway. Required when you create new IBM Cloud connections."
-  type        = string
-  default     = null
-}
-
-variable "cloud_connection" {
-  description = "Cloud connection configuration: speed (50, 100, 200, 500, 1000, 2000, 5000, 10000 Mb/s), count (1 or 2 connections), global_routing (true or false), metered (true or false)"
-  type = object({
-    count          = number
-    speed          = number
-    global_routing = bool
-    metered        = bool
-  })
-
-  default = {
-    count          = 0
-    speed          = 5000
-    global_routing = true
-    metered        = true
-  }
 }
 
 #####################################################
@@ -136,6 +75,11 @@ variable "powervs_memory_size" {
   default     = null
 }
 
+variable "powervs_networks" {
+  description = "Existing list of subnets name to be attached to an instance. First network has to be a management network."
+  type        = list(any)
+}
+
 variable "powervs_storage_config" {
   description = "Custom File systems to be created and attached to PowerVS instance. 'disk_size' is in GB. 'count' specify over how many storage volumes the file system will be striped. 'tier' specifies the storage tier in PowerVS workspace. 'mount' specifies the mount point on the OS."
   type = list(object({
@@ -158,16 +102,46 @@ variable "powervs_storage_config" {
   ]
 }
 
-variable "pi_instance_init" {
+#####################################################
+# PowerVS Instance Initialization Optional parameters.
+#####################################################
+
+variable "powervs_instance_init" {
   description = "Setup Proxy client and create filesystems on OS. Supported for LINUX distribution only."
   type = object({
     enable            = bool
     access_host_or_ip = string
     ssh_private_key   = string
   })
+}
+
+variable "powervs_proxy_settings" {
+  description = "Configures a PowerVS instance to have internet access by setting proxy on it. E.g., 10.10.10.4:3128 <ip:port>. Requires 'powervs_instance_init' variable to be set."
+  type = object(
+    {
+      proxy_host_or_ip_port = string
+      no_proxy_hosts        = string
+    }
+  )
   default = {
-    enable            = false
-    access_host_or_ip = ""
-    ssh_private_key   = ""
+    proxy_host_or_ip_port = "<ip:port>"
+    no_proxy_hosts        = "161.0.0.0/8,10.0.0.0/8"
+  }
+}
+
+variable "powervs_network_services_config" {
+  description = "Configures network services NTP, NFS and DNS on PowerVS instance"
+  type = object(
+    {
+      nfs = object({ enable = bool, nfs_server_path = string, nfs_client_path = string })
+      dns = object({ enable = bool, dns_server_ip = string })
+      ntp = object({ enable = bool, ntp_server_ip = string })
+    }
+  )
+
+  default = {
+    nfs = { enable = false, nfs_server_path = "", nfs_client_path = "" }
+    dns = { enable = false, dns_server_ip = "" }
+    ntp = { enable = false, ntp_server_ip = "" }
   }
 }
