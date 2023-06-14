@@ -57,6 +57,33 @@
         "line": 68
       }
     },
+    "pi_network_services_config": {
+      "name": "pi_network_services_config",
+      "type": "object(\n    {\n      nfs = object({ enable = bool, nfs_server_path = string, nfs_client_path = string })\n      dns = object({ enable = bool, dns_server_ip = string })\n      ntp = object({ enable = bool, ntp_server_ip = string })\n    }\n  )",
+      "description": "Configures network services NTP, NFS and DNS on PowerVS instance",
+      "default": {
+        "dns": {
+          "dns_server_ip": "",
+          "enable": false
+        },
+        "nfs": {
+          "enable": false,
+          "nfs_client_path": "",
+          "nfs_server_path": ""
+        },
+        "ntp": {
+          "enable": false,
+          "ntp_server_ip": ""
+        }
+      },
+      "source": [
+        "module.pi_instance_init"
+      ],
+      "pos": {
+        "filename": "variables.tf",
+        "line": 126
+      }
+    },
     "pi_networks": {
       "name": "pi_networks",
       "type": "list(any)",
@@ -105,7 +132,7 @@
       },
       "pos": {
         "filename": "variables.tf",
-        "line": 113
+        "line": 112
       }
     },
     "pi_resource_group_name": {
@@ -492,9 +519,25 @@
       "source": "./modules/pi_instance_init",
       "attributes": {
         "access_host_or_ip": "pi_instance_init",
+        "pi_network_services_config": "pi_network_services_config",
         "ssh_private_key": "pi_instance_init"
       },
       "managed_resources": {
+        "null_resource.configure_network_services": {
+          "mode": "managed",
+          "type": "null_resource",
+          "name": "configure_network_services",
+          "attributes": {
+            "count": "pi_network_services_config"
+          },
+          "provider": {
+            "name": "null"
+          },
+          "pos": {
+            "filename": "modules/pi_instance_init/main.tf",
+            "line": 232
+          }
+        },
         "null_resource.configure_os": {
           "mode": "managed",
           "type": "null_resource",
@@ -507,7 +550,7 @@
           },
           "pos": {
             "filename": "modules/pi_instance_init/main.tf",
-            "line": 175
+            "line": 182
           }
         },
         "null_resource.pi_install_packages": {
@@ -519,7 +562,7 @@
           },
           "pos": {
             "filename": "modules/pi_instance_init/main.tf",
-            "line": 130
+            "line": 137
           }
         },
         "null_resource.pi_proxy_settings": {
@@ -534,7 +577,7 @@
           },
           "pos": {
             "filename": "modules/pi_instance_init/main.tf",
-            "line": 27
+            "line": 34
           }
         },
         "null_resource.pi_update_os": {
@@ -549,7 +592,7 @@
           },
           "pos": {
             "filename": "modules/pi_instance_init/main.tf",
-            "line": 76
+            "line": 83
           }
         },
         "time_sleep.pi_wait_for_reboot": {
@@ -561,7 +604,7 @@
           },
           "pos": {
             "filename": "modules/pi_instance_init/main.tf",
-            "line": 119
+            "line": 126
           }
         }
       },

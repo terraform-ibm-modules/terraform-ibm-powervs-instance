@@ -14,6 +14,6 @@ output "pi_instance_mgmt_ip" {
 }
 
 output "pi_storage_configuration" {
-  description = "Storage configuration of PowerVS instance"
+  description = "Storage configuration of PowerVS instance."
   value       = module.pi_instance.pi_storage_configuration
 }

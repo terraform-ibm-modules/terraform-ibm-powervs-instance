@@ -9,8 +9,8 @@ variable "powervs_zone" {
   description = "IBM Cloud PowerVS zone."
   type        = string
   validation {
-    condition     = contains(["syd04", "syd05", "eu-de-1", "eu-de-2", "lon04", "lon06", "tok04", "us-east", "us-south", "dal12", "dal13", "tor01", "osa21", "sao01", "sao04", "mon01", "wdc04", "wdc06", "wdc07"], var.powervs_zone)
-    error_message = "Only Following DC values are supported :  syd04, syd05, eu-de-1, eu-de-2, lon04, lon06, tok04, us-east, us-south, dal12, dal13, tor01, osa21, sao01, sao04, mon01, wdc04, wdc06, wdc07"
+    condition     = contains(["syd04", "syd05", "eu-de-1", "eu-de-2", "lon04", "lon06", "us-east", "us-south", "dal10", "dal12", "tok04", "osa21", "sao01", "mon01", "tor01"], var.powervs_zone)
+    error_message = "Only Following DC values are supported : syd04, syd05, eu-de-1, eu-de-2, lon04, lon06, us-east, us-south, dal10, dal12, tok04, osa21, sao01, mon01, tor01"
   }
 }
 
@@ -126,5 +126,22 @@ variable "powervs_proxy_settings" {
   default = {
     proxy_host_or_ip_port = "<ip:port>"
     no_proxy_hosts        = "161.0.0.0/8,10.0.0.0/8"
+  }
+}
+
+variable "powervs_network_services_config" {
+  description = "Configures network services NTP, NFS and DNS on PowerVS instance"
+  type = object(
+    {
+      nfs = object({ enable = bool, nfs_server_path = string, nfs_client_path = string })
+      dns = object({ enable = bool, dns_server_ip = string })
+      ntp = object({ enable = bool, ntp_server_ip = string })
+    }
+  )
+
+  default = {
+    nfs = { enable = false, nfs_server_path = "", nfs_client_path = "" }
+    dns = { enable = false, dns_server_ip = "" }
+    ntp = { enable = false, ntp_server_ip = "" }
   }
 }

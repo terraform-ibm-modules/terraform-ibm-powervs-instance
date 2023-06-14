@@ -26,25 +26,25 @@ provider "ibm" {
 }
 
 module "pi_instance" {
-  # Replace "main" with a GIT release version to lock into a specific release
-  source = "git::https://github.com/terraform-ibm-modules/terraform-ibm-powervs-instance.git?ref=main"
+    # Replace "main" with a GIT release version to lock into a specific release
+    source = "git::https://github.com/terraform-ibm-modules/terraform-ibm-powervs-instance.git?ref=main"
 
-  pi_zone                 = var.pi_zone
-  pi_resource_group_name  = var.pi_resource_group_name
-  pi_workspace_name       = var.pi_workspace_name
-  pi_sshkey_name          = var.pi_sshkey_name
-  pi_instance_name        = var.pi_instance_name
-  pi_os_image_name        = var.pi_os_image_name
-  pi_os_image_name        = var.pi_os_image_name
-  pi_networks             = var.pi_networks
-  pi_sap_profile_id       = var.pi_sap_profile_id
-  pi_server_type          = var.pi_server_type
-  pi_cpu_proc_type        = var.pi_cpu_proc_type
-  pi_number_of_processors = var.pi_number_of_processors
-  pi_memory_size          = var.pi_memory_size
-  pi_storage_config       = var.pi_storage_config
-  pi_instance_init        = var.pi_instance_init
-  pi_proxy_settings       = var.pi_proxy_settings
+    pi_zone                       = var.pi_zone
+    pi_resource_group_name        = var.pi_resource_group_name
+    pi_workspace_name             = var.pi_workspace_name
+    pi_sshkey_name                = var.pi_sshkey_name
+    pi_instance_name              = var.pi_instance_name
+    pi_os_image_name              = var.pi_os_image_name
+    pi_networks                   = var.pi_networks
+    pi_sap_profile_id             = var.pi_sap_profile_id
+    pi_server_type                = var.pi_server_type
+    pi_cpu_proc_type              = var.pi_cpu_proc_type
+    pi_number_of_processors       = var.pi_number_of_processors
+    pi_memory_size                = var.pi_memory_size
+    pi_storage_config             = var.pi_storage_config
+    pi_instance_init              = var.pi_instance_init
+    pi_proxy_settings             = var.pi_proxy_settings
+    pi_network_services_config    = var.pi_network_services_config
 
 }
 ```
@@ -101,6 +101,7 @@ No resources.
 | <a name="input_pi_instance_init"></a> [pi\_instance\_init](#input\_pi\_instance\_init) | Setup Proxy client and create filesystems on OS. Supported for LINUX distribution only. 'access\_host\_or\_ip' Public IP of Bastion Host | <pre>object(<br>    {<br>      enable            = bool<br>      access_host_or_ip = string<br>      ssh_private_key   = string<br>    }<br>  )</pre> | <pre>{<br>  "access_host_or_ip": "",<br>  "enable": false,<br>  "ssh_private_key": ""<br>}</pre> | no |
 | <a name="input_pi_instance_name"></a> [pi\_instance\_name](#input\_pi\_instance\_name) | Name of instance which will be created | `string` | n/a | yes |
 | <a name="input_pi_memory_size"></a> [pi\_memory\_size](#input\_pi\_memory\_size) | Amount of memory. Required when not creating SAP instances. Conflicts with pi\_sap\_profile\_id | `string` | `null` | no |
+| <a name="input_pi_network_services_config"></a> [pi\_network\_services\_config](#input\_pi\_network\_services\_config) | Configures network services NTP, NFS and DNS on PowerVS instance | <pre>object(<br>    {<br>      nfs = object({ enable = bool, nfs_server_path = string, nfs_client_path = string })<br>      dns = object({ enable = bool, dns_server_ip = string })<br>      ntp = object({ enable = bool, ntp_server_ip = string })<br>    }<br>  )</pre> | <pre>{<br>  "dns": {<br>    "dns_server_ip": "",<br>    "enable": false<br>  },<br>  "nfs": {<br>    "enable": false,<br>    "nfs_client_path": "",<br>    "nfs_server_path": ""<br>  },<br>  "ntp": {<br>    "enable": false,<br>    "ntp_server_ip": ""<br>  }<br>}</pre> | no |
 | <a name="input_pi_networks"></a> [pi\_networks](#input\_pi\_networks) | Existing list of subnets name to be attached to an instance. First network has to be a management network | `list(any)` | n/a | yes |
 | <a name="input_pi_number_of_processors"></a> [pi\_number\_of\_processors](#input\_pi\_number\_of\_processors) | Number of processors. Required when not creating SAP instances. Conflicts with pi\_sap\_profile\_id | `string` | `null` | no |
 | <a name="input_pi_os_image_name"></a> [pi\_os\_image\_name](#input\_pi\_os\_image\_name) | Image Name for PowerVS Instance | `string` | n/a | yes |
@@ -120,7 +121,7 @@ No resources.
 | <a name="output_pi_instance_mgmt_ip"></a> [pi\_instance\_mgmt\_ip](#output\_pi\_instance\_mgmt\_ip) | IP address of the management network interface of IBM PowerVS instance. |
 | <a name="output_pi_instance_private_ips"></a> [pi\_instance\_private\_ips](#output\_pi\_instance\_private\_ips) | All private IP addresses (as a list) of IBM PowerVS instance. |
 | <a name="output_pi_instance_private_ips_info"></a> [pi\_instance\_private\_ips\_info](#output\_pi\_instance\_private\_ips\_info) | Complete info about all private IP addresses of IBM PowerVS instance. |
-| <a name="output_pi_storage_configuration"></a> [pi\_storage\_configuration](#output\_pi\_storage\_configuration) | Storage configuration of PowerVS instance |
+| <a name="output_pi_storage_configuration"></a> [pi\_storage\_configuration](#output\_pi\_storage\_configuration) | Storage configuration of PowerVS instance. |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 <!-- BEGIN CONTRIBUTING HOOK -->
 
