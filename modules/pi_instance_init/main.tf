@@ -8,28 +8,18 @@
 #####################################################
 
 locals {
-  scr_scripts_dir = "${path.module}/../terraform_templates/linux"
+  scr_scripts_dir = "${path.module}/templates/linux"
   dst_scripts_dir = "/root/terraform_scripts"
-
-  src_services_init_tpl_path    = "${local.scr_scripts_dir}/services_init.sh.tftpl"
-  dst_services_init_path        = "${local.dst_scripts_dir}/services_init.sh"
-  src_install_packages_tpl_path = "${local.scr_scripts_dir}/install_packages.sh.tftpl"
-  dst_install_packages_path     = "${local.dst_scripts_dir}/install_packages.sh"
-
-  src_ansible_exec_tpl_path          = "${local.scr_scripts_dir}/ansible_exec.sh.tftpl"
-  ansible_configure_os_playbook_name = "power-linux-configure.yml"
-  dst_ansible_configure_os_path      = "${local.dst_scripts_dir}/configure_os.sh"
-  dst_ansible_vars_configure_os_path = "${local.dst_scripts_dir}/ansible_configure_os.yml"
-
-  ansible_configure_network_services_playbook_name = "powervs-services.yml"
-  dst_ansible_configure_network_services           = "${local.dst_scripts_dir}/configure_network_services.sh"
-  dst_ansible_vars_configure_network_services      = "${local.dst_scripts_dir}/ansible_configure_network_services.yml"
-
 }
 
 #####################################################
 # 1. Configure Squid client
 #####################################################
+
+locals {
+  src_services_init_tpl_path = "${local.scr_scripts_dir}/services_init.sh.tftpl"
+  dst_services_init_path     = "${local.dst_scripts_dir}/services_init.sh"
+}
 
 resource "null_resource" "pi_proxy_settings" {
 
@@ -129,10 +119,14 @@ resource "time_sleep" "pi_wait_for_reboot" {
   create_duration = "120s"
 }
 
-
 #####################################################
 # 3. Install Necessary Packages
 #####################################################
+
+locals {
+  src_install_packages_tpl_path = "${local.scr_scripts_dir}/install_packages.sh.tftpl"
+  dst_install_packages_path     = "${local.dst_scripts_dir}/install_packages.sh"
+}
 
 resource "null_resource" "pi_install_packages" {
   depends_on = [time_sleep.pi_wait_for_reboot]
@@ -179,6 +173,14 @@ resource "null_resource" "pi_install_packages" {
 # 4. Execute Ansible galaxy role to create filesystems
 #####################################################
 
+locals {
+  ansible_configure_os_playbook_name = "power-linux-configure.yml"
+  src_script_configure_os_tfpl_path  = "${local.scr_scripts_dir}/configure_os.sh.tftpl"
+  dst_script_configure_os_sh_path    = "${local.dst_scripts_dir}/configure_os.sh"
+  dst_ansible_vars_configure_os_path = "${local.dst_scripts_dir}/ansible_configure_os.yml"
+
+}
+
 resource "null_resource" "configure_os" {
   depends_on = [null_resource.pi_install_packages]
   count      = var.pi_storage_config != null ? var.pi_storage_config[0].count != "" ? 1 : 0 : 0
@@ -204,9 +206,9 @@ EOF
 
   ####### Copy Template file to target host ############
   provisioner "file" {
-    destination = local.dst_ansible_configure_os_path
+    destination = local.dst_script_configure_os_sh_path
     content = templatefile(
-      local.src_ansible_exec_tpl_path,
+      local.src_script_configure_os_tfpl_path,
       {
         "ansible_playbook_name" : local.ansible_configure_os_playbook_name
         "ansible_extra_vars_path" : local.dst_ansible_vars_configure_os_path
@@ -215,11 +217,11 @@ EOF
     )
   }
 
-  ####  Execute ansible roles: To create fielsystems  ####
+  ####  Execute ansible roles: To create filesystems  ####
   provisioner "remote-exec" {
     inline = [
-      "chmod +x ${local.dst_ansible_configure_os_path}",
-      local.dst_ansible_configure_os_path
+      "chmod +x ${local.dst_script_configure_os_sh_path}",
+      local.dst_script_configure_os_sh_path
     ]
   }
 }
@@ -228,6 +230,14 @@ EOF
 # 5. Execute Ansible galaxy role to connect to
 # network services (NTP, NFS, DNS)
 #####################################################
+
+locals {
+  ansible_configure_network_services_playbook_name = "powervs-services.yml"
+  src_script_configure_network_services_tfpl_path  = "${local.scr_scripts_dir}/configure_os.sh.tftpl"
+  dst_script_configure_network_services_sh_path    = "${local.dst_scripts_dir}/configure_network_services.sh"
+  dst_ansible_vars_configure_network_services      = "${local.dst_scripts_dir}/ansible_configure_network_services.yml"
+
+}
 
 resource "null_resource" "configure_network_services" {
   depends_on = [null_resource.configure_os]
@@ -256,9 +266,9 @@ EOF
 
   ####### Copy Template file to target host ############
   provisioner "file" {
-    destination = local.dst_ansible_configure_network_services
+    destination = local.dst_script_configure_network_services_sh_path
     content = templatefile(
-      local.src_ansible_exec_tpl_path,
+      local.src_script_configure_network_services_tfpl_path,
       {
         "ansible_playbook_name" : local.ansible_configure_network_services_playbook_name
         "ansible_extra_vars_path" : local.dst_ansible_vars_configure_network_services
@@ -270,8 +280,8 @@ EOF
   ####  Execute ansible role : powervs_client_enable_services  ####
   provisioner "remote-exec" {
     inline = [
-      "chmod +x ${local.dst_ansible_configure_network_services}",
-      local.dst_ansible_configure_network_services
+      "chmod +x ${local.dst_script_configure_network_services_sh_path}",
+      local.dst_script_configure_network_services_sh_path
     ]
   }
 }
