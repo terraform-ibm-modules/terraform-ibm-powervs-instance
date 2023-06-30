@@ -23,7 +23,7 @@ Use of this resource for production deployments is not recommended. Instead, gen
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_powervs_infrastructure"></a> [powervs\_infrastructure](#module\_powervs\_infrastructure) | git::https://github.com/terraform-ibm-modules/terraform-ibm-powervs-infrastructure.git | v8.2.1 |
+| <a name="module_powervs_infrastructure"></a> [powervs\_infrastructure](#module\_powervs\_infrastructure) | git::https://github.com/terraform-ibm-modules/terraform-ibm-powervs-infrastructure.git | v1.0.0 |
 | <a name="module_powervs_instance"></a> [powervs\_instance](#module\_powervs\_instance) | ../../ | n/a |
 | <a name="module_resource_group"></a> [resource\_group](#module\_resource\_group) | git::https://github.com/terraform-ibm-modules/terraform-ibm-resource-group.git | v1.0.5 |
 
