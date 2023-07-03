@@ -71,16 +71,16 @@ You need the following permissions to run this module.
 <!-- BEGIN EXAMPLES HOOK -->
 ## Examples
 
-- [ Basic PowerVS Infrastructure with a Power Virtual server Instance Example](solutions/default)
-- [ Basic Power Virtual Server Instance Module Example](solutions/single-instance)
+- [ Basic PowerVS Infrastructure with a Power Virtual server Instance Example](examples/default)
+- [ Basic Power Virtual Server Instance Module Example](examples/single-instance)
 <!-- END EXAMPLES HOOK -->
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3, < 1.5 |
-| <a name="requirement_ibm"></a> [ibm](#requirement\_ibm) | >=1.49.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3, < 1.6 |
+| <a name="requirement_ibm"></a> [ibm](#requirement\_ibm) | >=1.54.0 |
 
 ## Modules
 
