@@ -94,9 +94,9 @@ module "resource_group" {
 
 module "powervs_infrastructure" {
 
-  # Add explicit depends_on here due to https://github.com/terraform-ibm-modules/terraform-ibm-powervs-infrastructure/issues/143
   depends_on                  = [module.resource_group]
-  source                      = "git::https://github.com/terraform-ibm-modules/terraform-ibm-powervs-infrastructure.git?ref=v1.0.0"
+  source                      = "terraform-ibm-modules/powervs-infrastructure/ibm"
+  version                     = "1.0.0"
   powervs_zone                = var.powervs_zone
   powervs_resource_group_name = module.resource_group.resource_group_name
   powervs_workspace_name      = local.powervs_workspace_name
@@ -107,15 +107,15 @@ module "powervs_infrastructure" {
   powervs_backup_network      = var.powervs_backup_network
   transit_gateway_name        = var.transit_gateway_name
   reuse_cloud_connections     = true
-  cloud_connection_count      = var.cloud_connection["count"]
-  cloud_connection_speed      = var.cloud_connection["speed"]
-  cloud_connection_gr         = var.cloud_connection["global_routing"]
-  cloud_connection_metered    = var.cloud_connection["metered"]
+  cloud_connection_count      = var.cloud_connection.count
+  cloud_connection_speed      = var.cloud_connection.speed
+  cloud_connection_gr         = var.cloud_connection.global_routing
+  cloud_connection_metered    = var.cloud_connection.metered
 
 }
 
 locals {
-  additional_networks = [var.powervs_management_network["name"], var.powervs_backup_network["name"]]
+  additional_networks = [var.powervs_management_network.name, var.powervs_backup_network.name]
 }
 
 #####################################################
