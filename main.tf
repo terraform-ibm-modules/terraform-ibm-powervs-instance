@@ -25,7 +25,7 @@ module "pi_instance" {
 locals {
   os_distribution = length(regexall(".*RHEL.*", var.pi_os_image_name)) > 0 || length(regexall(".*SLES.*", var.pi_os_image_name)) > 0 ? "linux" : "aix"
 
-  pi_instance_init            = var.pi_instance_init != null ? local.os_distribution == "linux" && var.pi_instance_init.enable && var.pi_instance_init.ssh_private_key != "" && var.pi_instance_init.ssh_private_key != null ? true : false : false
+  pi_instance_init            = var.pi_instance_init != null ? local.os_distribution == "linux" && var.pi_instance_init.enable && var.pi_instance_init.access_host_or_ip != "" && var.pi_instance_init.access_host_or_ip != null && var.pi_instance_init.ssh_private_key != "" && var.pi_instance_init.ssh_private_key != null ? true : false : false
   pi_instance_init_validation = local.pi_instance_init ? true : var.pi_instance_init != null ? !var.pi_instance_init.enable ? true : false : false
   pi_instance_init_msg        = "pi_instance_init.enable is set to true, but pi_instance_init.access_host_or_ip or pi_instance_init.ssh_private_key has empty or null values."
   # tflint-ignore: terraform_unused_declarations
