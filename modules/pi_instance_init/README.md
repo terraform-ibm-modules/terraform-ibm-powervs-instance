@@ -8,7 +8,7 @@ This module configures the PowerVS instance and prepares the system.
 - Run ansible galaxy roles to create filesystems and configure network services (NTP, NFS and DNS)
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
-## Requirements
+### Requirements
 
 | Name | Version |
 |------|---------|
@@ -16,11 +16,11 @@ This module configures the PowerVS instance and prepares the system.
 | <a name="requirement_null"></a> [null](#requirement\_null) | >= 3.2.1 |
 | <a name="requirement_time"></a> [time](#requirement\_time) | >= 0.9.1 |
 
-## Modules
+### Modules
 
 No modules.
 
-## Resources
+### Resources
 
 | Name | Type |
 |------|------|
@@ -31,7 +31,7 @@ No modules.
 | [null_resource.pi_update_os](https://registry.terraform.io/providers/hashicorp/null/latest/docs/resources/resource) | resource |
 | [time_sleep.pi_wait_for_reboot](https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/sleep) | resource |
 
-## Inputs
+### Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
@@ -42,7 +42,7 @@ No modules.
 | <a name="input_ssh_private_key"></a> [ssh\_private\_key](#input\_ssh\_private\_key) | Private Key to configure Instance, Will not be uploaded to server. | `string` | n/a | yes |
 | <a name="input_target_server_ip"></a> [target\_server\_ip](#input\_target\_server\_ip) | Private IP of PowerVS instance reachable from the access host. | `string` | n/a | yes |
 
-## Outputs
+### Outputs
 
 No outputs.
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
