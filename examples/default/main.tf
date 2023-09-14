@@ -88,7 +88,7 @@ module "powervs_infrastructure" {
 
   depends_on = [module.resource_group]
   source     = "terraform-ibm-modules/powervs-infrastructure/ibm"
-  version    = "1.2.0"
+  version    = "2.0.0"
 
   powervs_zone                = var.powervs_zone
   powervs_resource_group_name = module.resource_group.resource_group_name
