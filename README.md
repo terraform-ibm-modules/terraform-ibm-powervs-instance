@@ -72,6 +72,7 @@ You need the following permissions to run this module.
 ## Examples
 
 - [ Basic PowerVS Infrastructure with a Power Virtual server Instance Example](examples/default)
+- [ Basic Power Virtual Server Instance Module Example](examples/multiple)
 - [ Basic Power Virtual Server Instance Module Example](examples/single-instance)
 <!-- END EXAMPLES HOOK -->
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
