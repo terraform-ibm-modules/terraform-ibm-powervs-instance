@@ -102,7 +102,7 @@ variable "powervs_instance_name" {
 variable "powervs_os_image_name" {
   description = "Image Name for PowerVS Instance"
   type        = string
-  default     = "RHEL8-SP4-SAP"
+  default     = "RHEL8-SP6-SAP"
 }
 
 variable "powervs_sap_profile_id" {
