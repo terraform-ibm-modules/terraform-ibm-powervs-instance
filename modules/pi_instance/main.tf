@@ -63,6 +63,9 @@ resource "ibm_pi_instance" "instance" {
     create = "50m"
   }
 
+  lifecycle {
+    ignore_changes = [pi_cloud_instance_id, pi_image_id]
+  }
 }
 
 #####################################################
@@ -97,6 +100,10 @@ resource "ibm_pi_volume" "create_volume" {
   timeouts {
     create = "15m"
   }
+
+  lifecycle {
+    ignore_changes = [pi_cloud_instance_id]
+  }
 }
 
 #####################################################
@@ -113,6 +120,10 @@ resource "ibm_pi_volume_attach" "instance_volumes_attach" {
   timeouts {
     create = "50m"
     delete = "50m"
+  }
+
+  lifecycle {
+    ignore_changes = [pi_cloud_instance_id, pi_volume_id]
   }
 }
 
