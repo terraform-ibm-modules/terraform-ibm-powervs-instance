@@ -350,7 +350,7 @@
           },
           "pos": {
             "filename": "modules/pi_instance/main.tf",
-            "line": 87
+            "line": 90
           }
         },
         "ibm_pi_volume_attach.instance_volumes_attach": {
@@ -362,7 +362,7 @@
           },
           "pos": {
             "filename": "modules/pi_instance/main.tf",
-            "line": 106
+            "line": 113
           }
         }
       },
@@ -391,7 +391,7 @@
           },
           "pos": {
             "filename": "modules/pi_instance/main.tf",
-            "line": 138
+            "line": 149
           }
         },
         "data.ibm_pi_instance_ip.instance_mgmt_ip_ds": {
@@ -406,7 +406,7 @@
           },
           "pos": {
             "filename": "modules/pi_instance/main.tf",
-            "line": 131
+            "line": 142
           }
         },
         "data.ibm_pi_key.key_ds": {
