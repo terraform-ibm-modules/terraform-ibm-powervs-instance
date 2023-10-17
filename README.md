@@ -26,8 +26,9 @@ provider "ibm" {
 }
 
 module "pi_instance" {
-    # Replace "main" with a GIT release version to lock into a specific release
-    source = "git::https://github.com/terraform-ibm-modules/terraform-ibm-powervs-instance.git?ref=main"
+    source     = "terraform-ibm-modules/powervs-instance/ibm"
+    # Replace "x" with a GIT release version to lock into a specific release
+    version    = "x"
 
     pi_zone                       = var.pi_zone
     pi_resource_group_name        = var.pi_resource_group_name
