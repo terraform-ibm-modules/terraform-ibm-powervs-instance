@@ -14,17 +14,12 @@ variable "powervs_zone" {
   }
 }
 
-variable "resource_group_name" {
-  type        = string
-  description = "Existing IBM Cloud resource group name."
-}
-
-variable "powervs_workspace_name" {
-  description = "Name of the PowerVS Workspace to create"
+variable "powervs_workspace_guid" {
+  description = "Existing GUID of the PowerVS workspace. The GUID of the service instance associated with an account"
   type        = string
 }
 
-variable "powervs_sshkey_name" {
+variable "powervs_ssh_public_key_name" {
   description = "Name of the PowerVS SSH key to create"
   type        = string
 }
@@ -39,8 +34,8 @@ variable "powervs_instance_name" {
   default     = "pi"
 }
 
-variable "powervs_os_image_name" {
-  description = "Image Name for PowerVS Instance"
+variable "powervs_image_id" {
+  description = "Image ID used for PowerVS instance. Run 'ibmcloud pi images' to list available images"
   type        = string
   default     = "RHEL8-SP4-SAP"
 }
@@ -76,8 +71,14 @@ variable "powervs_memory_size" {
 }
 
 variable "powervs_networks" {
-  description = "Existing list of subnets name to be attached to an instance. First network has to be a management network."
-  type        = list(any)
+  description = "Existing list of private subnet ids to be attached to an instance. The first element will become the primary interface."
+  type = list(
+    object({
+      name = string
+      id   = string
+      cidr = optional(string)
+    })
+  )
 }
 
 variable "powervs_storage_config" {
@@ -106,12 +107,12 @@ variable "powervs_storage_config" {
 # PowerVS Instance Initialization Optional parameters.
 #####################################################
 
-variable "powervs_instance_init" {
+variable "powervs_instance_init_linux" {
   description = "Setup Proxy client and create filesystems on OS. Supported for LINUX distribution only."
   type = object({
-    enable            = bool
-    access_host_or_ip = string
-    ssh_private_key   = string
+    enable          = bool
+    bastion_host_ip = string
+    ssh_private_key = string
   })
 }
 

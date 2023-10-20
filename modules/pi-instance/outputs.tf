@@ -3,14 +3,9 @@ output "pi_instance_private_ips" {
   value       = join(", ", [for ip in data.ibm_pi_instance.instance_ips_ds.networks[*].ip : format("%s", ip)])
 }
 
-output "pi_instance_private_ips_info" {
-  description = "Complete info about all private IP addresses of IBM PowerVS instance."
-  value       = data.ibm_pi_network.pi_subnets_ds
-}
-
-output "pi_instance_mgmt_ip" {
+output "pi_instance_primary_ip" {
   description = "IP address of the management network interface of IBM PowerVS instance."
-  value       = data.ibm_pi_instance_ip.instance_mgmt_ip_ds.ip
+  value       = data.ibm_pi_instance_ip.instance_primary_ip_ds.ip
 }
 
 output "pi_storage_configuration" {

@@ -1,10 +1,10 @@
-variable "access_host_or_ip" {
+variable "bastion_host_ip" {
   description = "Public IP of Bastion Host"
   type        = string
 }
 
 variable "target_server_ip" {
-  description = "Private IP of PowerVS instance reachable from the access host."
+  description = "Private IP of PowerVS instance reachable from the bastion host."
   type        = string
 }
 

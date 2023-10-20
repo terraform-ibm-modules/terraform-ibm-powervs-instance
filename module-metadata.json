@@ -15,10 +15,10 @@
     },
     "pi_instance_init": {
       "name": "pi_instance_init",
-      "type": "object(\n    {\n      enable            = bool\n      access_host_or_ip = string\n      ssh_private_key   = string\n    }\n  )",
-      "description": "Setup Proxy client and create filesystems on OS. Supported for LINUX distribution only. 'access_host_or_ip' Public IP of Bastion Host",
+      "type": "object(\n    {\n      enable            = bool\n      bastion_host_ip = string\n      ssh_private_key   = string\n    }\n  )",
+      "description": "Setup Proxy client and create filesystems on OS. Supported for LINUX distribution only. 'bastion_host_ip' Public IP of Bastion Host",
       "default": {
-        "access_host_or_ip": "",
+        "bastion_host_ip": "",
         "enable": false,
         "ssh_private_key": ""
       },
@@ -518,7 +518,7 @@
       "name": "pi_instance_init",
       "source": "./modules/pi_instance_init",
       "attributes": {
-        "access_host_or_ip": "pi_instance_init",
+        "bastion_host_ip": "pi_instance_init",
         "pi_network_services_config": "pi_network_services_config",
         "ssh_private_key": "pi_instance_init"
       },

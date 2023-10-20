@@ -1,20 +1,10 @@
-variable "pi_zone" {
-  description = "IBM Cloud PowerVS zone."
+variable "pi_workspace_guid" {
+  description = "Existing GUID of the PowerVS workspace. The GUID of the service instance associated with an account"
   type        = string
 }
 
-variable "pi_resource_group_name" {
-  description = "Existing IBM Cloud resource group name"
-  type        = string
-}
-
-variable "pi_workspace_name" {
-  description = "Existing Name of the PowerVS workspace"
-  type        = string
-}
-
-variable "pi_sshkey_name" {
-  description = "Existing PowerVs SSH key name"
+variable "pi_ssh_public_key_name" {
+  description = "Existing PowerVS SSH Public key name. Run 'ibmcloud pi keys' to list available keys"
   type        = string
 }
 
@@ -27,14 +17,20 @@ variable "pi_instance_name" {
   }
 }
 
-variable "pi_os_image_name" {
-  description = "Image Name for PowerVS Instance"
+variable "pi_image_id" {
+  description = "Image ID used for PowerVS instance. Run 'ibmcloud pi images' to list available images"
   type        = string
 }
 
 variable "pi_networks" {
-  description = "Existing list of subnets name to be attached to an instance. First network has to be a management network"
-  type        = list(any)
+  description = "Existing list of private subnet ids to be attached to an instance. The first element will become the primary interface. Run 'ibmcloud pi networks' to list available private subnets"
+  type = list(
+    object({
+      name = string
+      id   = string
+      cidr = optional(string)
+    })
+  )
 }
 
 variable "pi_sap_profile_id" {
@@ -76,11 +72,7 @@ variable "pi_storage_config" {
     tier  = string
     mount = string
   }))
-  default = [
-    {
-      name = "data", size = "100", count = "2", tier = "tier1", mount = "/data"
-    }
-  ]
+
   validation {
     condition = var.pi_storage_config != null ? (
       alltrue([for config in var.pi_storage_config : (
@@ -89,6 +81,5 @@ variable "pi_storage_config" {
     ) : var.pi_storage_config == null ? true : false
     error_message = "One of the storage config has invalid value, probably an empty string"
   }
-
 
 }

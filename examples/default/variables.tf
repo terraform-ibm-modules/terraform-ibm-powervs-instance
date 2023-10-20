@@ -14,13 +14,13 @@ variable "powervs_zone" {
   }
 }
 
-#####################################################
-# PowerVS Infrastructure Parameters
-#####################################################
+###########################################
+# PowerVS Workspace module variables
+############################################
 
-variable "resource_group" {
+variable "powervs_resource_group_name" {
   type        = string
-  description = "Existing IBM Cloud resource group name. If null, a new resource group will be created."
+  description = "The name of an existing resource group to provision resources in to. If null, a new resource group will be created. using the prefix variable"
   default     = null
 }
 
@@ -31,49 +31,49 @@ variable "prefix" {
 }
 
 variable "powervs_workspace_name" {
-  description = "Name of the PowerVS Workspace to create"
+  description = "Name of IBM Cloud PowerVS workspace which will be created."
   type        = string
-  default     = "power-workspace"
+  default     = "powervs-workspace"
 }
 
-variable "powervs_sshkey_name" {
-  description = "Name of the PowerVS SSH key to create"
+variable "powervs_ssh_public_key" {
+  description = "Value of the Public SSH key to create."
   type        = string
-  default     = "ssh-key-pvs"
 }
 
-variable "powervs_management_network" {
-  description = "Name of the IBM Cloud PowerVS management subnet and CIDR to create"
+variable "powervs_private_subnet_1" {
+  description = "IBM Cloud PowerVS first private subnet name and cidr which will be created. Set value to null to not create this subnet."
   type = object({
     name = string
     cidr = string
   })
   default = {
-    name = "mgmt_net"
+    name = "sub_1"
     cidr = "10.51.0.0/24"
   }
 }
 
-variable "powervs_backup_network" {
-  description = "Name of the IBM Cloud PowerVS backup network and CIDR to create"
+variable "powervs_private_subnet_2" {
+  description = "IBM Cloud PowerVS second private subnet name and cidr which will be created. Set value to null to not create this subnet."
   type = object({
     name = string
     cidr = string
   })
   default = {
-    name = "bkp_net"
-    cidr = "10.52.0.0/24"
+    name = "sub_2"
+    cidr = "10.53.0.0/24"
   }
 }
 
-variable "transit_gateway_name" {
-  description = "Name of the existing transit gateway. Required when you create new IBM Cloud connections."
-  type        = string
-  default     = null
+variable "powervs_image_names" {
+  description = "List of Images to be imported into cloud account from catalog images."
+  type        = list(string)
+  default     = ["SLES15-SP4-SAP", "RHEL8-SP6-SAP", "7300-01-01", "IBMi-75-01-2984-2"]
 }
 
-variable "cloud_connection" {
-  description = "Cloud connection configuration: speed (50, 100, 200, 500, 1000, 2000, 5000, 10000 Mb/s), count (1 or 2 connections), global_routing (true or false), metered (true or false)"
+### Not creating cloud connections. Change count to enable
+variable "powervs_cloud_connection" {
+  description = "Cloud connection configuration: speed (50, 100, 200, 500, 1000, 2000, 5000, 10000 Mb/s), count (1 or 2 connections), global_routing (true or false), metered (true or false). Not applicable for PER enabled DC and CCs will not be created."
   type = object({
     count          = number
     speed          = number
@@ -144,6 +144,7 @@ variable "powervs_storage_config" {
     tier  = string
     mount = string
   }))
+
   default = [
     {
       name = "data", size = "100", count = "2", tier = "tier1", mount = "/data"
@@ -157,16 +158,18 @@ variable "powervs_storage_config" {
   ]
 }
 
+/*
 variable "pi_instance_init" {
   description = "Setup Proxy client and create filesystems on OS. Supported for LINUX distribution only."
   type = object({
     enable            = bool
-    access_host_or_ip = string
+    bastion_host_ip = string
     ssh_private_key   = string
   })
   default = {
     enable            = false
-    access_host_or_ip = ""
+    bastion_host_ip = ""
     ssh_private_key   = ""
   }
 }
+*/
