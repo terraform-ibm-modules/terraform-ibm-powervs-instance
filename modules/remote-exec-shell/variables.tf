@@ -1,15 +1,15 @@
 variable "bastion_host_ip" {
-  description = "Public IP of Bastion Host"
+  description = "Public IP of bastion host."
   type        = string
 }
 
 variable "host_ip" {
-  description = "Private IP of instance reachable from the Bastion Host."
+  description = "Private IP of instance reachable from the bastion host."
   type        = string
 }
 
 variable "ssh_private_key" {
-  description = "Private Key to configure Instance, will not be uploaded to server."
+  description = "Private Key to configure instance, will not be uploaded to server."
   type        = string
   sensitive   = true
 }

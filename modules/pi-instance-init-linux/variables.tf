@@ -1,5 +1,5 @@
 variable "bastion_host_ip" {
-  description = "Public IP of Bastion Host"
+  description = "Public IP of bastion host."
   type        = string
 }
 
@@ -15,7 +15,7 @@ variable "ssh_private_key" {
 }
 
 variable "pi_proxy_settings" {
-  description = "Configures a PowerVS instance to have internet access by setting proxy on it. E.g., 10.10.10.4:3128 <ip:port>"
+  description = "Configures a PowerVS instance to have internet access by setting proxy on it. E.g., 10.10.10.4:3128 <ip:port>."
   type = object(
     {
       enable                = string
@@ -26,7 +26,7 @@ variable "pi_proxy_settings" {
 }
 
 variable "pi_storage_config" {
-  description = "File systems to be created and mounted on PowerVS instance. 'size' is in GB. 'count' specify over how many storage volumes the file system will be striped. 'tier' specifies the storage tier in PowerVS workspace, 'mount' specifies the mount point on the OS. 'wwns' specifies the comma separated volume ids"
+  description = "File systems to be created and mounted on PowerVS instance. 'size' is in GB. 'count' specify over how many storage volumes the file system will be striped. 'tier' specifies the storage tier in PowerVS workspace, 'mount' specifies the mount point on the OS. 'wwns' specifies the comma separated volume ids."
   type = list(object({
     name  = string
     size  = string
@@ -38,7 +38,7 @@ variable "pi_storage_config" {
 }
 
 variable "pi_network_services_config" {
-  description = "Configures network services NTP, NFS and DNS on PowerVS instance"
+  description = "Configures network services NTP, NFS and DNS on PowerVS instance. Requires 'pi_instance_init_linux' and 'powervs_proxy_settings' to be specified as internet access is required to download ansible collection [ibm.power_linux_sap collection](https://galaxy.ansible.com/ui/repo/published/ibm/power_linux_sap/) to configure these services."
   type = object(
     {
       nfs = object({ enable = bool, nfs_server_path = string, nfs_client_path = string })

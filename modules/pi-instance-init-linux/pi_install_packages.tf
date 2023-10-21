@@ -29,7 +29,6 @@ locals {
 module "pi_install_packages" {
   source     = "../remote-exec-shell"
   depends_on = [time_sleep.pi_wait_for_reboot]
-  count      = local.proxy_enabled ? 1 : 0
 
   bastion_host_ip                                   = var.bastion_host_ip
   host_ip                                           = var.target_server_ip

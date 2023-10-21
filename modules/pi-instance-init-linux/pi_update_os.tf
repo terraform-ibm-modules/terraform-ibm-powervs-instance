@@ -31,7 +31,6 @@ locals {
 module "pi_update_os" {
   source     = "../remote-exec-shell"
   depends_on = [module.pi_proxy_settings]
-  count      = local.proxy_enabled ? 1 : 0
 
   bastion_host_ip                                   = var.bastion_host_ip
   host_ip                                           = var.target_server_ip
@@ -43,7 +42,6 @@ module "pi_update_os" {
 
 resource "time_sleep" "pi_wait_for_reboot" {
   depends_on = [module.pi_update_os]
-  count      = local.proxy_enabled ? 1 : 0
 
   create_duration = "120s"
 }

@@ -42,7 +42,7 @@ locals {
 module "pi_create_filesystems" {
   source     = "../remote-exec-ansible"
   depends_on = [module.pi_install_packages]
-  count      = local.proxy_enabled && var.pi_storage_config != null ? var.pi_storage_config[0].count != "" ? 1 : 0 : 0
+  count      = var.pi_storage_config != null ? var.pi_storage_config[0].count != "" ? 1 : 0 : 0
 
   bastion_host_ip                                   = var.bastion_host_ip
   host_ip                                           = var.target_server_ip

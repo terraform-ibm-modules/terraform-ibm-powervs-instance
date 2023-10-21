@@ -24,7 +24,7 @@ module "pi_instance_init_linux" {
   bastion_host_ip            = var.pi_instance_init_linux.bastion_host_ip
   target_server_ip           = module.pi_instance.pi_instance_primary_ip
   ssh_private_key            = var.pi_instance_init_linux.ssh_private_key
-  pi_proxy_settings          = local.pi_proxy_settings
+  pi_proxy_settings          = local.pi_linux_proxy_settings
   pi_storage_config          = module.pi_instance.pi_storage_configuration
   pi_network_services_config = var.pi_network_services_config
 

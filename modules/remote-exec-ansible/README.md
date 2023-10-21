@@ -45,8 +45,8 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_bastion_host_ip"></a> [bastion\_host\_ip](#input\_bastion\_host\_ip) | Public IP of Bastion Host | `string` | n/a | yes |
-| <a name="input_host_ip"></a> [host\_ip](#input\_host\_ip) | Private IP of instance reachable from the Bastion Host. | `string` | n/a | yes |
+| <a name="input_bastion_host_ip"></a> [bastion\_host\_ip](#input\_bastion\_host\_ip) | Public IP of bastion host. | `string` | n/a | yes |
+| <a name="input_host_ip"></a> [host\_ip](#input\_host\_ip) | Private IP of instance reachable from the bastion host. | `string` | n/a | yes |
 | <a name="input_provisioner_file_1"></a> [provisioner\_file\_1](#input\_provisioner\_file\_1) | First template file to be copied from local to remote host. This will be executed after contents of 'provisioner\_remote\_exec\_inline\_pre\_exec\_commands' variable. | <pre>object(<br>    {<br>      template_content          = map(any)<br>      source_template_file_path = string<br>      destination_file_path     = string<br>    }<br>  )</pre> | n/a | yes |
 | <a name="input_provisioner_file_2"></a> [provisioner\_file\_2](#input\_provisioner\_file\_2) | Template file to be copied from local to remote host. This will be executed after contents of 'provisioner\_file\_1' variable. | <pre>object(<br>    {<br>      template_content          = map(any)<br>      source_template_file_path = string<br>      destination_file_path     = string<br>    }<br>  )</pre> | n/a | yes |
 | <a name="input_provisioner_remote_exec_inline_post_exec_commands"></a> [provisioner\_remote\_exec\_inline\_post\_exec\_commands](#input\_provisioner\_remote\_exec\_inline\_post\_exec\_commands) | List of commands to be executed on target host. This variable will be executed last. This will be executed after provisioning of template file 'provisioner\_file\_2' variable. | `list(any)` | n/a | yes |

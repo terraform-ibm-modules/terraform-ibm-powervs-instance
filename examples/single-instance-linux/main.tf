@@ -18,6 +18,5 @@ module "powervs_instance" {
   pi_cpu_proc_type           = var.powervs_cpu_proc_type
   pi_storage_config          = var.powervs_storage_config
   pi_instance_init_linux     = var.powervs_instance_init_linux
-  pi_proxy_settings          = var.powervs_proxy_settings
   pi_network_services_config = var.powervs_network_services_config
 }
