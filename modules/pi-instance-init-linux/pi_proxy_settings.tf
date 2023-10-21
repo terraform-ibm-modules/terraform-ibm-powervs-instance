@@ -9,10 +9,10 @@ locals {
 
   pi_proxy_settings = {
     # Creates terraform scripts directory
-    remote_exec_inline_pre_exec_commands = ["mkdir -p ${local.dst_files_dir}", "chmod 777 ${local.dst_files_dir}", ]
+    provisioner_remote_exec_inline_pre_exec_commands = ["mkdir -p ${local.dst_files_dir}", "chmod 777 ${local.dst_files_dir}", ]
 
     # Copy template file to target host
-    remote_exec_file_provisioner = {
+    provisioner_file = {
       destination_file_path     = local.dst_proxy_settings_file_path,
       source_template_file_path = local.src_proxy_settings_tpl_path,
       template_content = {
@@ -21,7 +21,7 @@ locals {
       }
     }
     #######  Execute script: SQUID Forward Proxy client setup and OS Registration ############
-    remote_exec_inline_post_exec_commands = [
+    provisioner_remote_exec_inline_post_exec_commands = [
       "chmod +x ${local.dst_proxy_settings_file_path}",
       "${local.dst_proxy_settings_file_path} setup_proxy",
       "${local.dst_proxy_settings_file_path} register_os"
@@ -33,10 +33,10 @@ module "pi_proxy_settings" {
   source = "../remote-exec-shell"
   count  = local.proxy_enabled ? 1 : 0
 
-  bastion_host_ip                       = var.bastion_host_ip
-  host_ip                               = var.target_server_ip
-  ssh_private_key                       = var.ssh_private_key
-  remote_exec_inline_pre_exec_commands  = local.pi_proxy_settings.remote_exec_inline_pre_exec_commands
-  remote_exec_file_provisioner          = local.pi_proxy_settings.remote_exec_file_provisioner
-  remote_exec_inline_post_exec_commands = local.pi_proxy_settings.remote_exec_inline_post_exec_commands
+  bastion_host_ip                                   = var.bastion_host_ip
+  host_ip                                           = var.target_server_ip
+  ssh_private_key                                   = var.ssh_private_key
+  provisioner_remote_exec_inline_pre_exec_commands  = local.pi_proxy_settings.provisioner_remote_exec_inline_pre_exec_commands
+  provisioner_file                                  = local.pi_proxy_settings.provisioner_file
+  provisioner_remote_exec_inline_post_exec_commands = local.pi_proxy_settings.provisioner_remote_exec_inline_post_exec_commands
 }

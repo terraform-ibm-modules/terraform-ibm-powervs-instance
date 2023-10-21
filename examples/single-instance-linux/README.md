@@ -1,4 +1,4 @@
-# Basic Power Virtual Server instance with OS initialization
+# Basic Power Virtual Server instance with linux OS initialization
 
 This example illustrates how to use the `powervs-instance` module.
 

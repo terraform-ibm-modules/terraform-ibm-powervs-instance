@@ -14,13 +14,13 @@ variable "ssh_private_key" {
   sensitive   = true
 }
 
-variable "remote_exec_inline_pre_exec_commands" {
-  description = "List of Commands to be executed on target host. This variable will be executed first."
+variable "provisioner_remote_exec_inline_pre_exec_commands" {
+  description = "List of commands to be executed on target host. This variable will be executed first."
   type        = list(any)
 }
 
-variable "remote_exec_file_provisioner_1" {
-  description = "First template file to be copied from local to remote host. This will be executed after contents of 'remote_exec_inline_pre_exec_commands' variable."
+variable "provisioner_file_1" {
+  description = "First template file to be copied from local to remote host. This will be executed after contents of 'provisioner_remote_exec_inline_pre_exec_commands' variable."
   type = object(
     {
       template_content          = map(any)
@@ -30,8 +30,8 @@ variable "remote_exec_file_provisioner_1" {
   )
 }
 
-variable "remote_exec_file_provisioner_2" {
-  description = "Template file to be copied from local to remote host. This will be executed after contents of 'remote_exec_inline_pre_exec_commands_1' variable."
+variable "provisioner_file_2" {
+  description = "Template file to be copied from local to remote host. This will be executed after contents of 'provisioner_file_1' variable."
   type = object(
     {
       template_content          = map(any)
@@ -41,7 +41,7 @@ variable "remote_exec_file_provisioner_2" {
   )
 }
 
-variable "remote_exec_inline_post_exec_commands" {
-  description = "List of commands to be executed on target host. This variable will be executed last. This will be executed after provisioning of template file 'remote_exec_file_provisioner_2' variable."
+variable "provisioner_remote_exec_inline_post_exec_commands" {
+  description = "List of commands to be executed on target host. This variable will be executed last. This will be executed after provisioning of template file 'provisioner_file_2' variable."
   type        = list(any)
 }

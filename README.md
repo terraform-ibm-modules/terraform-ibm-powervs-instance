@@ -28,7 +28,7 @@ For more information about IBM Power Virtual Server see the [getting started](ht
     * [remote-exec-shell](./modules/remote-exec-shell)
 * [Examples](./examples)
     * [Basic Power Virtual Server infrastructure with a Power Virtual Server instance](./examples/default)
-    * [Basic Power Virtual Server instance with OS initialization](./examples/single-instance-linux)
+    * [Basic Power Virtual Server instance with linux OS initialization](./examples/single-instance-linux)
 * [Contributing](#contributing)
 <!-- END OVERVIEW HOOK -->
 

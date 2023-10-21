@@ -14,13 +14,13 @@ variable "ssh_private_key" {
   sensitive   = true
 }
 
-variable "remote_exec_inline_pre_exec_commands" {
-  description = "List of Commands to be executed on target host. This variable will be executed first."
+variable "provisioner_remote_exec_inline_pre_exec_commands" {
+  description = "List of commands to be executed on target host. This variable will be executed first."
   type        = list(any)
 }
 
-variable "remote_exec_file_provisioner" {
-  description = "Template file to be copied from local to remote host. This will be executed after contents of 'remote_exec_inline_pre_exec_commands' variable."
+variable "provisioner_file" {
+  description = "Template file to be copied from local to remote host. This will be executed after contents of 'provisioner_remote_exec_inline_pre_exec_commands' variable."
   type = object(
     {
       template_content          = map(any)
@@ -30,7 +30,7 @@ variable "remote_exec_file_provisioner" {
   )
 }
 
-variable "remote_exec_inline_post_exec_commands" {
-  description = "List of commands to be executed on target host. This variable will be executed last. This will be executed after provisioning of template file 'remote_exec_file_provisioner' variable."
+variable "provisioner_remote_exec_inline_post_exec_commands" {
+  description = "List of commands to be executed on target host. This variable will be executed last. This will be executed after provisioning of template file 'provisioner_file' variable."
   type        = list(any)
 }

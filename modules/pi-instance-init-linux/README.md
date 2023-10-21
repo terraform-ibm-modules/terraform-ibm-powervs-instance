@@ -13,7 +13,7 @@ This module configures the Power Virtual Server instance and prepares the system
 ```hcl
 
 module "pi_instance_init_linux" {
-  source     = "terraform-ibm-modules/powervs-instance/ibm//modules//pi-instance-init"
+  source     = "terraform-ibm-modules/powervs-instance/ibm//modules//pi-instance-init-linux"
   version    = "x.x.x" #replace x.x.x to lock to a specific version
 
   bastion_host_ip            = var.bastion_host_ip

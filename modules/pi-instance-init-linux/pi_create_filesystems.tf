@@ -10,10 +10,10 @@ locals {
 
   pi_create_filesystems = {
     # Creates terraform scripts directory
-    remote_exec_inline_pre_exec_commands = ["mkdir -p ${local.dst_files_dir}", "chmod 777 ${local.dst_files_dir}", ]
+    provisioner_remote_exec_inline_pre_exec_commands = ["mkdir -p ${local.dst_files_dir}", "chmod 777 ${local.dst_files_dir}", ]
 
     # Copy playbook template file to target host
-    remote_exec_file_provisioner_1 = {
+    provisioner_file_1 = {
       destination_file_path     = local.dst_playbook_create_filesystems_file_path,
       source_template_file_path = local.src_playbook_create_filesystems_tpl_path,
       template_content = {
@@ -22,7 +22,7 @@ locals {
     }
 
     # Copy ansible exec template file to target host
-    remote_exec_file_provisioner_2 = {
+    provisioner_file_2 = {
       destination_file_path     = local.dst_create_filesystems_file_path,
       source_template_file_path = local.src_create_filesystems_tpl_path,
       template_content = {
@@ -32,7 +32,7 @@ locals {
     }
 
     #  Execute script: create_filesystems.sh
-    remote_exec_inline_post_exec_commands = [
+    provisioner_remote_exec_inline_post_exec_commands = [
       "chmod +x ${local.dst_create_filesystems_file_path}",
       local.dst_create_filesystems_file_path,
     ]
@@ -44,11 +44,11 @@ module "pi_create_filesystems" {
   depends_on = [module.pi_install_packages]
   count      = local.proxy_enabled && var.pi_storage_config != null ? var.pi_storage_config[0].count != "" ? 1 : 0 : 0
 
-  bastion_host_ip                       = var.bastion_host_ip
-  host_ip                               = var.target_server_ip
-  ssh_private_key                       = var.ssh_private_key
-  remote_exec_inline_pre_exec_commands  = local.pi_create_filesystems.remote_exec_inline_pre_exec_commands
-  remote_exec_file_provisioner_1        = local.pi_create_filesystems.remote_exec_file_provisioner_1
-  remote_exec_file_provisioner_2        = local.pi_create_filesystems.remote_exec_file_provisioner_2
-  remote_exec_inline_post_exec_commands = local.pi_create_filesystems.remote_exec_inline_post_exec_commands
+  bastion_host_ip                                   = var.bastion_host_ip
+  host_ip                                           = var.target_server_ip
+  ssh_private_key                                   = var.ssh_private_key
+  provisioner_remote_exec_inline_pre_exec_commands  = local.pi_create_filesystems.provisioner_remote_exec_inline_pre_exec_commands
+  provisioner_file_1                                = local.pi_create_filesystems.provisioner_file_1
+  provisioner_file_2                                = local.pi_create_filesystems.provisioner_file_2
+  provisioner_remote_exec_inline_post_exec_commands = local.pi_create_filesystems.provisioner_remote_exec_inline_post_exec_commands
 }
