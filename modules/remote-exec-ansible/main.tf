@@ -1,4 +1,4 @@
-resource "terraform_data" "remote_exec" {
+resource "terraform_data" "remote_exec_ansible" {
 
   connection {
     type         = "ssh"

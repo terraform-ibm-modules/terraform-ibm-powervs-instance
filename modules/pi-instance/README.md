@@ -1,4 +1,4 @@
-# Module pi_instance
+# Module pi-instance
 
 This module provisions the following resources in IBM Cloud:
 
@@ -15,10 +15,9 @@ ibmcloud_api_key = "your api key" != null ? "your api key" : null
 }
 
 module "powervs_instance" {
-  source     = "terraform-ibm-modules/powervs-instance/ibm//modules//pi_instance"
+  source     = "terraform-ibm-modules/powervs-instance/ibm//modules//pi-instance"
   version    = "x.x.x" #replace x.x.x to lock to a specific version
 
-  pi_zone                 = var.pi_zone
   pi_workspace_guid       = var.pi_workspace_guid
   pi_ssh_public_key_name  = var.pi_ssh_public_key_name
   pi_image_id             = var.pi_image_id
@@ -75,7 +74,7 @@ No modules.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_pi_instance_primary_ip"></a> [pi\_instance\_primary\_ip](#output\_pi\_instance\_primary\_ip) | IP address of the management network interface of IBM PowerVS instance. |
+| <a name="output_pi_instance_primary_ip"></a> [pi\_instance\_primary\_ip](#output\_pi\_instance\_primary\_ip) | IP address of the primary network interface of IBM PowerVS instance. |
 | <a name="output_pi_instance_private_ips"></a> [pi\_instance\_private\_ips](#output\_pi\_instance\_private\_ips) | All private IP addresses (as a list) of IBM PowerVS instance. |
 | <a name="output_pi_storage_configuration"></a> [pi\_storage\_configuration](#output\_pi\_storage\_configuration) | Storage configuration of PowerVS instance |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

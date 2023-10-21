@@ -2,7 +2,6 @@ variable "ibmcloud_api_key" {
   description = "The IBM Cloud platform API key needed to deploy IAM enabled resources."
   type        = string
   sensitive   = true
-  default     = null
 }
 
 variable "powervs_zone" {
@@ -31,13 +30,11 @@ variable "powervs_ssh_public_key_name" {
 variable "powervs_instance_name" {
   description = "Name of instance which will be created"
   type        = string
-  default     = "pi"
 }
 
 variable "powervs_image_id" {
   description = "Image ID used for PowerVS instance. Run 'ibmcloud pi images' to list available images"
   type        = string
-  default     = "RHEL8-SP4-SAP"
 }
 
 variable "powervs_sap_profile_id" {
@@ -124,10 +121,6 @@ variable "powervs_proxy_settings" {
       no_proxy_hosts        = string
     }
   )
-  default = {
-    proxy_host_or_ip_port = "<ip:port>"
-    no_proxy_hosts        = "161.0.0.0/8,10.0.0.0/8"
-  }
 }
 
 variable "powervs_network_services_config" {
@@ -139,10 +132,4 @@ variable "powervs_network_services_config" {
       ntp = object({ enable = bool, ntp_server_ip = string })
     }
   )
-
-  default = {
-    nfs = { enable = false, nfs_server_path = "", nfs_client_path = "" }
-    dns = { enable = false, dns_server_ip = "" }
-    ntp = { enable = false, ntp_server_ip = "" }
-  }
 }

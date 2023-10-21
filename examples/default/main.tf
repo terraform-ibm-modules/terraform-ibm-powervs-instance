@@ -6,7 +6,6 @@
 module "powervs_instance" {
   source = "../../"
 
-  pi_zone                 = var.powervs_zone
   pi_workspace_guid       = local.pi_workspace_guid
   pi_ssh_public_key_name  = local.powervs_ssh_public_key.name
   pi_image_id             = local.pi_image_id

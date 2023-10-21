@@ -1,60 +1,69 @@
-// Tests in this file are run in the PR pipeline
+// Tests in this file are run in the PR pipeline and the continuous testing pipeline
 package test
 
 import (
+	"os"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/cloudinfo"
 	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/testhelper"
 )
 
 // Use existing resource group
 const resourceGroup = "geretain-test-resources"
-const defaultExampleTerraformDir = "examples/default"
+const completeExampleDir = "examples/default"
 
-func setupOptions(t *testing.T, prefix string) *testhelper.TestOptions {
-	options := testhelper.TestOptionsDefault(&testhelper.TestOptions{
+var sharedInfoSvc *cloudinfo.CloudInfoService
+
+func TestMain(m *testing.M) {
+	sharedInfoSvc, _ = cloudinfo.NewCloudInfoServiceFromEnv("TF_VAR_ibmcloud_api_key", cloudinfo.CloudInfoServiceOptions{})
+	os.Exit(m.Run())
+}
+
+func setupOptions(t *testing.T, prefix string, dir string) *testhelper.TestOptions {
+	options := testhelper.TestOptionsDefaultWithVars(&testhelper.TestOptions{
 		Testing:            t,
-		TerraformDir:       defaultExampleTerraformDir,
+		TerraformDir:       dir,
 		Prefix:             prefix,
 		ResourceGroup:      resourceGroup,
-		Region:             "lon06", // specify default region to skip best choice query
-		DefaultRegion:      "lon06",
+		Region:             "us-south", // specify default region to skip best choice query
+		DefaultRegion:      "us-south",
 		BestRegionYAMLPath: "../common-dev-assets/common-go-assets/cloudinfo-region-power-prefs.yaml", // specific to powervs zones
 	})
-
-	// query for best zone to deploy powervs example, based on current connection count
-	// NOTE: this is why we do not want to run multiple tests in parallel
-	options.Region, _ = testhelper.GetBestPowerSystemsRegion(options.RequiredEnvironmentVars["TF_VAR_ibmcloud_api_key"], options.BestRegionYAMLPath, options.DefaultRegion)
+	options.Region, _ = testhelper.GetBestPowerSystemsRegionO(options.RequiredEnvironmentVars["TF_VAR_ibmcloud_api_key"], options.BestRegionYAMLPath, options.DefaultRegion,
+		testhelper.TesthelperTerraformOptions{CloudInfoService: sharedInfoSvc})
 	// if for any reason the region is empty at this point, such as error, use default
 	if len(options.Region) == 0 {
 		options.Region = options.DefaultRegion
 	}
 
 	options.TerraformVars = map[string]interface{}{
-		"prefix":         options.Prefix,
-		"resource_group": options.ResourceGroup,
-		// locking into syd05 as this DC is stable for attaching disks
-		"powervs_zone": options.Region,
+		"prefix":                      options.Prefix,
+		"powervs_resource_group_name": options.ResourceGroup,
+		// locking into syd05 due to other data center issues
+		//"powervs_zone": "lon06",
+		"powervs_zone":           options.Region,
+		"powervs_ssh_public_key": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCd6kECDFRccE3AY/3u4FcHoNtNJjE7fCg0INvxAU9i3V8bibnUnDrWYuWV1pUq6wm0+Ab1ECX6R+MUfNC22xhbYQDvdREEfUFIeGPW27kJ3zT4Jxiw0ih23p8Scukk0B7wWaDl+HQnHkZNhD+1I8Y5yGULBqNVnVdFhXQZK03tLBC4OvhQNVbjO93iAkJQYpTGQZGxIlyavEk4T3criztFeMzVieN2J6vbvxDOuqjCGE+VcBaIXHoHIpUu44ZlCax4ArxOx+MlZBb5LXasjdhajKBqSiL7Sknq51ftnAbj0+spqRYpbNrMC2TThYrXLsYQ4EV7nndRpeLqLk+dJoX0F5KuRSOeImvyGPkCpEySzSw2SPjzlMLmJNSFErMZS159F1N6fyjRzEJQYKRu4lRSoVeirNcmM8mfuF3SesRCqy5FuUKr3B/NzJ6hJ+ia8vgy2e6itcynk+QvgLrY/iO8LXy1m9vG/xF8qDvviPsFe4KAe31IyHoIcgncwe3smtU= root@eu-jump-box-1",
 	}
-
 	return options
 }
 
-func TestRunDefaultExample(t *testing.T) {
+func TestRunBranchExample(t *testing.T) {
 	t.Parallel()
 
-	options := setupOptions(t, "pi")
+	options := setupOptions(t, "pib", completeExampleDir)
 
 	output, err := options.RunTestConsistency()
 	assert.Nil(t, err, "This should not have errored")
 	assert.NotNil(t, output, "Expected some output")
 }
 
-func TestRunUpgradeExample(t *testing.T) {
+func TestRunMainExample(t *testing.T) {
 	t.Parallel()
 
-	options := setupOptions(t, "power-sap-upg")
+	//t.Skip("Skipping upgrade test until initial code is in master branch")
+	options := setupOptions(t, "pim", completeExampleDir)
 
 	output, err := options.RunTestUpgrade()
 	if !options.UpgradeTestSkipped {

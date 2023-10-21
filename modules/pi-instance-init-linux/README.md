@@ -1,20 +1,14 @@
-# Module pi_instance_init
+# Module pi-instance-init
 
-This module configures the PowerVS instance and prepares the system.
+This module configures the Power Virtual Server instance and prepares the system.
+
 - Configures proxy settings for access to internet (SQUID forward proxy)
 - SUSE/RHEL OS Registration
 - Update OS
 - Install Packages (ansible, unbuffer)
-- Run ansible galaxy roles to create filesystems and configure network services (NTP, NFS and DNS)
+- Optionally execute ansible galaxy collection roles [ibm.power_linux_sap collection](https://galaxy.ansible.com/ui/repo/published/ibm/power_linux_sap/) to create filesystems
+- Optionally execute ansible galaxy collection roles [ibm.power_linux_sap collection](https://galaxy.ansible.com/ui/repo/published/ibm/power_linux_sap/) to configure network services (NTP, NFS and DNS)
 
-#####################################################
-# 1. Proxy Client setup
-# 2. Update OS and Reboot
-# 3. Install Necessary Packages
-# 4. Execute Ansible galaxy role to create filesystems
-# 5. Execute Ansible galaxy role to connect to
-# network services (NTP, NFS, DNS)
-#####################################################
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ### Requirements

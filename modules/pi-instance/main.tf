@@ -1,13 +1,9 @@
-#####################################################
-# PowerVs Instance Create Configuration
-#####################################################
-
 locals {
   pi_boot_image_storage_tier = var.pi_sap_profile_id == null ? "tier3" : "tier1"
 }
 
 #####################################################
-# Create PowerVs Instance
+# Create Power Virtual server Instance
 #####################################################
 
 resource "ibm_pi_instance" "instance" {
@@ -39,6 +35,10 @@ resource "ibm_pi_instance" "instance" {
     ignore_changes = [pi_cloud_instance_id, pi_image_id]
   }
 }
+
+#####################################################
+# For outputs
+#####################################################
 
 data "ibm_pi_instance_ip" "instance_primary_ip_ds" {
   depends_on           = [ibm_pi_instance.instance]

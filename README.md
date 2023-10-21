@@ -8,16 +8,34 @@
 [![latest release](https://img.shields.io/github/v/release/terraform-ibm-modules/terraform-ibm-powervs-instance?logo=GitHub&sort=semver)](https://github.com/terraform-ibm-modules/terraform-ibm-powervs-instance/releases/latest)
 [![Renovate enabled](https://img.shields.io/badge/renovate-enabled-brightgreen.svg)](https://renovatebot.com/)
 
-The PowerVS instance module automates the following tasks:
+## Summary
+This root module automates and provisions a IBM Power Virtual Server instance with following components:
 
 - Creates an IBM® Power Virtual Server Instance.
-- Creates Volumes and Attaches it to the instance.
 - Attaches existing private subnets to the instance.
-- Optional Instance Initialization for linux images only (Configure proxy settings and create files systems).
+- Optionally creates volumes and attaches it to the instance.
+- Optional instance initialization for linux images only ( configures proxy settings, creates filesystems, connects to network management services like DNS, NTP and NFS).
 
 For more information about IBM Power Virtual Server see the [getting started](https://cloud.ibm.com/docs/power-iaas?topic=power-iaas-getting-started) IBM Cloud docs.
 
-## Usage
+<!-- BEGIN OVERVIEW HOOK -->
+## Overview
+* [terraform-ibm-powervs-instance](#terraform-ibm-powervs-instance)
+* [Submodules](./modules)
+    * [pi-instance-init-linux](./modules/pi-instance-init-linux)
+    * [pi-instance](./modules/pi-instance)
+    * [remote-exec-ansible](./modules/remote-exec-ansible)
+    * [remote-exec-shell](./modules/remote-exec-shell)
+* [Examples](./examples)
+    * [Basic Power Virtual Server Instance Module example with OS Initialization](./examples/single-instance-linux)
+    * [Basic PowerVS Infrastructure with a Power Virtual server Instance Example](./examples/default)
+* [Contributing](#contributing)
+<!-- END OVERVIEW HOOK -->
+
+## terraform-ibm-powervs-instance
+
+### Usage
+
 ```hcl
 provider "ibm" {
   region           = var.pi_region
@@ -27,26 +45,22 @@ provider "ibm" {
 
 module "pi_instance" {
     source     = "terraform-ibm-modules/powervs-instance/ibm"
-    # Replace "x" with a GIT release version to lock into a specific release
-    version    = "x"
+    version    = "x.x.x" # Replace "x.x.x" with a GIT release version to lock into a specific release
 
-    pi_zone                       = var.pi_zone
-    pi_resource_group_name        = var.pi_resource_group_name
-    pi_workspace_name             = var.pi_workspace_name
-    pi_sshkey_name                = var.pi_sshkey_name
-    pi_instance_name              = var.pi_instance_name
-    pi_os_image_name              = var.pi_os_image_name
-    pi_networks                   = var.pi_networks
-    pi_sap_profile_id             = var.pi_sap_profile_id
-    pi_server_type                = var.pi_server_type
-    pi_cpu_proc_type              = var.pi_cpu_proc_type
-    pi_number_of_processors       = var.pi_number_of_processors
-    pi_memory_size                = var.pi_memory_size
-    pi_storage_config             = var.pi_storage_config
-    pi_instance_init              = var.pi_instance_init
-    pi_proxy_settings             = var.pi_proxy_settings
-    pi_network_services_config    = var.pi_network_services_config
-
+    pi_workspace_guid          = var.pi_workspace_guid
+    pi_ssh_public_key_name     = var.pi_ssh_public_key_name
+    pi_image_id                = var.pi_image_id
+    pi_networks                = var.pi_networks
+    pi_instance_name           = var.pi_instance_name
+    pi_sap_profile_id          = var.pi_sap_profile_id           #(optional, default ush1-4x128)
+    pi_server_type             = var.pi_server_type              #(optional, default null)
+    pi_number_of_processors    = var.pi_number_of_processors     #(optional, default null)
+    pi_memory_size             = var.pi_memory_size              #(optional, default null)
+    pi_cpu_proc_type           = var.pi_cpu_proc_type            #(optional, default check vars)
+    pi_storage_config          = var.pi_storage_config           #(optional, default check vars)
+    pi_instance_init_linux     = var.pi_instance_init_linux      #(optional, default check vars)
+    pi_proxy_settings          = var.pi_proxy_settings           #(optional, default check vars)
+    pi_network_services_config = var.pi_network_services_config  #(optional, default check vars)
 }
 ```
 
@@ -73,8 +87,9 @@ You need the following permissions to run this module.
 ## Examples
 
 - [ Basic PowerVS Infrastructure with a Power Virtual server Instance Example](examples/default)
-- [ Basic Power Virtual Server Instance Module Example](examples/single-instance-linux)
+- [ Basic Power Virtual Server Instance Module example with OS Initialization](examples/single-instance-linux)
 <!-- END EXAMPLES HOOK -->
+
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ### Requirements
 
@@ -112,13 +127,12 @@ No resources.
 | <a name="input_pi_ssh_public_key_name"></a> [pi\_ssh\_public\_key\_name](#input\_pi\_ssh\_public\_key\_name) | Existing PowerVS SSH Public key name. Run 'ibmcloud pi keys' to list available keys | `string` | n/a | yes |
 | <a name="input_pi_storage_config"></a> [pi\_storage\_config](#input\_pi\_storage\_config) | File systems to be created and attached to PowerVS instance. 'size' is in GB. 'count' specify over how many storage volumes the file system will be striped. 'tier' specifies the storage tier in PowerVS workspace, 'mount' specifies the mount point on the OS. | <pre>list(object({<br>    name  = string<br>    size  = string<br>    count = string<br>    tier  = string<br>    mount = string<br>  }))</pre> | <pre>[<br>  {<br>    "count": "2",<br>    "mount": "/data",<br>    "name": "data",<br>    "size": "100",<br>    "tier": "tier1"<br>  }<br>]</pre> | no |
 | <a name="input_pi_workspace_guid"></a> [pi\_workspace\_guid](#input\_pi\_workspace\_guid) | Existing GUID of the PowerVS workspace. The GUID of the service instance associated with an account | `string` | n/a | yes |
-| <a name="input_pi_zone"></a> [pi\_zone](#input\_pi\_zone) | IBM Cloud PowerVS zone | `string` | n/a | yes |
 
 ### Outputs
 
 | Name | Description |
 |------|-------------|
-| <a name="output_pi_instance_primary_ip"></a> [pi\_instance\_primary\_ip](#output\_pi\_instance\_primary\_ip) | IP address of the management network interface of IBM PowerVS instance. |
+| <a name="output_pi_instance_primary_ip"></a> [pi\_instance\_primary\_ip](#output\_pi\_instance\_primary\_ip) | IP address of the primary network interface of IBM PowerVS instance. |
 | <a name="output_pi_instance_private_ips"></a> [pi\_instance\_private\_ips](#output\_pi\_instance\_private\_ips) | All private IP addresses (as a list) of IBM PowerVS instance. |
 | <a name="output_pi_storage_configuration"></a> [pi\_storage\_configuration](#output\_pi\_storage\_configuration) | Storage configuration of PowerVS instance. |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

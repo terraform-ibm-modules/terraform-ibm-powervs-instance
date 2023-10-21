@@ -2,7 +2,6 @@ variable "ibmcloud_api_key" {
   description = "The IBM Cloud platform API key needed to deploy IAM enabled resources."
   type        = string
   sensitive   = true
-  default     = null
 }
 
 variable "powervs_zone" {
@@ -27,7 +26,6 @@ variable "powervs_resource_group_name" {
 variable "prefix" {
   description = "Prefix for resources which will be created."
   type        = string
-  default     = "pi"
 }
 
 variable "powervs_workspace_name" {
@@ -157,19 +155,3 @@ variable "powervs_storage_config" {
     },
   ]
 }
-
-/*
-variable "pi_instance_init" {
-  description = "Setup Proxy client and create filesystems on OS. Supported for LINUX distribution only."
-  type = object({
-    enable            = bool
-    bastion_host_ip = string
-    ssh_private_key   = string
-  })
-  default = {
-    enable            = false
-    bastion_host_ip = ""
-    ssh_private_key   = ""
-  }
-}
-*/

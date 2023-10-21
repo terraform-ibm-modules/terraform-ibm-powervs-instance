@@ -4,7 +4,7 @@ output "pi_instance_private_ips" {
 }
 
 output "pi_instance_primary_ip" {
-  description = "IP address of the management network interface of IBM PowerVS instance."
+  description = "IP address of the primary network interface of IBM PowerVS instance."
   value       = data.ibm_pi_instance_ip.instance_primary_ip_ds.ip
 }
 
