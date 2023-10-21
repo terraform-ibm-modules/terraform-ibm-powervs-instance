@@ -1,4 +1,4 @@
-# Module pi-instance-init
+# Module pi-instance-init-linux
 
 This module configures the Power Virtual Server instance and prepares the system.
 
@@ -9,6 +9,21 @@ This module configures the Power Virtual Server instance and prepares the system
 - Optionally execute ansible galaxy collection roles [ibm.power_linux_sap collection](https://galaxy.ansible.com/ui/repo/published/ibm/power_linux_sap/) to create filesystems
 - Optionally execute ansible galaxy collection roles [ibm.power_linux_sap collection](https://galaxy.ansible.com/ui/repo/published/ibm/power_linux_sap/) to configure network services (NTP, NFS and DNS)
 
+## Usage
+```hcl
+
+module "pi_instance_init_linux" {
+  source     = "terraform-ibm-modules/powervs-instance/ibm//modules//pi-instance-init"
+  version    = "x.x.x" #replace x.x.x to lock to a specific version
+
+  bastion_host_ip            = var.bastion_host_ip
+  target_server_ip           = var.target_server_ip
+  ssh_private_key            = var.ssh_private_key
+  pi_proxy_settings          = var.pi_proxy_settings
+  pi_storage_config          = var.pi_storage_config
+  pi_network_services_config = var.pi_network_services_config
+}
+```
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ### Requirements

@@ -1,9 +1,9 @@
-# Basic PowerVS Infrastructure with a Power Virtual server Instance Example
+# Basic Power Virtual Server infrastructure with a Power Virtual Server instance
 
 This example illustrates how to use the `powervs-workspace` &`powervs-instance` module.
 It provisions the following infrastructure:
-- Creates a [Resource group](https://github.com/terraform-ibm-modules/terraform-ibm-resource-group)
-- Creates a [PowerVS Workspace](https://github.com/terraform-ibm-modules/terraform-ibm-powervs-worksoace) calling root module which create workspace, ssh key, 2 private subnets and imports images <br/>
+- Creates a [Resource group](https://github.com/terraform-ibm-modules/terraform-ibm-resource-group).
+- Creates a [PowerVS Workspace](https://github.com/terraform-ibm-modules/terraform-ibm-powervs-worksoace) calling root module which create workspace, ssh key, 2 private subnets and imports images.<br/>
 - Creates an IBM® Power Virtual Server Instance.
 - Creates volumes and attaches it to the instance.
 

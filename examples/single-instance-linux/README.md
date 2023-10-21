@@ -1,12 +1,12 @@
-# Basic Power Virtual Server Instance Module example with OS Initialization
+# Basic Power Virtual Server instance with OS initialization
 
 This example illustrates how to use the `powervs-instance` module.
 
 It provisions the following components in IBM cloud:
 
-- Creates an IBM® Power Virtual Server Instance in a pre-existing PowerVS Workspace (which contains Public SSH key and pre-imported OS image) .
+- Creates an IBM® Power Virtual Server Instance in a pre-existing PowerVS Workspace (which contains Public SSH key and pre-imported OS image).
 - Creates volumes and attaches it to the instance.
-- Optional Instance Initialization for linux images only (Configure proxy settings, configure network services (NTP, DNS, NFS) and create files systems)
+- Optional Instance Initialization for linux images only (Configure proxy settings, configure network services (NTP, DNS, NFS) and create files systems).
 
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->

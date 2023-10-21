@@ -27,8 +27,8 @@ For more information about IBM Power Virtual Server see the [getting started](ht
     * [remote-exec-ansible](./modules/remote-exec-ansible)
     * [remote-exec-shell](./modules/remote-exec-shell)
 * [Examples](./examples)
-    * [Basic Power Virtual Server Instance Module example with OS Initialization](./examples/single-instance-linux)
-    * [Basic PowerVS Infrastructure with a Power Virtual server Instance Example](./examples/default)
+    * [Basic Power Virtual Server infrastructure with a Power Virtual Server instance](./examples/default)
+    * [Basic Power Virtual Server instance with OS initialization](./examples/single-instance-linux)
 * [Contributing](#contributing)
 <!-- END OVERVIEW HOOK -->
 
@@ -83,12 +83,6 @@ You need the following permissions to run this module.
             - `Editor` platform access
 
 <!-- END MODULE HOOK -->
-<!-- BEGIN EXAMPLES HOOK -->
-## Examples
-
-- [ Basic PowerVS Infrastructure with a Power Virtual server Instance Example](examples/default)
-- [ Basic Power Virtual Server Instance Module example with OS Initialization](examples/single-instance-linux)
-<!-- END EXAMPLES HOOK -->
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ### Requirements

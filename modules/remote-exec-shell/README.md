@@ -17,7 +17,7 @@ module "configure_os" {
   host_ip                               = var.host_ip
   ssh_private_key                       = var.ssh_private_key
   remote_exec_inline_pre_exec_commands  = var.remote_exec_inline_pre_exec_commands
-  remote_exec_file_provisioner        = var.remote_exec_file_provisioner
+  remote_exec_file_provisioner          = var.remote_exec_file_provisioner
   remote_exec_inline_post_exec_commands = var.remote_exec_inline_post_exec_commands
 }
 ```
