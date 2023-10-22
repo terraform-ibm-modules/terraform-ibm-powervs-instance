@@ -1,20 +1,10 @@
-variable "pi_zone" {
-  description = "IBM Cloud PowerVS zone."
+variable "pi_workspace_guid" {
+  description = "Existing GUID of the PowerVS workspace. The GUID of the service instance associated with an account."
   type        = string
 }
 
-variable "pi_resource_group_name" {
-  description = "Existing IBM Cloud resource group name"
-  type        = string
-}
-
-variable "pi_workspace_name" {
-  description = "Existing Name of the PowerVS workspace"
-  type        = string
-}
-
-variable "pi_sshkey_name" {
-  description = "Existing PowerVs SSH key name"
+variable "pi_ssh_public_key_name" {
+  description = "Existing PowerVS SSH Public key name. Run 'ibmcloud pi keys' to list available keys."
   type        = string
 }
 
@@ -23,18 +13,24 @@ variable "pi_instance_name" {
   type        = string
   validation {
     condition     = length(var.pi_instance_name) <= 13
-    error_message = "Maximum length of Instance name must be less or equal to 13 characters only"
+    error_message = "Maximum length of Instance name must be less or equal to 13 characters only."
   }
 }
 
-variable "pi_os_image_name" {
-  description = "Image Name for PowerVS Instance"
+variable "pi_image_id" {
+  description = "Image ID used for PowerVS instance. Run 'ibmcloud pi images' to list available images."
   type        = string
 }
 
 variable "pi_networks" {
-  description = "Existing list of subnets name to be attached to an instance. First network has to be a management network"
-  type        = list(any)
+  description = "Existing list of private subnet ids to be attached to an instance. The first element will become the primary interface. Run 'ibmcloud pi networks' to list available private subnets."
+  type = list(
+    object({
+      name = string
+      id   = string
+      cidr = optional(string)
+    })
+  )
 }
 
 variable "pi_sap_profile_id" {
@@ -44,25 +40,25 @@ variable "pi_sap_profile_id" {
 }
 
 variable "pi_server_type" {
-  description = "Processor type e980/s922/e1080/s1022. Required when not creating SAP instances. Conflicts with pi_sap_profile_id"
+  description = "Processor type e980/s922/e1080/s1022. Required when not creating SAP instances. Conflicts with 'pi_sap_profile_id'."
   type        = string
   default     = null
 }
 
 variable "pi_cpu_proc_type" {
-  description = "Dedicated or shared processors. Required when not creating SAP instances. Conflicts with pi_sap_profile_id"
+  description = "Dedicated or shared processors. Required when not creating SAP instances. Conflicts with 'pi_sap_profile_id'."
   type        = string
   default     = null
 }
 
 variable "pi_number_of_processors" {
-  description = "Number of processors. Required when not creating SAP instances. Conflicts with pi_sap_profile_id"
+  description = "Number of processors. Required when not creating SAP instances. Conflicts with 'pi_sap_profile_id'."
   type        = string
   default     = null
 }
 
 variable "pi_memory_size" {
-  description = "Amount of memory. Required when not creating SAP instances. Conflicts with pi_sap_profile_id"
+  description = "Amount of memory. Required when not creating SAP instances. Conflicts with 'pi_sap_profile_id'."
   type        = string
   default     = null
 }
@@ -76,19 +72,14 @@ variable "pi_storage_config" {
     tier  = string
     mount = string
   }))
-  default = [
-    {
-      name = "data", size = "100", count = "2", tier = "tier1", mount = "/data"
-    }
-  ]
+
   validation {
     condition = var.pi_storage_config != null ? (
       alltrue([for config in var.pi_storage_config : (
         (config.name != "" && config.count != "" && config.tier != "" && config.mount != "") || (config.name == "" && config.count == "" && config.tier == "" && config.mount == "")
       )])
     ) : var.pi_storage_config == null ? true : false
-    error_message = "One of the storage config has invalid value, probably an empty string"
+    error_message = "One of the storage config has invalid value, probably an empty string'"
   }
-
 
 }

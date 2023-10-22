@@ -2,7 +2,6 @@ variable "ibmcloud_api_key" {
   description = "The IBM Cloud platform API key needed to deploy IAM enabled resources."
   type        = string
   sensitive   = true
-  default     = null
 }
 
 variable "powervs_zone" {
@@ -14,66 +13,65 @@ variable "powervs_zone" {
   }
 }
 
-#####################################################
-# PowerVS Infrastructure Parameters
-#####################################################
+###########################################
+# PowerVS Workspace module variables
+############################################
 
-variable "resource_group" {
+variable "powervs_resource_group_name" {
   type        = string
-  description = "Existing IBM Cloud resource group name. If null, a new resource group will be created."
+  description = "The name of an existing resource group to provision resources in to. If null, a new resource group will be created. using the prefix variable."
   default     = null
 }
 
 variable "prefix" {
   description = "Prefix for resources which will be created."
   type        = string
-  default     = "pi"
 }
 
 variable "powervs_workspace_name" {
-  description = "Name of the PowerVS Workspace to create"
+  description = "Name of IBM Cloud PowerVS workspace which will be created."
   type        = string
-  default     = "power-workspace"
+  default     = "powervs-workspace"
 }
 
-variable "powervs_sshkey_name" {
-  description = "Name of the PowerVS SSH key to create"
+variable "powervs_ssh_public_key" {
+  description = "Value of the Public SSH key to create."
   type        = string
-  default     = "ssh-key-pvs"
 }
 
-variable "powervs_management_network" {
-  description = "Name of the IBM Cloud PowerVS management subnet and CIDR to create"
+variable "powervs_private_subnet_1" {
+  description = "IBM Cloud PowerVS first private subnet name and cidr which will be created. Set value to null to not create this subnet."
   type = object({
     name = string
     cidr = string
   })
   default = {
-    name = "mgmt_net"
+    name = "sub_1"
     cidr = "10.51.0.0/24"
   }
 }
 
-variable "powervs_backup_network" {
-  description = "Name of the IBM Cloud PowerVS backup network and CIDR to create"
+variable "powervs_private_subnet_2" {
+  description = "IBM Cloud PowerVS second private subnet name and cidr which will be created. Set value to null to not create this subnet."
   type = object({
     name = string
     cidr = string
   })
   default = {
-    name = "bkp_net"
-    cidr = "10.52.0.0/24"
+    name = "sub_2"
+    cidr = "10.53.0.0/24"
   }
 }
 
-variable "transit_gateway_name" {
-  description = "Name of the existing transit gateway. Required when you create new IBM Cloud connections."
-  type        = string
-  default     = null
+variable "powervs_image_names" {
+  description = "List of Images to be imported into cloud account from catalog images."
+  type        = list(string)
+  default     = ["SLES15-SP4-SAP", "RHEL8-SP6-SAP", "7300-01-01", "IBMi-75-01-2984-2"]
 }
 
-variable "cloud_connection" {
-  description = "Cloud connection configuration: speed (50, 100, 200, 500, 1000, 2000, 5000, 10000 Mb/s), count (1 or 2 connections), global_routing (true or false), metered (true or false)"
+### Not creating cloud connections. Change count to enable
+variable "powervs_cloud_connection" {
+  description = "Cloud connection configuration: speed (50, 100, 200, 500, 1000, 2000, 5000, 10000 Mb/s), count (1 or 2 connections), global_routing (true or false), metered (true or false). Not applicable for PER enabled DC and CCs will not be created."
   type = object({
     count          = number
     speed          = number
@@ -94,43 +92,43 @@ variable "cloud_connection" {
 #####################################################
 
 variable "powervs_instance_name" {
-  description = "Name of instance which will be created"
+  description = "Name of instance which will be created."
   type        = string
   default     = "pi"
 }
 
 variable "powervs_os_image_name" {
-  description = "Image Name for PowerVS Instance"
+  description = "Image Name for PowerVS Instance."
   type        = string
   default     = "RHEL8-SP6-SAP"
 }
 
 variable "powervs_sap_profile_id" {
-  description = "SAP Profile ID for the amount of cores and memory. Must be one of the supported profiles. See [here](https://cloud.ibm.com/docs/sap?topic=sap-hana-iaas-offerings-profiles-power-vs). Required only when creating SAP instances. If this is mentioned then pi_server_type, pi_cpu_proc_type, pi_number_of_processors and pi_memory_size will not be taken into account"
+  description = "SAP Profile ID for the amount of cores and memory. Must be one of the supported profiles. See [here](https://cloud.ibm.com/docs/sap?topic=sap-hana-iaas-offerings-profiles-power-vs). Required only when creating SAP instances. If this is mentioned then pi_server_type, pi_cpu_proc_type, pi_number_of_processors and pi_memory_size will not be taken into account."
   type        = string
   default     = "ush1-4x128"
 }
 
 variable "powervs_server_type" {
-  description = "Processor type e980/s922/e1080/s1022. Required when not creating SAP instances. Conflicts with powervs_sap_profile_id"
+  description = "Processor type e980/s922/e1080/s1022. Required when not creating SAP instances. Conflicts with 'powervs_sap_profile_id'."
   type        = string
   default     = null
 }
 
 variable "powervs_cpu_proc_type" {
-  description = "Dedicated or shared processors. Required when not creating SAP instances. Conflicts with powervs_sap_profile_id"
+  description = "Dedicated or shared processors. Required when not creating SAP instances. Conflicts with 'powervs_sap_profile_id'."
   type        = string
   default     = null
 }
 
 variable "powervs_number_of_processors" {
-  description = "Number of processors. Required when not creating SAP instances. Conflicts with powervs_sap_profile_id"
+  description = "Number of processors. Required when not creating SAP instances. Conflicts with 'powervs_sap_profile_id'."
   type        = string
   default     = null
 }
 
 variable "powervs_memory_size" {
-  description = "Amount of memory. Required when not creating SAP instances. Conflicts with powervs_sap_profile_id"
+  description = "Amount of memory. Required when not creating SAP instances. Conflicts with 'powervs_sap_profile_id'."
   type        = string
   default     = null
 }
@@ -144,6 +142,7 @@ variable "powervs_storage_config" {
     tier  = string
     mount = string
   }))
+
   default = [
     {
       name = "data", size = "100", count = "2", tier = "tier1", mount = "/data"
@@ -155,18 +154,4 @@ variable "powervs_storage_config" {
       name = "shared", size = "20", count = "1", tier = "tier1", mount = "/shared"
     },
   ]
-}
-
-variable "pi_instance_init" {
-  description = "Setup Proxy client and create filesystems on OS. Supported for LINUX distribution only."
-  type = object({
-    enable            = bool
-    access_host_or_ip = string
-    ssh_private_key   = string
-  })
-  default = {
-    enable            = false
-    access_host_or_ip = ""
-    ssh_private_key   = ""
-  }
 }
