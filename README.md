@@ -9,12 +9,12 @@
 [![Renovate enabled](https://img.shields.io/badge/renovate-enabled-brightgreen.svg)](https://renovatebot.com/)
 
 ## Summary
-This root module automates and provisions a IBM Power Virtual Server instance with following components:
+This root module automates and provisions an IBM® Power Virtual Server instance with following components:
 
 - Creates an IBM® Power Virtual Server Instance.
-- Attaches existing private subnets to the instance.
+- Attaches **existing private subnets** to the instance.
 - Optionally creates volumes and attaches it to the instance.
-- Optional instance initialization for linux images only ( configures proxy settings, creates filesystems, connects to network management services like DNS, NTP and NFS) using ansible galaxy collection roles [ibm.power_linux_sap collection](https://galaxy.ansible.com/ui/repo/published/ibm/power_linux_sap/).
+- Optional instance initialization for **ibm provided subscription linux images only** ( configures proxy settings, creates filesystems, connects to network management services like DNS, NTP and NFS) using ansible galaxy collection roles [ibm.power_linux_sap collection](https://galaxy.ansible.com/ui/repo/published/ibm/power_linux_sap/). Tested with RHEL8.4, RHEL 8.6, SLES15-SP4 and SLES15-SP6 images.
 
 For more information about IBM Power Virtual Server see the [getting started](https://cloud.ibm.com/docs/power-iaas?topic=power-iaas-getting-started) IBM Cloud docs.
 
