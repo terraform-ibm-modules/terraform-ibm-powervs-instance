@@ -1,11 +1,11 @@
-#####################################################
-# 1. Proxy Client setup
-# 2. Update OS and Reboot
-# 3. Install Necessary Packages
-# 4. Execute Ansible galaxy role to create filesystems
-# 5. Execute Ansible galaxy role to connect to
+########################################################################################
+# 1. Proxy Client setup                                :: pi_proxy_settings.tf
+# 2. Update OS and Reboot                              :: pi_update_os.tf
+# 3. Install Necessary Packages                        :: pi_install_packages.tf
+# 4. Execute Ansible galaxy role to create filesystems :: pi_create_filesystems.tf
+# 5. Execute Ansible galaxy role to connect to         :: pi_configure_network_services.tf
 # network services (NTP, NFS, DNS)
-#####################################################
+#########################################################################################
 
 locals {
   src_shell_templates_dir   = "${path.module}/templates-shell/"
