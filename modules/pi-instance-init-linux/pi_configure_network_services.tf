@@ -42,7 +42,7 @@ locals {
 
 module "pi_configure_network_services" {
   source     = "../remote-exec-ansible"
-  depends_on = [module.pi_install_packages]
+  depends_on = [module.pi_create_filesystems]
   count      = var.pi_network_services_config != null ? var.pi_network_services_config.dns.enable || var.pi_network_services_config.ntp.enable || var.pi_network_services_config.nfs.enable ? 1 : 0 : 0
 
   bastion_host_ip                                   = var.bastion_host_ip
