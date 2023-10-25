@@ -2,10 +2,10 @@
 
 This module uses a terraform_data resource to perform following operations on a host behind a jump/bastion/access host_or_ip in following order:
 
-- Executes a list of inline commands as first remote-exec provisioner.
+- Executes a list of inline commands as the first remote-exec provisioner.
 - Executes a first file provisioner to copy a file to remote host using a template file allowing to write content.
 - Executes a second file provisioner to copy a file to remote host using a template file allowing to write content.
-- Executes a list of inline commands as last remote-exec provisioner.
+- Executes a list of inline commands as the last remote-exec provisioner.
 
 ## Usage
 ```hcl
