@@ -11,13 +11,13 @@ module "resource_group" {
 }
 
 ####################################################
-# Create a new PowerVS workspace
+# Create a new PowerVS Workspace
 #####################################################
 
 module "powervs_infrastructure" {
   depends_on = [module.resource_group]
   source     = "terraform-ibm-modules/powervs-workspace/ibm"
-  version    = "1.0.2"
+  version    = "1.1.3"
 
   pi_zone                = var.powervs_zone
   pi_resource_group_name = local.powervs_resource_group_name
