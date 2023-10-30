@@ -11,7 +11,7 @@ module "resource_group" {
 }
 
 ####################################################
-# Create a new PowerVS workspace
+# Create a new PowerVS Workspace
 #####################################################
 
 module "powervs_infrastructure" {
