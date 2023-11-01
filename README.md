@@ -24,8 +24,6 @@ For more information about IBM Power Virtual Server see the [getting started](ht
 * [Submodules](./modules)
     * [pi-instance-init-linux](./modules/pi-instance-init-linux)
     * [pi-instance](./modules/pi-instance)
-    * [remote-exec-ansible](./modules/remote-exec-ansible)
-    * [remote-exec-shell](./modules/remote-exec-shell)
 * [Examples](./examples)
     * [Basic Power Virtual Server infrastructure with a Power Virtual Server instance](./examples/default)
     * [Basic Power Virtual Server instance with linux OS initialization](./examples/single-instance-linux)
