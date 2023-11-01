@@ -37,11 +37,11 @@ module "pi_instance_init_linux" {
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_pi_configure_network_services"></a> [pi\_configure\_network\_services](#module\_pi\_configure\_network\_services) | ../remote-exec-ansible | n/a |
-| <a name="module_pi_create_filesystems"></a> [pi\_create\_filesystems](#module\_pi\_create\_filesystems) | ../remote-exec-ansible | n/a |
-| <a name="module_pi_install_packages"></a> [pi\_install\_packages](#module\_pi\_install\_packages) | ../remote-exec-shell | n/a |
-| <a name="module_pi_proxy_settings"></a> [pi\_proxy\_settings](#module\_pi\_proxy\_settings) | ../remote-exec-shell | n/a |
-| <a name="module_pi_update_os"></a> [pi\_update\_os](#module\_pi\_update\_os) | ../remote-exec-shell | n/a |
+| <a name="module_pi_configure_network_services"></a> [pi\_configure\_network\_services](#module\_pi\_configure\_network\_services) | ./remote-exec-ansible | n/a |
+| <a name="module_pi_create_filesystems"></a> [pi\_create\_filesystems](#module\_pi\_create\_filesystems) | ./remote-exec-ansible | n/a |
+| <a name="module_pi_install_packages"></a> [pi\_install\_packages](#module\_pi\_install\_packages) | ./remote-exec-shell | n/a |
+| <a name="module_pi_proxy_settings"></a> [pi\_proxy\_settings](#module\_pi\_proxy\_settings) | ./remote-exec-shell | n/a |
+| <a name="module_pi_update_os"></a> [pi\_update\_os](#module\_pi\_update\_os) | ./remote-exec-shell | n/a |
 
 ### Resources
 
