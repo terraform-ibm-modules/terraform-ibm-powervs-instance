@@ -22,7 +22,7 @@ It provisions the following infrastructure:
 |------|--------|---------|
 | <a name="module_powervs_infrastructure"></a> [powervs\_infrastructure](#module\_powervs\_infrastructure) | terraform-ibm-modules/powervs-workspace/ibm | 1.1.3 |
 | <a name="module_powervs_instance"></a> [powervs\_instance](#module\_powervs\_instance) | ../../ | n/a |
-| <a name="module_resource_group"></a> [resource\_group](#module\_resource\_group) | terraform-ibm-modules/resource-group/ibm | 1.1.0 |
+| <a name="module_resource_group"></a> [resource\_group](#module\_resource\_group) | terraform-ibm-modules/resource-group/ibm | 1.1.4 |
 
 ### Resources
 
