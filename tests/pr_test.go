@@ -29,7 +29,7 @@ func setupOptions(t *testing.T, prefix string, dir string) *testhelper.TestOptio
 		ResourceGroup:      resourceGroup,
 		Region:             "us-south", // specify default region to skip best choice query
 		DefaultRegion:      "us-south",
-		BestRegionYAMLPath: "../common-dev-assets/common-go-assets/cloudinfo-region-power-prefs.yaml", // specific to powervs zones
+		BestRegionYAMLPath: "./common-go-assets/cloudinfo-region-power-prefs.yaml", // specific to powervs zones
 	})
 	options.Region, _ = testhelper.GetBestPowerSystemsRegionO(options.RequiredEnvironmentVars["TF_VAR_ibmcloud_api_key"], options.BestRegionYAMLPath, options.DefaultRegion,
 		testhelper.TesthelperTerraformOptions{CloudInfoService: sharedInfoSvc})
@@ -42,7 +42,7 @@ func setupOptions(t *testing.T, prefix string, dir string) *testhelper.TestOptio
 		"prefix":                      options.Prefix,
 		"powervs_resource_group_name": options.ResourceGroup,
 		// locking into syd05 due to other data center issues
-		//"powervs_zone": "eu-de-1",
+		//"powervs_zone": "syd05",
 		"powervs_zone":           options.Region,
 		"powervs_ssh_public_key": "ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCd6kECDFRccE3AY/3u4FcHoNtNJjE7fCg0INvxAU9i3V8bibnUnDrWYuWV1pUq6wm0+Ab1ECX6R+MUfNC22xhbYQDvdREEfUFIeGPW27kJ3zT4Jxiw0ih23p8Scukk0B7wWaDl+HQnHkZNhD+1I8Y5yGULBqNVnVdFhXQZK03tLBC4OvhQNVbjO93iAkJQYpTGQZGxIlyavEk4T3criztFeMzVieN2J6vbvxDOuqjCGE+VcBaIXHoHIpUu44ZlCax4ArxOx+MlZBb5LXasjdhajKBqSiL7Sknq51ftnAbj0+spqRYpbNrMC2TThYrXLsYQ4EV7nndRpeLqLk+dJoX0F5KuRSOeImvyGPkCpEySzSw2SPjzlMLmJNSFErMZS159F1N6fyjRzEJQYKRu4lRSoVeirNcmM8mfuF3SesRCqy5FuUKr3B/NzJ6hJ+ia8vgy2e6itcynk+QvgLrY/iO8LXy1m9vG/xF8qDvviPsFe4KAe31IyHoIcgncwe3smtU= root@eu-jump-box-1",
 	}
@@ -62,7 +62,6 @@ func TestRunBranchExample(t *testing.T) {
 func TestRunMainExample(t *testing.T) {
 	t.Parallel()
 
-	//t.Skip("Skipping upgrade test until initial code is in master branch")
 	options := setupOptions(t, "pim", completeExampleDir)
 
 	output, err := options.RunTestUpgrade()
