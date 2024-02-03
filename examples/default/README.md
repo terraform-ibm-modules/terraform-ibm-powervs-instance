@@ -20,7 +20,7 @@ It provisions the following infrastructure:
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_powervs_infrastructure"></a> [powervs\_infrastructure](#module\_powervs\_infrastructure) | terraform-ibm-modules/powervs-workspace/ibm | 1.5.0 |
+| <a name="module_powervs_infrastructure"></a> [powervs\_infrastructure](#module\_powervs\_infrastructure) | terraform-ibm-modules/powervs-workspace/ibm | 1.6.0 |
 | <a name="module_powervs_instance"></a> [powervs\_instance](#module\_powervs\_instance) | ../../ | n/a |
 | <a name="module_resource_group"></a> [resource\_group](#module\_resource\_group) | terraform-ibm-modules/resource-group/ibm | 1.1.4 |
 
