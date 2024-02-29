@@ -15,6 +15,15 @@
 #  roles:
 #  - { role: ibm.power_linux_sap.powervs_install_services, when: server_config!= "" }
 
+- name: Ansible play to configure Network services Proxy, DNS, NTP and NFS
+  hosts: all
+  vars:
+    client_config: ${client_config}
+
+  roles:
+  - { role: ibm.power_linux_sap.powervs_client_enable_services, when: client_config is defined }
+
+
 - name: Ansible play to create filesystems and mount them
   hosts: all
   vars:
@@ -22,12 +31,3 @@
 
   roles:
   - { role: ibm.power_linux_sap.powervs_fs_creation, when: disks_configuration is defined }
-
-
-- name: Ansible play to configure Network services DNS, NTP and NFS
-  hosts: all
-  vars:
-    client_config: ${client_config}
-
-  roles:
-  - { role: ibm.power_linux_sap.powervs_client_enable_services, when: client_config is defined }
