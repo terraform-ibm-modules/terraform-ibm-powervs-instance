@@ -109,21 +109,19 @@ variable "powervs_instance_init_linux" {
   sensitive   = true
   type = object(
     {
-      enable                = bool
-      bastion_host_ip       = string
-      ssh_private_key       = string
-      proxy_host_or_ip_port = string
-      no_proxy_hosts        = string
+      enable             = bool
+      bastion_host_ip    = string
+      ansible_host_or_ip = string
+      ssh_private_key    = string
     }
   )
 
   default = {
-    enable                = false
-    bastion_host_ip       = ""
-    ssh_private_key       = <<-EOF
+    enable             = false
+    bastion_host_ip    = ""
+    ansible_host_or_ip = ""
+    ssh_private_key    = <<-EOF
 EOF
-    proxy_host_or_ip_port = ""
-    no_proxy_hosts        = "161.0.0.0/8,10.0.0.0/8"
   }
 
 }
@@ -132,16 +130,18 @@ variable "powervs_network_services_config" {
   description = "Configures network services NTP, NFS and DNS on PowerVS instance. Requires 'powervs_instance_init_linux' to be specified as internet access is required to download ansible collection [ibm.power_linux_sap collection](https://galaxy.ansible.com/ui/repo/published/ibm/power_linux_sap/) to configure these services."
   type = object(
     {
-      nfs = object({ enable = bool, nfs_server_path = string, nfs_client_path = string })
-      dns = object({ enable = bool, dns_server_ip = string })
-      ntp = object({ enable = bool, ntp_server_ip = string })
+      squid = object({ enable = bool, squid_server_ip_port = string, no_proxy_hosts = string })
+      nfs   = object({ enable = bool, nfs_server_path = string, nfs_client_path = string })
+      dns   = object({ enable = bool, dns_server_ip = string })
+      ntp   = object({ enable = bool, ntp_server_ip = string })
     }
   )
 
   default = {
-    nfs = { enable = false, nfs_server_path = "", nfs_client_path = "" }
-    dns = { enable = false, dns_server_ip = "" }
-    ntp = { enable = false, ntp_server_ip = "" }
+    squid = { enable = false, squid_server_ip_port = "", no_proxy_hosts = "" }
+    nfs   = { enable = false, nfs_server_path = "", nfs_client_path = "" }
+    dns   = { enable = false, dns_server_ip = "" }
+    ntp   = { enable = false, ntp_server_ip = "" }
   }
 
 }

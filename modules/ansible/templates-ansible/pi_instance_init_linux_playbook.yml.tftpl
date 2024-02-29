@@ -6,7 +6,26 @@
 # ------------------------------------------------------------------------
 
 ---
-- hosts: all
+
+#- name: Ansible play to setup squid client proxy and register os
+#  hosts: all
+#  vars:
+#    server_config:
+
+#  roles:
+#  - { role: ibm.power_linux_sap.powervs_install_services, when: server_config!= "" }
+
+- name: Ansible play to create filesystems and mount them
+  hosts: all
+  vars:
+    disks_configuration: ${pi_storage_config}
+
+  roles:
+  - { role: ibm.power_linux_sap.powervs_fs_creation, when: disks_configuration is defined }
+
+
+- name: Ansible play to configure Network services DNS, NTP and NFS
+  hosts: all
   vars:
     client_config: ${client_config}
 
