@@ -17,8 +17,7 @@ data "ibm_pi_storage_pools_capacity" "pools" {
 }
 
 locals {
-  #highest_capacity_pool_name = data.ibm_pi_storage_pools_capacity.pools.maximum_storage_allocation.storage_pool
-  highest_capacity_pool_name = "General-Flash-72"
+  highest_capacity_pool_name = data.ibm_pi_storage_pools_capacity.pools.maximum_storage_allocation.storage_pool
   shareable_volume_list = [
     { name = "shared", size = "400", tier = "tier1" },
     { name = "shared", size = "200", tier = "tier1" },
@@ -30,7 +29,6 @@ locals {
 #####################################################
 # Create shareable volumes
 #####################################################
-
 
 resource "ibm_pi_volume" "cluster_volumes" {
   count = length(local.shareable_volume_list)
@@ -57,7 +55,7 @@ locals {
 }
 
 #####################################################
-# Create Clusters Upto 4
+# Create Upto 4 Cluster nodes
 #####################################################
 
 module "powervs_instance_node_1" {
