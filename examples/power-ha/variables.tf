@@ -18,6 +18,10 @@ variable "powervs_workspace_guid" {
   type        = string
 }
 
+#####################################################
+# PowerVS Instance Parameters
+#####################################################
+
 variable "powervs_ssh_public_key_name" {
   description = "Name of the PowerVS SSH key to create."
   type        = string
@@ -38,37 +42,29 @@ variable "powerv_cluster_nodes" {
   type        = number
 }
 
-#####################################################
-# PowerVS Instance Parameters
-#####################################################
-
 variable "powervs_instance_name" {
   description = "Name of instance which will be created."
   type        = string
 }
 
 variable "powervs_server_type" {
-  description = "Processor type e980/s922/e1080/s1022. Required when not creating SAP instances. Conflicts with 'powervs_sap_profile_id'."
+  description = "Processor type e980/s922/e1080/s1022. Required when not creating SAP instances."
   type        = string
-  default     = "s922"
 }
 
 variable "powervs_cpu_proc_type" {
-  description = "Dedicated or shared processors. Required when not creating SAP instances. Conflicts with 'powervs_sap_profile_id'."
+  description = "Dedicated or shared processors. Required when not creating SAP instances."
   type        = string
-  default     = "dedicated"
 }
 
 variable "powervs_number_of_processors" {
-  description = "Number of processors. Required when not creating SAP instances. Conflicts with 'powervs_sap_profile_id'."
+  description = "Number of processors. Required when not creating SAP instances."
   type        = string
-  default     = "2"
 }
 
 variable "powervs_memory_size" {
-  description = "Amount of memory. Required when not creating SAP instances. Conflicts with 'powervs_sap_profile_id'."
+  description = "Amount of memory. Required when not creating SAP instances."
   type        = string
-  default     = "4"
 }
 
 variable "powervs_networks" {
