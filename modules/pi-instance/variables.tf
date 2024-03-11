@@ -63,6 +63,33 @@ variable "pi_memory_size" {
   default     = null
 }
 
+variable "pi_replicants" {
+  description = "The number of instances that you want to provision with the same configuration. If this parameter is not set, 1 is used by default. The replication policy that you want to use, either affinity, anti-affinity or none. If this parameter is not set, none is used by default. pi_placement_group_id cannot be used when specifying pi_replicants"
+  type = object({
+    count  = number
+    policy = string
+  })
+  default = null
+}
+
+variable "pi_placement_group_id" {
+  description = "The ID of the placement group that the instance is in or empty quotes '' to indicate it is not in a placement group. pi_replicants cannot be used when specifying a placement group ID."
+  type        = string
+  default     = null
+
+}
+
+variable "pi_boot_image_storage_pool" {
+  description = "Storage Pool for server deployment; Only valid when you deploy one of the IBM supplied stock images. Storage pool for a custom image (an imported image or an image that is created from a VM capture) defaults to the storage pool the image was created in."
+  type        = string
+  default     = null
+}
+
+variable "pi_boot_image_storage_tier" {
+  description = "Storage type for server deployment; If storage type is not provided the storage type will default to tier3."
+  type        = string
+}
+
 variable "pi_storage_config" {
   description = "File systems to be created and attached to PowerVS instance. 'size' is in GB. 'count' specify over how many storage volumes the file system will be striped. 'tier' specifies the storage tier in PowerVS workspace, 'mount' specifies the mount point on the OS."
   type = list(object({
@@ -82,4 +109,10 @@ variable "pi_storage_config" {
     error_message = "One of the storage config has invalid value, probably an empty string'"
   }
 
+}
+
+variable "pi_existing_volume_ids" {
+  description = "List of exisiting volume ids that must be attached to the instance."
+  type        = list(string)
+  default     = null
 }

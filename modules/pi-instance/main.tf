@@ -1,7 +1,3 @@
-locals {
-  pi_boot_image_storage_tier = var.pi_sap_profile_id == null ? "tier3" : "tier1"
-}
-
 #####################################################
 # Create Power Virtual server Instance
 #####################################################
@@ -18,7 +14,14 @@ resource "ibm_pi_instance" "instance" {
   pi_key_pair_name         = var.pi_ssh_public_key_name
   pi_health_status         = "OK"
   pi_storage_pool_affinity = false
-  pi_storage_type          = local.pi_boot_image_storage_tier
+
+  pi_placement_group_id = var.pi_replicants == null ? var.pi_placement_group_id : null
+  pi_replicants         = var.pi_replicants != null ? var.pi_replicants.count : null
+  pi_replication_policy = var.pi_replicants != null ? var.pi_replicants.policy : null
+  pi_storage_pool       = var.pi_boot_image_storage_pool
+  pi_storage_type       = var.pi_boot_image_storage_tier
+  pi_volume_ids         = var.pi_existing_volume_ids != null ? var.pi_existing_volume_ids : null
+
 
   dynamic "pi_network" {
     for_each = var.pi_networks

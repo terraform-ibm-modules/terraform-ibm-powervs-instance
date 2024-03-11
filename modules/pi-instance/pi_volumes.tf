@@ -12,6 +12,7 @@ locals {
         size  = vol.size
         tier  = vol.tier
         mount = vol.mount
+        pool  = can(vol.pool) ? vol.pool : null
       }
     ]
   ]) : []
@@ -24,6 +25,7 @@ resource "ibm_pi_volume" "create_volume" {
   pi_volume_name       = "${var.pi_instance_name}-${local.volume_list[count.index].name}"
   pi_volume_size       = local.volume_list[count.index].size
   pi_volume_type       = local.volume_list[count.index].tier
+  pi_volume_pool       = local.volume_list[count.index].pool
   pi_volume_shareable  = false
   pi_cloud_instance_id = var.pi_workspace_guid
 
