@@ -128,7 +128,7 @@ module "powervs_instance_node_4" {
   source = "../../"
 
   count      = var.powerv_cluster_nodes > 3 ? 1 : 0
-  depends_on = [module.powervs_instance_node_1]
+  depends_on = [module.powervs_instance_node_3]
 
   pi_workspace_guid          = var.powervs_workspace_guid
   pi_ssh_public_key_name     = var.powervs_ssh_public_key_name
