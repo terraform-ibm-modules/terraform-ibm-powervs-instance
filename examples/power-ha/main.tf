@@ -52,6 +52,10 @@ resource "ibm_pi_volume" "cluster_volumes" {
 
 locals {
   shareable_volume_ids = [for vol in ibm_pi_volume.cluster_volumes : vol.volume_id]
+  powervs_dedicated_filesystem_config = [
+    for storage in var.powervs_dedicated_filesystem_config :
+    merge(storage, { pool = local.highest_capacity_pool_name })
+  ]
 }
 
 #####################################################
@@ -73,7 +77,7 @@ module "powervs_instance_node_1" {
   pi_number_of_processors    = var.powervs_number_of_processors
   pi_memory_size             = var.powervs_memory_size
   pi_placement_group_id      = ibm_pi_placement_group.different_server.placement_group_id
-  pi_storage_config          = var.powervs_dedicated_filesystem_config
+  pi_storage_config          = local.powervs_dedicated_filesystem_config
   pi_existing_volume_ids     = local.shareable_volume_ids
 
 }
@@ -96,7 +100,7 @@ module "powervs_instance_node_2" {
   pi_number_of_processors    = var.powervs_number_of_processors
   pi_memory_size             = var.powervs_memory_size
   pi_placement_group_id      = ibm_pi_placement_group.different_server.placement_group_id
-  pi_storage_config          = var.powervs_dedicated_filesystem_config
+  pi_storage_config          = local.powervs_dedicated_filesystem_config
   pi_existing_volume_ids     = local.shareable_volume_ids
 
 }
@@ -119,7 +123,7 @@ module "powervs_instance_node_3" {
   pi_number_of_processors    = var.powervs_number_of_processors
   pi_memory_size             = var.powervs_memory_size
   pi_placement_group_id      = ibm_pi_placement_group.different_server.placement_group_id
-  pi_storage_config          = var.powervs_dedicated_filesystem_config
+  pi_storage_config          = local.powervs_dedicated_filesystem_config
   pi_existing_volume_ids     = local.shareable_volume_ids
 
 }
@@ -142,7 +146,7 @@ module "powervs_instance_node_4" {
   pi_number_of_processors    = var.powervs_number_of_processors
   pi_memory_size             = var.powervs_memory_size
   pi_placement_group_id      = ibm_pi_placement_group.different_server.placement_group_id
-  pi_storage_config          = var.powervs_dedicated_filesystem_config
+  pi_storage_config          = local.powervs_dedicated_filesystem_config
   pi_existing_volume_ids     = local.shareable_volume_ids
 
 }
