@@ -91,9 +91,4 @@ variable "powervs_dedicated_filesystem_config" {
     tier  = string
     mount = string
   }))
-  default = [
-    {
-      name = "data", size = "400", count = "1", tier = "tier1", mount = "/data"
-    }
-  ]
 }

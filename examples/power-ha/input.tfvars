@@ -11,3 +11,8 @@ powervs_server_type             = "s922"
 powervs_cpu_proc_type           = "shared"
 powervs_number_of_processors    = "0.25"
 powervs_memory_size             = "2"
+powervs_dedicated_filesystem_config = [
+  {
+    name = "data", size = "400", count = "1", tier = "tier1", mount = "/data"
+  }
+]
