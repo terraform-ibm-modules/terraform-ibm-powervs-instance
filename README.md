@@ -27,7 +27,6 @@ For more information about IBM Power Virtual Server see the [getting started](ht
 * [Examples](./examples)
     * [Basic Power Virtual Server infrastructure with a Power Virtual Server instance](./examples/default)
     * [Basic Power Virtual Server instance with linux OS initialization](./examples/single-instance-linux)
-    * [Power HA cluster Deployment](./examples/power-ha)
 * [Contributing](#contributing)
 <!-- END OVERVIEW HOOK -->
 
