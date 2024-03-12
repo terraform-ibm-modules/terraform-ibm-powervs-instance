@@ -64,7 +64,7 @@ variable "powervs_private_subnet_2" {
 }
 
 variable "powervs_image_names" {
-  description = "List of Images to be imported into cloud account from catalog images."
+  description = "List of Images to be imported into cloud account from catalog images. Supported values can be found [here](https://github.com/terraform-ibm-modules/terraform-ibm-powervs-infrastructure/blob/main/solutions/full-stack/docs/catalog_image_names.md)"
   type        = list(string)
   default     = ["SLES15-SP4-SAP", "RHEL8-SP6-SAP", "7300-01-01", "IBMi-75-01-2984-2"]
 }
@@ -145,13 +145,11 @@ variable "powervs_storage_config" {
 
   default = [
     {
-      name = "data", size = "100", count = "2", tier = "tier1", mount = "/data"
-    },
-    {
-      name = "log", size = "20", count = "2", tier = "tier3", mount = "/log"
-    },
-    {
-      name = "shared", size = "20", count = "1", tier = "tier1", mount = "/shared"
-    },
+      "name" : "data",
+      "size" : "50",
+      "count" : "1",
+      "tier" : "tier3",
+      "mount" : "/data"
+    }
   ]
 }

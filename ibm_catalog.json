@@ -261,7 +261,12 @@
                         },
                         {
                             "key": "powervs_storage_config",
-                            "required": true
+                            "required": true,
+                            "custom_config": {
+                                "grouping": "deployment",
+                                "original_grouping": "deployment",
+                                "type": "json_editor"
+                            }
                         }
                     ],
                     "iam_permissions": [
