@@ -127,6 +127,9 @@ No resources.
 
 | Name | Description |
 |------|-------------|
+| <a name="output_pi_instance_id"></a> [pi\_instance\_id](#output\_pi\_instance\_id) | he unique identifier of the instance. The ID is composed of <power\_instance\_id>/<instance\_id>. |
+| <a name="output_pi_instance_instance_id"></a> [pi\_instance\_instance\_id](#output\_pi\_instance\_instance\_id) | The unique identifier of PowerVS instance. |
+| <a name="output_pi_instance_name"></a> [pi\_instance\_name](#output\_pi\_instance\_name) | Name of PowerVS instance. |
 | <a name="output_pi_instance_primary_ip"></a> [pi\_instance\_primary\_ip](#output\_pi\_instance\_primary\_ip) | IP address of the primary network interface of IBM PowerVS instance. |
 | <a name="output_pi_instance_private_ips"></a> [pi\_instance\_private\_ips](#output\_pi\_instance\_private\_ips) | All private IP addresses (as a list) of IBM PowerVS instance. |
 | <a name="output_pi_storage_configuration"></a> [pi\_storage\_configuration](#output\_pi\_storage\_configuration) | Storage configuration of PowerVS instance. |
