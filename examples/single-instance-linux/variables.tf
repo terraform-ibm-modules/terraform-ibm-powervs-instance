@@ -37,7 +37,7 @@ variable "powervs_image_id" {
   type        = string
 }
 
-variable "powervs_boot_imahe_storage_tier" {
+variable "powervs_boot_image_storage_tier" {
   description = "Storage type for server deployment. Possible values tier0, tier1 and tier3"
   type        = string
 }
