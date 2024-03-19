@@ -109,6 +109,12 @@ variable "powervs_sap_profile_id" {
   default     = "ush1-4x128"
 }
 
+variable "powervs_boot_image_storage_tier" {
+  description = "Storage type for server deployment.Possible values tier0, tier1 and tier3"
+  type        = string
+  default     = "tier1"
+}
+
 variable "powervs_server_type" {
   description = "Processor type e980/s922/e1080/s1022. Required when not creating SAP instances. Conflicts with 'powervs_sap_profile_id'."
   type        = string
