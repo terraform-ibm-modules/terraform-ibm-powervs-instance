@@ -12,7 +12,7 @@ module "powervs_instance" {
   pi_networks                = local.pi_networks
   pi_instance_name           = local.powervs_instance_name
   pi_sap_profile_id          = var.powervs_sap_profile_id
-  pi_boot_image_storage_tier = "tier1"
+  pi_boot_image_storage_tier = var.powervs_boot_image_storage_tier
   pi_server_type             = var.powervs_server_type
   pi_number_of_processors    = var.powervs_number_of_processors
   pi_memory_size             = var.powervs_memory_size

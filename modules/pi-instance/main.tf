@@ -5,7 +5,7 @@
 resource "ibm_pi_instance" "instance" {
   pi_cloud_instance_id     = var.pi_workspace_guid
   pi_instance_name         = var.pi_instance_name
-  pi_image_id              = var.pi_image_id
+  pi_image_id              = var.pi_boot_image_id
   pi_sap_profile_id        = var.pi_sap_profile_id == null ? null : var.pi_sap_profile_id
   pi_processors            = var.pi_sap_profile_id != null ? null : var.pi_number_of_processors
   pi_memory                = var.pi_sap_profile_id != null ? null : var.pi_memory_size

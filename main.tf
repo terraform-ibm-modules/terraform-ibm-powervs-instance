@@ -5,7 +5,7 @@ module "pi_instance" {
   pi_workspace_guid          = var.pi_workspace_guid
   pi_ssh_public_key_name     = var.pi_ssh_public_key_name
   pi_instance_name           = var.pi_instance_name
-  pi_image_id                = var.pi_image_id
+  pi_boot_image_id           = var.pi_image_id
   pi_boot_image_storage_tier = var.pi_boot_image_storage_tier
   pi_boot_image_storage_pool = var.pi_boot_image_storage_pool
   pi_networks                = var.pi_networks

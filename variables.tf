@@ -18,9 +18,16 @@ variable "pi_image_id" {
   type        = string
 }
 
-variable "pi_boot_image_storage_tier" {
-  description = "Storage type for server deployment. Possible values tier0, tier1 and tier3"
+variable "pi_boot_image_storage_pool" {
+  description = "Storage Pool for server deployment; Only valid when you deploy one of the IBM supplied stock images. Storage pool for a custom image (an imported image or an image that is created from a VM capture) defaults to the storage pool the image was created in."
   type        = string
+  default     = null
+}
+
+variable "pi_boot_image_storage_tier" {
+  description = "Storage type for server deployment. If storage type is not provided the storage type will default to tier3. Possible values tier0, tier1 and tier3"
+  type        = string
+  default     = null
 }
 
 variable "pi_networks" {
@@ -80,12 +87,6 @@ variable "pi_placement_group_id" {
 
 }
 
-variable "pi_boot_image_storage_pool" {
-  description = "Storage Pool for server deployment; Only valid when you deploy one of the IBM supplied stock images. Storage pool for a custom image (an imported image or an image that is created from a VM capture) defaults to the storage pool the image was created in."
-  type        = string
-  default     = null
-}
-
 variable "pi_storage_config" {
   description = "File systems to be created and attached to PowerVS instance. 'size' is in GB. 'count' specify over how many storage volumes the file system will be striped. 'tier' specifies the storage tier in PowerVS workspace, 'mount' specifies the mount point on the OS."
   type = list(object({
@@ -94,12 +95,10 @@ variable "pi_storage_config" {
     count = string
     tier  = string
     mount = string
+    pool  = optional(string)
   }))
-  default = [
-    {
-      name = "data", size = "100", count = "2", tier = "tier1", mount = "/data"
-    }
-  ]
+
+  default = null
 }
 
 variable "pi_existing_volume_ids" {
