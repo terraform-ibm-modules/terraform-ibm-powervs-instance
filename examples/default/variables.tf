@@ -110,9 +110,9 @@ variable "powervs_sap_profile_id" {
 }
 
 variable "powervs_boot_image_storage_tier" {
-  description = "Storage type for server deployment. If storage type is not provided the storage type will default to tier3. Possible values tier0, tier1 and tier3"
+  description = "Storage type for server deployment.Possible values tier0, tier1 and tier3"
   type        = string
-  default     = "tier3"
+  default     = "tier1"
 }
 
 variable "powervs_server_type" {
