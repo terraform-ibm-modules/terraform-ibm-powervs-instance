@@ -9,6 +9,7 @@ module "powervs_instance" {
   pi_workspace_guid          = var.powervs_workspace_guid
   pi_ssh_public_key_name     = var.powervs_ssh_public_key_name
   pi_image_id                = var.powervs_image_id
+  pi_boot_image_storage_tier = var.powervs_boot_image_storage_tier
   pi_networks                = var.powervs_networks
   pi_instance_name           = var.powervs_instance_name
   pi_sap_profile_id          = var.powervs_sap_profile_id

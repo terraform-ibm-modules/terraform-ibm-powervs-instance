@@ -50,11 +50,16 @@ module "pi_instance" {
     pi_image_id                = var.pi_image_id
     pi_networks                = var.pi_networks
     pi_instance_name           = var.pi_instance_name
-    pi_sap_profile_id          = var.pi_sap_profile_id           #(optional, default ush1-4x128)
+    pi_sap_profile_id          = var.pi_sap_profile_id           #(optional, default null)
     pi_server_type             = var.pi_server_type              #(optional, default null)
     pi_number_of_processors    = var.pi_number_of_processors     #(optional, default null)
     pi_memory_size             = var.pi_memory_size              #(optional, default null)
     pi_cpu_proc_type           = var.pi_cpu_proc_type            #(optional, default check vars)
+    pi_boot_image_storage_pool = vat.pi_boot_image_storage_pool  #(optional, default null)
+    pi_boot_image_storage_tier = var.pi_boot_image_storage_tier  #(optional, default null)
+    pi_replicants              = var.pi_replicants               #(optional, default null)
+    pi_placement_group_id      = var.pi_placement_group_id       #(optional, default null)
+    pi_existing_volume_ids     = var.pi_existing_volume_ids      #(optional, default null)
     pi_storage_config          = var.pi_storage_config           #(optional, default check vars)
     pi_instance_init_linux     = var.pi_instance_init_linux      #(optional, default check vars)
     pi_network_services_config = var.pi_network_services_config  #(optional, default check vars)
@@ -87,7 +92,7 @@ You need the following permissions to run this module.
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3 |
-| <a name="requirement_ibm"></a> [ibm](#requirement\_ibm) | >=1.49.0 |
+| <a name="requirement_ibm"></a> [ibm](#requirement\_ibm) | >=1.62.0 |
 
 ### Modules
 
@@ -104,7 +109,10 @@ No resources.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_pi_boot_image_storage_pool"></a> [pi\_boot\_image\_storage\_pool](#input\_pi\_boot\_image\_storage\_pool) | Storage Pool for server deployment; Only valid when you deploy one of the IBM supplied stock images. Storage pool for a custom image (an imported image or an image that is created from a VM capture) defaults to the storage pool the image was created in. | `string` | `null` | no |
+| <a name="input_pi_boot_image_storage_tier"></a> [pi\_boot\_image\_storage\_tier](#input\_pi\_boot\_image\_storage\_tier) | Storage type for server deployment. If storage type is not provided the storage type will default to tier3. Possible values tier0, tier1 and tier3 | `string` | `null` | no |
 | <a name="input_pi_cpu_proc_type"></a> [pi\_cpu\_proc\_type](#input\_pi\_cpu\_proc\_type) | Dedicated or shared processors. Required when not creating SAP instances. Conflicts with 'pi\_sap\_profile\_id'. | `string` | `null` | no |
+| <a name="input_pi_existing_volume_ids"></a> [pi\_existing\_volume\_ids](#input\_pi\_existing\_volume\_ids) | List of exisiting volume ids that must be attached to the instance. | `list(string)` | `null` | no |
 | <a name="input_pi_image_id"></a> [pi\_image\_id](#input\_pi\_image\_id) | Image ID used for PowerVS instance. Run 'ibmcloud pi images' to list available images. | `string` | n/a | yes |
 | <a name="input_pi_instance_init_linux"></a> [pi\_instance\_init\_linux](#input\_pi\_instance\_init\_linux) | Configures a PowerVS linux instance to have internet access by setting proxy on it, updates os and create filesystems using ansible collection [ibm.power\_linux\_sap collection](https://galaxy.ansible.com/ui/repo/published/ibm/power_linux_sap/). where 'proxy\_host\_or\_ip\_port' E.g., 10.10.10.4:3128 <ip:port>, 'bastion\_host\_ip' is public IP of bastion/jump host to access the private IP of ansible node. this ansible node must have access to the power virtual server  instance. | <pre>object(<br>    {<br>      enable             = bool<br>      bastion_host_ip    = string<br>      ansible_host_or_ip = string<br>      ssh_private_key    = string<br>    }<br>  )</pre> | <pre>{<br>  "ansible_host_or_ip": "",<br>  "bastion_host_ip": "",<br>  "enable": false,<br>  "ssh_private_key": ""<br>}</pre> | no |
 | <a name="input_pi_instance_name"></a> [pi\_instance\_name](#input\_pi\_instance\_name) | Name of instance which will be created. | `string` | n/a | yes |
@@ -112,16 +120,21 @@ No resources.
 | <a name="input_pi_network_services_config"></a> [pi\_network\_services\_config](#input\_pi\_network\_services\_config) | Configures network services proxy, NTP, NFS and DNS on PowerVS instance. Requires 'pi\_instance\_init\_linux' to be specified to configure these services. | <pre>object(<br>    {<br>      squid = object({ enable = bool, squid_server_ip_port = string, no_proxy_hosts = string })<br>      nfs   = object({ enable = bool, nfs_server_path = string, nfs_client_path = string })<br>      dns   = object({ enable = bool, dns_server_ip = string })<br>      ntp   = object({ enable = bool, ntp_server_ip = string })<br>    }<br>  )</pre> | <pre>{<br>  "dns": {<br>    "dns_server_ip": "",<br>    "enable": false<br>  },<br>  "nfs": {<br>    "enable": false,<br>    "nfs_client_path": "",<br>    "nfs_server_path": ""<br>  },<br>  "ntp": {<br>    "enable": false,<br>    "ntp_server_ip": ""<br>  },<br>  "squid": {<br>    "enable": false,<br>    "no_proxy_hosts": "",<br>    "squid_server_ip_port": ""<br>  }<br>}</pre> | no |
 | <a name="input_pi_networks"></a> [pi\_networks](#input\_pi\_networks) | Existing list of private subnet ids to be attached to an instance. The first element will become the primary interface. Run 'ibmcloud pi networks' to list available private subnets. | <pre>list(<br>    object({<br>      name = string<br>      id   = string<br>      cidr = optional(string)<br>    })<br>  )</pre> | n/a | yes |
 | <a name="input_pi_number_of_processors"></a> [pi\_number\_of\_processors](#input\_pi\_number\_of\_processors) | Number of processors. Required when not creating SAP instances. Conflicts with 'pi\_sap\_profile\_id'. | `string` | `null` | no |
-| <a name="input_pi_sap_profile_id"></a> [pi\_sap\_profile\_id](#input\_pi\_sap\_profile\_id) | SAP HANA profile to use. Must be one of the supported profiles. See [here](https://cloud.ibm.com/docs/sap?topic=sap-hana-iaas-offerings-profiles-power-vs). If this is mentioned then pi\_server\_type, pi\_cpu\_proc\_type, pi\_number\_of\_processors and pi\_memory\_size will not be taken into account. | `string` | `"ush1-4x128"` | no |
+| <a name="input_pi_placement_group_id"></a> [pi\_placement\_group\_id](#input\_pi\_placement\_group\_id) | The ID of the placement group that the instance is in or empty quotes '' to indicate it is not in a placement group. pi\_replicants cannot be used when specifying a placement group ID. | `string` | `null` | no |
+| <a name="input_pi_replicants"></a> [pi\_replicants](#input\_pi\_replicants) | The number of instances that you want to provision with the same configuration. If this parameter is not set, 1 is used by default. The replication policy that you want to use, either affinity, anti-affinity or none. If this parameter is not set, none is used by default. pi\_placement\_group\_id cannot be used when specifying pi\_replicants | <pre>object({<br>    count  = number<br>    policy = string<br>  })</pre> | `null` | no |
+| <a name="input_pi_sap_profile_id"></a> [pi\_sap\_profile\_id](#input\_pi\_sap\_profile\_id) | SAP HANA profile to use. Must be one of the supported profiles. See [here](https://cloud.ibm.com/docs/sap?topic=sap-hana-iaas-offerings-profiles-power-vs). If this is mentioned then pi\_server\_type, pi\_cpu\_proc\_type, pi\_number\_of\_processors and pi\_memory\_size will not be taken into account. | `string` | `null` | no |
 | <a name="input_pi_server_type"></a> [pi\_server\_type](#input\_pi\_server\_type) | Processor type e980/s922/e1080/s1022. Required when not creating SAP instances. Conflicts with 'pi\_sap\_profile\_id'. | `string` | `null` | no |
 | <a name="input_pi_ssh_public_key_name"></a> [pi\_ssh\_public\_key\_name](#input\_pi\_ssh\_public\_key\_name) | Existing PowerVS SSH Public key name. Run 'ibmcloud pi keys' to list available keys. | `string` | n/a | yes |
-| <a name="input_pi_storage_config"></a> [pi\_storage\_config](#input\_pi\_storage\_config) | File systems to be created and attached to PowerVS instance. 'size' is in GB. 'count' specify over how many storage volumes the file system will be striped. 'tier' specifies the storage tier in PowerVS workspace, 'mount' specifies the mount point on the OS. | <pre>list(object({<br>    name  = string<br>    size  = string<br>    count = string<br>    tier  = string<br>    mount = string<br>  }))</pre> | <pre>[<br>  {<br>    "count": "2",<br>    "mount": "/data",<br>    "name": "data",<br>    "size": "100",<br>    "tier": "tier1"<br>  }<br>]</pre> | no |
+| <a name="input_pi_storage_config"></a> [pi\_storage\_config](#input\_pi\_storage\_config) | File systems to be created and attached to PowerVS instance. 'size' is in GB. 'count' specify over how many storage volumes the file system will be striped. 'tier' specifies the storage tier in PowerVS workspace, 'mount' specifies the mount point on the OS. | <pre>list(object({<br>    name  = string<br>    size  = string<br>    count = string<br>    tier  = string<br>    mount = string<br>    pool  = optional(string)<br>  }))</pre> | `null` | no |
 | <a name="input_pi_workspace_guid"></a> [pi\_workspace\_guid](#input\_pi\_workspace\_guid) | Existing GUID of the PowerVS workspace. The GUID of the service instance associated with an account. | `string` | n/a | yes |
 
 ### Outputs
 
 | Name | Description |
 |------|-------------|
+| <a name="output_pi_instance_id"></a> [pi\_instance\_id](#output\_pi\_instance\_id) | he unique identifier of the instance. The ID is composed of <power\_instance\_id>/<instance\_id>. |
+| <a name="output_pi_instance_instance_id"></a> [pi\_instance\_instance\_id](#output\_pi\_instance\_instance\_id) | The unique identifier of PowerVS instance. |
+| <a name="output_pi_instance_name"></a> [pi\_instance\_name](#output\_pi\_instance\_name) | Name of PowerVS instance. |
 | <a name="output_pi_instance_primary_ip"></a> [pi\_instance\_primary\_ip](#output\_pi\_instance\_primary\_ip) | IP address of the primary network interface of IBM PowerVS instance. |
 | <a name="output_pi_instance_private_ips"></a> [pi\_instance\_private\_ips](#output\_pi\_instance\_private\_ips) | All private IP addresses (as a list) of IBM PowerVS instance. |
 | <a name="output_pi_storage_configuration"></a> [pi\_storage\_configuration](#output\_pi\_storage\_configuration) | Storage configuration of PowerVS instance. |

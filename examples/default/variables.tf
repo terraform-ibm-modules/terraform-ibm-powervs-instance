@@ -66,7 +66,7 @@ variable "powervs_private_subnet_2" {
 variable "powervs_image_names" {
   description = "List of Images to be imported into cloud account from catalog images."
   type        = list(string)
-  default     = ["SLES15-SP4-SAP", "RHEL8-SP6-SAP", "7300-01-01", "IBMi-75-01-2984-2"]
+  default     = ["SLES15-SP4-SAP", "RHEL8-SP6-SAP", "7300-01-01", "IBMi-75-03-2924-1"]
 }
 
 ### Not creating cloud connections. Change count to enable
@@ -107,6 +107,12 @@ variable "powervs_sap_profile_id" {
   description = "SAP Profile ID for the amount of cores and memory. Must be one of the supported profiles. See [here](https://cloud.ibm.com/docs/sap?topic=sap-hana-iaas-offerings-profiles-power-vs). Required only when creating SAP instances. If this is mentioned then pi_server_type, pi_cpu_proc_type, pi_number_of_processors and pi_memory_size will not be taken into account."
   type        = string
   default     = "ush1-4x128"
+}
+
+variable "powervs_boot_image_storage_tier" {
+  description = "Storage type for server deployment.Possible values tier0, tier1 and tier3"
+  type        = string
+  default     = "tier1"
 }
 
 variable "powervs_server_type" {

@@ -4,7 +4,7 @@
 
 module "resource_group" {
   source  = "terraform-ibm-modules/resource-group/ibm"
-  version = "1.1.4"
+  version = "1.1.5"
   # if an existing resource group is not set (null) create a new one using prefix
   resource_group_name          = var.powervs_resource_group_name == null ? "${var.prefix}-resource-group" : null
   existing_resource_group_name = var.powervs_resource_group_name
@@ -17,7 +17,7 @@ module "resource_group" {
 module "powervs_infrastructure" {
   depends_on = [module.resource_group]
   source     = "terraform-ibm-modules/powervs-workspace/ibm"
-  version    = "1.7.2"
+  version    = "1.13.0"
 
   pi_zone                = var.powervs_zone
   pi_resource_group_name = local.powervs_resource_group_name
