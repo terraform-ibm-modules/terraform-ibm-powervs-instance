@@ -90,12 +90,6 @@ main::install_packages() {
             done
         done
 
-        # Update OS
-        main::log_info 'Updating OS'
-        if ! yum update -y; then
-            main::log_warning 'OS Update failed'
-        fi
-
         main::log_info "All packages installed successfully"
     fi
 
