@@ -104,6 +104,6 @@ variable "pi_storage_config" {
 }
 
 variable "pi_existing_volume_ids" {
-  description = "List of exisiting volume ids that must be attached to the instance."
+  description = "List of existing volume ids that must be attached to the instance."
   type        = list(string)
 }

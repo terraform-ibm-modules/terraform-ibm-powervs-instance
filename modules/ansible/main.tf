@@ -12,9 +12,44 @@ locals {
 
 }
 
+##############################################################
+# 1. Execute shell script to install ansible roles/collections
+##############################################################
+
+resource "terraform_data" "setup_ansible_host" {
+
+  connection {
+    type         = "ssh"
+    user         = "root"
+    bastion_host = var.bastion_host_ip
+    host         = var.ansible_host_or_ip
+    private_key  = var.ssh_private_key
+    agent        = false
+    timeout      = "5m"
+  }
+
+  # Create terraform scripts directory
+  provisioner "remote-exec" {
+    inline = ["mkdir -p ${local.dst_files_dir}", "chmod 777 ${local.dst_files_dir}", ]
+  }
+
+  # Copy install_ansible.sh shell file to ansible host
+  provisioner "file" {
+    source      = "${local.src_shell_templates_dir}/install_ansible.sh"
+    destination = "${local.dst_files_dir}/install_ansible.sh"
+  }
+
+  # Execute install_ansible.sh shell script to configure ansible host
+  provisioner "remote-exec" {
+    inline = [
+      "chmod +x ${local.dst_files_dir}/install_ansible.sh",
+      "${local.dst_files_dir}/install_ansible.sh",
+    ]
+  }
+}
 
 ##############################################################
-# 1. Execute ansible playbooks
+# 2. Execute ansible playbooks
 ##############################################################
 
 resource "terraform_data" "trigger_ansible_vars" {
@@ -22,6 +57,7 @@ resource "terraform_data" "trigger_ansible_vars" {
 }
 
 resource "terraform_data" "execute_playbooks" {
+  depends_on = [terraform_data.setup_ansible_host]
 
   connection {
     type         = "ssh"
@@ -64,7 +100,7 @@ resource "terraform_data" "execute_playbooks" {
     destination = local.dst_script_file_path
   }
 
-  # Write ssh üser's ssh private key
+  # Write ssh user's ssh private key
   provisioner "remote-exec" {
     inline = [
       "mkdir -p /root/.ssh/",
