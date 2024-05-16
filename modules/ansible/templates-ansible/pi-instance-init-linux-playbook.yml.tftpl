@@ -22,4 +22,4 @@
     disks_configuration: ${pi_storage_config}
 
   roles:
-  - { role: ibm.power_linux_sap.powervs_fs_creation, when: disks_configuration is defined }
+  - { role: ibm.power_linux_sap.powervs_storage_setup, when: disks_configuration is defined }
