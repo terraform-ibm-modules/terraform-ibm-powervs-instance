@@ -14,7 +14,8 @@ This root module automates and provisions an IBM® Power Virtual Server instance
 - Creates an IBM® Power Virtual Server Instance.
 - Attaches **existing private subnets** to the instance.
 - Optionally creates volumes and attaches it to the instance.
-- Optional instance initialization for **ibm provided subscription linux images only** ( configures proxy settings, creates filesystems, connects to network management services like DNS, NTP and NFS) using ansible galaxy collection roles [ibm.power_linux_sap collection](https://galaxy.ansible.com/ui/repo/published/ibm/power_linux_sap/). Tested with RHEL8.4, RHEL 8.6, SLES15-SP4 and SLES15-SP6 images.
+- Optionally attaches existing volume ids to the instance.
+- Optional instance initialization for **ibm provided subscription linux images only** ( configures proxy settings, creates filesystems, connects to network management services like DNS, NTP and NFS) using ansible galaxy collection roles [ibm.power_linux_sap collection](https://galaxy.ansible.com/ui/repo/published/ibm/power_linux_sap/). Tested with RHEL8.4, RHEL 8.6, RHEL8.8, RHEL9.2, SLES15-SP4 and SLES15-SP5 images.
 
 For more information about IBM Power Virtual Server see the [getting started](https://cloud.ibm.com/docs/power-iaas?topic=power-iaas-getting-started) IBM Cloud docs.
 
@@ -22,7 +23,6 @@ For more information about IBM Power Virtual Server see the [getting started](ht
 ## Overview
 * [terraform-ibm-powervs-instance](#terraform-ibm-powervs-instance)
 * [Submodules](./modules)
-    * [ansible](./modules/ansible)
     * [pi-instance](./modules/pi-instance)
 * [Examples](./examples)
     * [Basic Power Virtual Server infrastructure with a Power Virtual Server instance](./examples/default)
@@ -92,7 +92,7 @@ You need the following permissions to run this module.
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3 |
-| <a name="requirement_ibm"></a> [ibm](#requirement\_ibm) | >=1.62.0 |
+| <a name="requirement_ibm"></a> [ibm](#requirement\_ibm) | >=1.65.0 |
 
 ### Modules
 

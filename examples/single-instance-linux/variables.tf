@@ -73,6 +73,12 @@ variable "powervs_memory_size" {
   default     = null
 }
 
+variable "powervs_placement_group_id" {
+  description = "The ID of the placement group that the instance is in or empty quotes '' to indicate it is not in a placement group. pi_replicants cannot be used when specifying a placement group ID."
+  type        = string
+  default     = null
+}
+
 variable "powervs_networks" {
   description = "Existing list of private subnet ids to be attached to an instance. The first element will become the primary interface."
   type = list(
@@ -104,6 +110,12 @@ variable "powervs_storage_config" {
       name = "shared", size = "20", count = "1", tier = "tier1", mount = "/shared"
     },
   ]
+}
+
+variable "powervs_existing_volume_ids" {
+  description = "List of existing volume ids that must be attached to the instance."
+  type        = list(string)
+  default     = null
 }
 
 #####################################################

@@ -69,24 +69,6 @@ variable "powervs_image_names" {
   default     = ["SLES15-SP4-SAP", "RHEL8-SP6-SAP", "7300-01-01", "IBMi-75-03-2924-1"]
 }
 
-### Not creating cloud connections. Change count to enable
-variable "powervs_cloud_connection" {
-  description = "Cloud connection configuration: speed (50, 100, 200, 500, 1000, 2000, 5000, 10000 Mb/s), count (1 or 2 connections), global_routing (true or false), metered (true or false). Not applicable for PER enabled DC and CCs will not be created."
-  type = object({
-    count          = number
-    speed          = number
-    global_routing = bool
-    metered        = bool
-  })
-
-  default = {
-    count          = 0
-    speed          = 5000
-    global_routing = true
-    metered        = true
-  }
-}
-
 #####################################################
 # PowerVS Instance Parameters
 #####################################################

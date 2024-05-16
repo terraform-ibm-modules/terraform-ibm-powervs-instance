@@ -1,5 +1,5 @@
 #####################################################
-# Ansible configure network services module
+# Ansible module
 #####################################################
 
 terraform {

@@ -11,6 +11,11 @@ variable "pi_ssh_public_key_name" {
 variable "pi_instance_name" {
   description = "Name of instance which will be created."
   type        = string
+
+  validation {
+    condition     = length(var.pi_instance_name) <= 16
+    error_message = "Maximum length of Instance name must be less or equal to 16 characters only."
+  }
 }
 
 variable "pi_image_id" {
@@ -84,7 +89,6 @@ variable "pi_placement_group_id" {
   description = "The ID of the placement group that the instance is in or empty quotes '' to indicate it is not in a placement group. pi_replicants cannot be used when specifying a placement group ID."
   type        = string
   default     = null
-
 }
 
 variable "pi_storage_config" {
@@ -99,6 +103,15 @@ variable "pi_storage_config" {
   }))
 
   default = null
+
+  validation {
+    condition = var.pi_storage_config != null ? (
+      alltrue([for config in var.pi_storage_config : (
+        (config.name != "" && config.count != "" && config.tier != "" && config.mount != "") || (config.name == "" && config.count == "" && config.tier == "" && config.mount == "")
+      )])
+    ) : var.pi_storage_config == null ? true : false
+    error_message = "One of the storage config has invalid value, probably an empty string'"
+  }
 }
 
 variable "pi_existing_volume_ids" {
@@ -132,8 +145,8 @@ EOF
   }
 
   validation {
-    condition     = var.pi_instance_init_linux != null ? var.pi_instance_init_linux.enable ? var.pi_instance_init_linux.bastion_host_ip != "" && var.pi_instance_init_linux.bastion_host_ip != null && var.pi_instance_init_linux.ssh_private_key != "" && var.pi_instance_init_linux.ssh_private_key != null ? true : false : true : true
-    error_message = "If 'enable' is true, then 'ssh_private_key' attributes of 'pi_instance_init_linux' must be provided."
+    condition     = var.pi_instance_init_linux != null ? var.pi_instance_init_linux.enable ? var.pi_instance_init_linux.bastion_host_ip != "" && var.pi_instance_init_linux.bastion_host_ip != null && var.pi_instance_init_linux.ansible_host_or_ip != "" && var.pi_instance_init_linux.ansible_host_or_ip != null && var.pi_instance_init_linux.ssh_private_key != "" && var.pi_instance_init_linux.ssh_private_key != null ? true : false : true : true
+    error_message = "If 'enable' is true, then all attributes of 'pi_instance_init_linux' must be provided."
   }
 }
 

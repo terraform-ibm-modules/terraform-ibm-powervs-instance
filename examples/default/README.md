@@ -3,7 +3,7 @@
 This example illustrates how to use the `powervs-workspace` &`powervs-instance` module.
 It provisions the following infrastructure:
 - Creates a [Resource group](https://github.com/terraform-ibm-modules/terraform-ibm-resource-group).
-- Creates a [PowerVS Workspace](https://github.com/terraform-ibm-modules/terraform-ibm-powervs-worksoace) calling root module which create workspace, ssh key, 2 private subnets and imports images.<br/>
+- Creates a [PowerVS Workspace](https://github.com/terraform-ibm-modules/terraform-ibm-powervs-worksoace) calling root module which creates workspace, ssh key, 2 private subnets and imports images.<br/>
 - Creates an IBM® Power Virtual Server Instance.
 - Creates volumes and attaches it to the instance.
 
@@ -14,14 +14,14 @@ It provisions the following infrastructure:
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3, < 1.7.0 |
-| <a name="requirement_ibm"></a> [ibm](#requirement\_ibm) | =1.62.0 |
+| <a name="requirement_ibm"></a> [ibm](#requirement\_ibm) | >=1.65.0 |
 
 ### Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_powervs_infrastructure"></a> [powervs\_infrastructure](#module\_powervs\_infrastructure) | terraform-ibm-modules/powervs-workspace/ibm | 1.13.0 |
 | <a name="module_powervs_instance"></a> [powervs\_instance](#module\_powervs\_instance) | ../../ | n/a |
+| <a name="module_powervs_workspace"></a> [powervs\_workspace](#module\_powervs\_workspace) | terraform-ibm-modules/powervs-workspace/ibm | 2.0.0 |
 | <a name="module_resource_group"></a> [resource\_group](#module\_resource\_group) | terraform-ibm-modules/resource-group/ibm | 1.1.5 |
 
 ### Resources
@@ -34,7 +34,6 @@ No resources.
 |------|-------------|------|---------|:--------:|
 | <a name="input_ibmcloud_api_key"></a> [ibmcloud\_api\_key](#input\_ibmcloud\_api\_key) | The IBM Cloud platform API key needed to deploy IAM enabled resources. | `string` | n/a | yes |
 | <a name="input_powervs_boot_image_storage_tier"></a> [powervs\_boot\_image\_storage\_tier](#input\_powervs\_boot\_image\_storage\_tier) | Storage type for server deployment.Possible values tier0, tier1 and tier3 | `string` | `"tier1"` | no |
-| <a name="input_powervs_cloud_connection"></a> [powervs\_cloud\_connection](#input\_powervs\_cloud\_connection) | Cloud connection configuration: speed (50, 100, 200, 500, 1000, 2000, 5000, 10000 Mb/s), count (1 or 2 connections), global\_routing (true or false), metered (true or false). Not applicable for PER enabled DC and CCs will not be created. | <pre>object({<br>    count          = number<br>    speed          = number<br>    global_routing = bool<br>    metered        = bool<br>  })</pre> | <pre>{<br>  "count": 0,<br>  "global_routing": true,<br>  "metered": true,<br>  "speed": 5000<br>}</pre> | no |
 | <a name="input_powervs_cpu_proc_type"></a> [powervs\_cpu\_proc\_type](#input\_powervs\_cpu\_proc\_type) | Dedicated or shared processors. Required when not creating SAP instances. Conflicts with 'powervs\_sap\_profile\_id'. | `string` | `null` | no |
 | <a name="input_powervs_image_names"></a> [powervs\_image\_names](#input\_powervs\_image\_names) | List of Images to be imported into cloud account from catalog images. | `list(string)` | <pre>[<br>  "SLES15-SP4-SAP",<br>  "RHEL8-SP6-SAP",<br>  "7300-01-01",<br>  "IBMi-75-03-2924-1"<br>]</pre> | no |
 | <a name="input_powervs_instance_name"></a> [powervs\_instance\_name](#input\_powervs\_instance\_name) | Name of instance which will be created. | `string` | `"pi"` | no |

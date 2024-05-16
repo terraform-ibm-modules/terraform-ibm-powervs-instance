@@ -1,5 +1,4 @@
 module "pi_instance" {
-
   source = "./modules/pi-instance"
 
   pi_workspace_guid          = var.pi_workspace_guid
@@ -30,11 +29,13 @@ module "pi_instance_init_linux" {
   ansible_host_or_ip = var.pi_instance_init_linux.ansible_host_or_ip
   ssh_private_key    = var.pi_instance_init_linux.ssh_private_key
 
-  src_script_template_name    = "ansible_exec.sh.tftpl"
-  dst_script_file_name        = "${var.pi_instance_name}_instance_init.sh"
-  src_playbook_template_name  = "pi-instance-init-linux-playbook.yml.tftpl"
-  dst_playbook_file_name      = "${var.pi_instance_name}-instance-init-playbook.yml"
-  playbook_template_vars      = { "pi_storage_config" : jsonencode(module.pi_instance.pi_storage_configuration), "client_config" : jsonencode(var.pi_network_services_config) }
+  src_script_template_name = "linux-init/ansible_exec.sh.tftpl"
+  dst_script_file_name     = "${var.pi_instance_name}_linux_init.sh"
+
+  src_playbook_template_name = "linux-init/playbook-linux-init.yml.tftpl"
+  dst_playbook_file_name     = "${var.pi_instance_name}-playbook-linux-init.yml"
+  playbook_template_vars     = { "pi_storage_config" : jsonencode(module.pi_instance.pi_storage_configuration), "client_config" : jsonencode(var.pi_network_services_config) }
+
   src_inventory_template_name = "pi-instance-inventory.tftpl"
   dst_inventory_file_name     = "${var.pi_instance_name}-instance-inventory"
   inventory_template_vars     = { "pi_instance_management_ip" : module.pi_instance.pi_instance_primary_ip }
