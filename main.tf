@@ -32,11 +32,11 @@ module "pi_instance_init_linux" {
 
   src_script_template_name    = "ansible_exec.sh.tftpl"
   dst_script_file_name        = "${var.pi_instance_name}_instance_init.sh"
-  src_playbook_template_name  = "pi_instance_init_linux_playbook.yml.tftpl"
-  dst_playbook_file_name      = "${var.pi_instance_name}_instance_init_playbook.yml"
+  src_playbook_template_name  = "pi-instance-init-linux-playbook.yml.tftpl"
+  dst_playbook_file_name      = "${var.pi_instance_name}-instance-init-playbook.yml"
   playbook_template_vars      = { "pi_storage_config" : jsonencode(module.pi_instance.pi_storage_configuration), "client_config" : jsonencode(var.pi_network_services_config) }
-  src_inventory_template_name = "pi_instance_inventory.tftpl"
-  dst_inventory_file_name     = "${var.pi_instance_name}_instance_inventory"
+  src_inventory_template_name = "pi-instance-inventory.tftpl"
+  dst_inventory_file_name     = "${var.pi_instance_name}-instance-inventory"
   inventory_template_vars     = { "pi_instance_management_ip" : module.pi_instance.pi_instance_primary_ip }
 
 }
