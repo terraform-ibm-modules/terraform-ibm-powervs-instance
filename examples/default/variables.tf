@@ -66,7 +66,7 @@ variable "powervs_private_subnet_2" {
 variable "powervs_image_names" {
   description = "List of Images to be imported into cloud account from catalog images."
   type        = list(string)
-  default     = ["SLES15-SP4-SAP", "RHEL8-SP6-SAP", "7300-01-01", "IBMi-75-03-2924-1"]
+  default     = ["SLES15-SP5-SAP", "RHEL9-SP2-SAP"]
 }
 
 #####################################################
@@ -82,7 +82,7 @@ variable "powervs_instance_name" {
 variable "powervs_os_image_name" {
   description = "Image Name for PowerVS Instance."
   type        = string
-  default     = "RHEL8-SP6-SAP"
+  default     = "RHEL9-SP2-SAP"
 }
 
 variable "powervs_sap_profile_id" {
