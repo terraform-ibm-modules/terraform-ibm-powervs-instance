@@ -13,7 +13,7 @@ locals {
 }
 
 resource "random_id" "filename" {
-  byte_length = 2 # 4 characters when encoded in base32, which will give you a lowercase alphabetic string
+  byte_length = 2
 }
 
 locals {

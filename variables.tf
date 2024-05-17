@@ -167,5 +167,4 @@ variable "pi_network_services_config" {
     dns   = { enable = false, dns_server_ip = "" }
     ntp   = { enable = false, ntp_server_ip = "" }
   }
-
 }

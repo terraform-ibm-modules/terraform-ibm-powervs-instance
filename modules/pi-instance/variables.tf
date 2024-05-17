@@ -87,7 +87,6 @@ variable "pi_storage_config" {
     mount = string
     pool  = optional(string)
   }))
-
 }
 
 variable "pi_existing_volume_ids" {

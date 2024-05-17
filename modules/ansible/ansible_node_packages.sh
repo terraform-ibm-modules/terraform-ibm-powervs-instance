@@ -8,7 +8,7 @@
 ############################################################
 
 GLOBAL_RHEL_PACKAGES="rhel-system-roles rhel-system-roles-sap expect"
-GLOBAL_GALAXY_COLLLECTIONS="ibm.power_linux_sap:2.0.0 ansible.utils:3.1.0 ansible.posix:1.5.4 community.general:8.4.0"
+GLOBAL_GALAXY_COLLLECTIONS="ibm.power_linux_sap:2.1.0 ansible.utils:3.1.0 ansible.posix:1.5.4 community.general:8.4.0"
 
 ############################################################
 # Start functions
@@ -20,7 +20,6 @@ main::get_os_version() {
     else
         main::log_error "Unsupported Linux distribution. Only RHEL is supported."
     fi
-    #readonly LINUX_VERSION=$(grep VERSION_ID /etc/os-release | awk -F '\"' '{ print $2 }')
 }
 
 main::log_info() {
@@ -44,7 +43,6 @@ main::subscription_mgr_check_process() {
         main::log_info "--- subscription-manager is still running. Waiting 10 seconds before attempting to continue"
         sleep 10s
     done
-
 }
 
 ############################################################

@@ -22,7 +22,6 @@ resource "ibm_pi_instance" "instance" {
   pi_storage_type       = var.pi_boot_image_storage_tier
   pi_volume_ids         = var.pi_existing_volume_ids != null ? var.pi_existing_volume_ids : null
 
-
   dynamic "pi_network" {
     for_each = var.pi_networks
     content {
