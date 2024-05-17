@@ -12,6 +12,14 @@ locals {
 
 }
 
+resource "random_id" "filename" {
+  byte_length = 2 # 4 characters when encoded in base32, which will give you a lowercase alphabetic string
+}
+
+locals {
+  private_key_file = "/root/.ssh/id_rsa_${substr(random_id.filename.b64_url, 0, 4)}"
+}
+
 ##############################################################
 # 1. Execute shell script to install ansible roles/collections
 ##############################################################
@@ -95,6 +103,7 @@ resource "terraform_data" "execute_playbooks" {
         "ansible_playbook_file" : local.dst_playbook_file_path,
         "ansible_log_path" : local.dst_files_dir,
         "ansible_inventory" : local.dst_inventory_file_path
+        "ansible_private_key_file" : local.private_key_file
     })
     destination = local.dst_script_file_path
   }
@@ -104,8 +113,8 @@ resource "terraform_data" "execute_playbooks" {
     inline = [
       "mkdir -p /root/.ssh/",
       "chmod 700 /root/.ssh",
-      "echo '${var.ssh_private_key}' >/root/.ssh/id_rsa",
-      "chmod 600 /root/.ssh/id_rsa",
+      "echo '${var.ssh_private_key}' > ${local.private_key_file}",
+      "chmod 600 ${local.private_key_file}",
     ]
   }
 
@@ -120,7 +129,7 @@ resource "terraform_data" "execute_playbooks" {
   # Again delete private ssh key
   provisioner "remote-exec" {
     inline = [
-      "rm -rf /root/.ssh/id_rsa"
+      "rm -rf ${local.private_key_file}"
     ]
   }
 }
