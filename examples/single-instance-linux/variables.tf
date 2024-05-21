@@ -145,11 +145,11 @@ EOF
 }
 
 variable "powervs_network_services_config" {
-  description = "Configures network services NTP, NFS and DNS on PowerVS instance. Requires 'powervs_instance_init_linux' to be specified as internet access is required to download ansible collection [ibm.power_linux_sap collection](https://galaxy.ansible.com/ui/repo/published/ibm/power_linux_sap/) to configure these services."
+  description = "Configures network services NTP, NFS and DNS on PowerVS instance. Requires 'powervs_instance_init_linux' to be specified as internet access is required to download ansible collection [ibm.power_linux_sap collection](https://galaxy.ansible.com/ui/repo/published/ibm/power_linux_sap/) to configure these services. The 'opts' attribute can take in comma separated values."
   type = object(
     {
       squid = object({ enable = bool, squid_server_ip_port = string, no_proxy_hosts = string })
-      nfs   = object({ enable = bool, nfs_server_path = string, nfs_client_path = string })
+      nfs   = object({ enable = bool, nfs_server_path = string, nfs_client_path = string, opts = string, fstype = string })
       dns   = object({ enable = bool, dns_server_ip = string })
       ntp   = object({ enable = bool, ntp_server_ip = string })
     }
@@ -157,7 +157,7 @@ variable "powervs_network_services_config" {
 
   default = {
     squid = { enable = false, squid_server_ip_port = "", no_proxy_hosts = "" }
-    nfs   = { enable = false, nfs_server_path = "", nfs_client_path = "" }
+    nfs   = { enable = false, nfs_server_path = "", nfs_client_path = "", opts = "", fstype = "" }
     dns   = { enable = false, dns_server_ip = "" }
     ntp   = { enable = false, ntp_server_ip = "" }
   }
