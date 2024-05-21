@@ -1,4 +1,3 @@
-
 #####################################################
 # Deploy PowerVS Instance
 #####################################################
@@ -17,7 +16,9 @@ module "powervs_instance" {
   pi_number_of_processors    = var.powervs_number_of_processors
   pi_memory_size             = var.powervs_memory_size
   pi_cpu_proc_type           = var.powervs_cpu_proc_type
+  pi_placement_group_id      = var.powervs_placement_group_id
   pi_storage_config          = var.powervs_storage_config
+  pi_existing_volume_ids     = var.powervs_existing_volume_ids
   pi_instance_init_linux     = var.powervs_instance_init_linux
   pi_network_services_config = var.powervs_network_services_config
 }

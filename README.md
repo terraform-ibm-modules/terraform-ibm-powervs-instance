@@ -14,7 +14,8 @@ This root module automates and provisions an IBM® Power Virtual Server instance
 - Creates an IBM® Power Virtual Server Instance.
 - Attaches **existing private subnets** to the instance.
 - Optionally creates volumes and attaches it to the instance.
-- Optional instance initialization for **ibm provided subscription linux images only** ( configures proxy settings, creates filesystems, connects to network management services like DNS, NTP and NFS) using ansible galaxy collection roles [ibm.power_linux_sap collection](https://galaxy.ansible.com/ui/repo/published/ibm/power_linux_sap/). Tested with RHEL8.4, RHEL 8.6, SLES15-SP4 and SLES15-SP6 images.
+- Optionally attaches existing volume ids to the instance.
+- Optional instance initialization for **ibm provided subscription linux images only** ( configures proxy settings, creates filesystems, connects to network management services like DNS, NTP and NFS) using ansible galaxy collection roles [ibm.power_linux_sap collection](https://galaxy.ansible.com/ui/repo/published/ibm/power_linux_sap/). Tested with RHEL8.4, RHEL 8.6, RHEL8.8, RHEL9.2, SLES15-SP4 and SLES15-SP5 images.
 
 For more information about IBM Power Virtual Server see the [getting started](https://cloud.ibm.com/docs/power-iaas?topic=power-iaas-getting-started) IBM Cloud docs.
 
@@ -22,7 +23,6 @@ For more information about IBM Power Virtual Server see the [getting started](ht
 ## Overview
 * [terraform-ibm-powervs-instance](#terraform-ibm-powervs-instance)
 * [Submodules](./modules)
-    * [pi-instance-init-linux](./modules/pi-instance-init-linux)
     * [pi-instance](./modules/pi-instance)
 * [Examples](./examples)
     * [Basic Power Virtual Server infrastructure with a Power Virtual Server instance](./examples/default)
@@ -92,14 +92,14 @@ You need the following permissions to run this module.
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3 |
-| <a name="requirement_ibm"></a> [ibm](#requirement\_ibm) | >=1.62.0 |
+| <a name="requirement_ibm"></a> [ibm](#requirement\_ibm) | >=1.65.0 |
 
 ### Modules
 
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_pi_instance"></a> [pi\_instance](#module\_pi\_instance) | ./modules/pi-instance | n/a |
-| <a name="module_pi_instance_init_linux"></a> [pi\_instance\_init\_linux](#module\_pi\_instance\_init\_linux) | ./modules/pi-instance-init-linux | n/a |
+| <a name="module_pi_instance_init_linux"></a> [pi\_instance\_init\_linux](#module\_pi\_instance\_init\_linux) | ./modules/ansible | n/a |
 
 ### Resources
 
@@ -112,12 +112,12 @@ No resources.
 | <a name="input_pi_boot_image_storage_pool"></a> [pi\_boot\_image\_storage\_pool](#input\_pi\_boot\_image\_storage\_pool) | Storage Pool for server deployment; Only valid when you deploy one of the IBM supplied stock images. Storage pool for a custom image (an imported image or an image that is created from a VM capture) defaults to the storage pool the image was created in. | `string` | `null` | no |
 | <a name="input_pi_boot_image_storage_tier"></a> [pi\_boot\_image\_storage\_tier](#input\_pi\_boot\_image\_storage\_tier) | Storage type for server deployment. If storage type is not provided the storage type will default to tier3. Possible values tier0, tier1 and tier3 | `string` | `null` | no |
 | <a name="input_pi_cpu_proc_type"></a> [pi\_cpu\_proc\_type](#input\_pi\_cpu\_proc\_type) | Dedicated or shared processors. Required when not creating SAP instances. Conflicts with 'pi\_sap\_profile\_id'. | `string` | `null` | no |
-| <a name="input_pi_existing_volume_ids"></a> [pi\_existing\_volume\_ids](#input\_pi\_existing\_volume\_ids) | List of exisiting volume ids that must be attached to the instance. | `list(string)` | `null` | no |
+| <a name="input_pi_existing_volume_ids"></a> [pi\_existing\_volume\_ids](#input\_pi\_existing\_volume\_ids) | List of existing volume ids that must be attached to the instance. | `list(string)` | `null` | no |
 | <a name="input_pi_image_id"></a> [pi\_image\_id](#input\_pi\_image\_id) | Image ID used for PowerVS instance. Run 'ibmcloud pi images' to list available images. | `string` | n/a | yes |
-| <a name="input_pi_instance_init_linux"></a> [pi\_instance\_init\_linux](#input\_pi\_instance\_init\_linux) | Configures a PowerVS linux instance to have internet access by setting proxy on it, updates os and create filesystems using ansible collection [ibm.power\_linux\_sap collection](https://galaxy.ansible.com/ui/repo/published/ibm/power_linux_sap/). where 'proxy\_host\_or\_ip\_port' E.g., 10.10.10.4:3128 <ip:port>, 'bastion\_host\_ip' is public IP of bastion/jump host to access the private IP of created linux PowerVS instance. | <pre>object(<br>    {<br>      enable                = bool<br>      bastion_host_ip       = string<br>      ssh_private_key       = string<br>      proxy_host_or_ip_port = string<br>      no_proxy_hosts        = string<br>    }<br>  )</pre> | <pre>{<br>  "bastion_host_ip": "",<br>  "enable": false,<br>  "no_proxy_hosts": "161.0.0.0/8,10.0.0.0/8",<br>  "proxy_host_or_ip_port": "",<br>  "ssh_private_key": ""<br>}</pre> | no |
+| <a name="input_pi_instance_init_linux"></a> [pi\_instance\_init\_linux](#input\_pi\_instance\_init\_linux) | Configures a PowerVS linux instance to have internet access by setting proxy on it, updates os and create filesystems using ansible collection [ibm.power\_linux\_sap collection](https://galaxy.ansible.com/ui/repo/published/ibm/power_linux_sap/) where 'bastion\_host\_ip' is public IP of bastion/jump host to access the 'ansible\_host\_or\_ip' private IP of ansible node. This ansible host must have access to the power virtual server instance and ansible host OS must be RHEL distribution. | <pre>object(<br>    {<br>      enable             = bool<br>      bastion_host_ip    = string<br>      ansible_host_or_ip = string<br>      ssh_private_key    = string<br>    }<br>  )</pre> | <pre>{<br>  "ansible_host_or_ip": "",<br>  "bastion_host_ip": "",<br>  "enable": false,<br>  "ssh_private_key": ""<br>}</pre> | no |
 | <a name="input_pi_instance_name"></a> [pi\_instance\_name](#input\_pi\_instance\_name) | Name of instance which will be created. | `string` | n/a | yes |
 | <a name="input_pi_memory_size"></a> [pi\_memory\_size](#input\_pi\_memory\_size) | Amount of memory. Required when not creating SAP instances. Conflicts with 'pi\_sap\_profile\_id'. | `string` | `null` | no |
-| <a name="input_pi_network_services_config"></a> [pi\_network\_services\_config](#input\_pi\_network\_services\_config) | Configures network services NTP, NFS and DNS on PowerVS instance. Requires 'pi\_instance\_init\_linux' to be specified as internet access is required to download ansible collection [ibm.power\_linux\_sap collection](https://galaxy.ansible.com/ui/repo/published/ibm/power_linux_sap/) to configure these services. | <pre>object(<br>    {<br>      nfs = object({ enable = bool, nfs_server_path = string, nfs_client_path = string })<br>      dns = object({ enable = bool, dns_server_ip = string })<br>      ntp = object({ enable = bool, ntp_server_ip = string })<br>    }<br>  )</pre> | <pre>{<br>  "dns": {<br>    "dns_server_ip": "",<br>    "enable": false<br>  },<br>  "nfs": {<br>    "enable": false,<br>    "nfs_client_path": "",<br>    "nfs_server_path": ""<br>  },<br>  "ntp": {<br>    "enable": false,<br>    "ntp_server_ip": ""<br>  }<br>}</pre> | no |
+| <a name="input_pi_network_services_config"></a> [pi\_network\_services\_config](#input\_pi\_network\_services\_config) | Configures network services proxy, NTP, NFS and DNS on PowerVS instance. Requires 'pi\_instance\_init\_linux' to be specified to configure these services. The 'opts' attribute can take in comma separated values. | <pre>object(<br>    {<br>      squid = object({ enable = bool, squid_server_ip_port = string, no_proxy_hosts = string })<br>      nfs   = object({ enable = bool, nfs_server_path = string, nfs_client_path = string, opts = string, fstype = string })<br>      dns   = object({ enable = bool, dns_server_ip = string })<br>      ntp   = object({ enable = bool, ntp_server_ip = string })<br>    }<br>  )</pre> | <pre>{<br>  "dns": {<br>    "dns_server_ip": "",<br>    "enable": false<br>  },<br>  "nfs": {<br>    "enable": false,<br>    "fstype": "",<br>    "nfs_client_path": "",<br>    "nfs_server_path": "",<br>    "opts": ""<br>  },<br>  "ntp": {<br>    "enable": false,<br>    "ntp_server_ip": ""<br>  },<br>  "squid": {<br>    "enable": false,<br>    "no_proxy_hosts": "",<br>    "squid_server_ip_port": ""<br>  }<br>}</pre> | no |
 | <a name="input_pi_networks"></a> [pi\_networks](#input\_pi\_networks) | Existing list of private subnet ids to be attached to an instance. The first element will become the primary interface. Run 'ibmcloud pi networks' to list available private subnets. | <pre>list(<br>    object({<br>      name = string<br>      id   = string<br>      cidr = optional(string)<br>    })<br>  )</pre> | n/a | yes |
 | <a name="input_pi_number_of_processors"></a> [pi\_number\_of\_processors](#input\_pi\_number\_of\_processors) | Number of processors. Required when not creating SAP instances. Conflicts with 'pi\_sap\_profile\_id'. | `string` | `null` | no |
 | <a name="input_pi_placement_group_id"></a> [pi\_placement\_group\_id](#input\_pi\_placement\_group\_id) | The ID of the placement group that the instance is in or empty quotes '' to indicate it is not in a placement group. pi\_replicants cannot be used when specifying a placement group ID. | `string` | `null` | no |

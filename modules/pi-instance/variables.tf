@@ -9,12 +9,8 @@ variable "pi_ssh_public_key_name" {
 }
 
 variable "pi_instance_name" {
-  description = "Name of instance which will be created"
+  description = "Name of instance which will be created."
   type        = string
-  validation {
-    condition     = length(var.pi_instance_name) <= 16
-    error_message = "Maximum length of Instance name must be less or equal to 16 characters only."
-  }
 }
 
 variable "pi_boot_image_id" {
@@ -91,19 +87,9 @@ variable "pi_storage_config" {
     mount = string
     pool  = optional(string)
   }))
-
-  validation {
-    condition = var.pi_storage_config != null ? (
-      alltrue([for config in var.pi_storage_config : (
-        (config.name != "" && config.count != "" && config.tier != "" && config.mount != "") || (config.name == "" && config.count == "" && config.tier == "" && config.mount == "")
-      )])
-    ) : var.pi_storage_config == null ? true : false
-    error_message = "One of the storage config has invalid value, probably an empty string'"
-  }
-
 }
 
 variable "pi_existing_volume_ids" {
-  description = "List of exisiting volume ids that must be attached to the instance."
+  description = "List of existing volume ids that must be attached to the instance."
   type        = list(string)
 }

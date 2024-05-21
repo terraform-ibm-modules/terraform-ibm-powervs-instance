@@ -6,9 +6,20 @@
 # ------------------------------------------------------------------------
 
 ---
-- hosts: all
+
+- name: Ansible play to configure Network services proxy, DNS, NTP and NFS
+  hosts: all
   vars:
     client_config: ${client_config}
 
   roles:
   - { role: ibm.power_linux_sap.powervs_client_enable_services, when: client_config is defined }
+
+
+- name: Ansible play for storage setup
+  hosts: all
+  vars:
+    disks_configuration: ${pi_storage_config}
+
+  roles:
+  - { role: ibm.power_linux_sap.powervs_storage_setup, when: disks_configuration is defined }

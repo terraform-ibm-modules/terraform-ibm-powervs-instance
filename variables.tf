@@ -11,6 +11,11 @@ variable "pi_ssh_public_key_name" {
 variable "pi_instance_name" {
   description = "Name of instance which will be created."
   type        = string
+
+  validation {
+    condition     = length(var.pi_instance_name) <= 16
+    error_message = "Maximum length of Instance name must be less or equal to 16 characters only."
+  }
 }
 
 variable "pi_image_id" {
@@ -84,7 +89,6 @@ variable "pi_placement_group_id" {
   description = "The ID of the placement group that the instance is in or empty quotes '' to indicate it is not in a placement group. pi_replicants cannot be used when specifying a placement group ID."
   type        = string
   default     = null
-
 }
 
 variable "pi_storage_config" {
@@ -99,10 +103,19 @@ variable "pi_storage_config" {
   }))
 
   default = null
+
+  validation {
+    condition = var.pi_storage_config != null ? (
+      alltrue([for config in var.pi_storage_config : (
+        (config.name != "" && config.count != "" && config.tier != "" && config.mount != "") || (config.name == "" && config.count == "" && config.tier == "" && config.mount == "")
+      )])
+    ) : var.pi_storage_config == null ? true : false
+    error_message = "One of the storage config has invalid value, probably an empty string'"
+  }
 }
 
 variable "pi_existing_volume_ids" {
-  description = "List of exisiting volume ids that must be attached to the instance."
+  description = "List of existing volume ids that must be attached to the instance."
   type        = list(string)
   default     = null
 }
@@ -112,47 +125,46 @@ variable "pi_existing_volume_ids" {
 #####################################################
 
 variable "pi_instance_init_linux" {
-  description = "Configures a PowerVS linux instance to have internet access by setting proxy on it, updates os and create filesystems using ansible collection [ibm.power_linux_sap collection](https://galaxy.ansible.com/ui/repo/published/ibm/power_linux_sap/). where 'proxy_host_or_ip_port' E.g., 10.10.10.4:3128 <ip:port>, 'bastion_host_ip' is public IP of bastion/jump host to access the private IP of created linux PowerVS instance."
+  description = "Configures a PowerVS linux instance to have internet access by setting proxy on it, updates os and create filesystems using ansible collection [ibm.power_linux_sap collection](https://galaxy.ansible.com/ui/repo/published/ibm/power_linux_sap/) where 'bastion_host_ip' is public IP of bastion/jump host to access the 'ansible_host_or_ip' private IP of ansible node. This ansible host must have access to the power virtual server instance and ansible host OS must be RHEL distribution."
   sensitive   = true
   type = object(
     {
-      enable                = bool
-      bastion_host_ip       = string
-      ssh_private_key       = string
-      proxy_host_or_ip_port = string
-      no_proxy_hosts        = string
+      enable             = bool
+      bastion_host_ip    = string
+      ansible_host_or_ip = string
+      ssh_private_key    = string
     }
   )
 
   default = {
-    enable                = false
-    bastion_host_ip       = ""
-    ssh_private_key       = <<-EOF
+    enable             = false
+    bastion_host_ip    = ""
+    ansible_host_or_ip = ""
+    ssh_private_key    = <<-EOF
 EOF
-    proxy_host_or_ip_port = ""
-    no_proxy_hosts        = "161.0.0.0/8,10.0.0.0/8"
   }
 
   validation {
-    condition     = var.pi_instance_init_linux != null ? var.pi_instance_init_linux.enable ? var.pi_instance_init_linux.bastion_host_ip != "" && var.pi_instance_init_linux.bastion_host_ip != null && var.pi_instance_init_linux.ssh_private_key != "" && var.pi_instance_init_linux.ssh_private_key != null && var.pi_instance_init_linux.proxy_host_or_ip_port != "" && var.pi_instance_init_linux.proxy_host_or_ip_port != null ? true : false : true : true
-    error_message = "If 'enable' is true,  then 'bastion_host_ip', 'ssh_private_key' and 'proxy_host_or_ip_port' attributes of 'pi_instance_init_linux' must be provided."
+    condition     = var.pi_instance_init_linux != null ? var.pi_instance_init_linux.enable ? var.pi_instance_init_linux.bastion_host_ip != "" && var.pi_instance_init_linux.bastion_host_ip != null && var.pi_instance_init_linux.ansible_host_or_ip != "" && var.pi_instance_init_linux.ansible_host_or_ip != null && var.pi_instance_init_linux.ssh_private_key != "" && var.pi_instance_init_linux.ssh_private_key != null ? true : false : true : true
+    error_message = "If 'enable' is true, then all attributes of 'pi_instance_init_linux' must be provided."
   }
 }
 
 variable "pi_network_services_config" {
-  description = "Configures network services NTP, NFS and DNS on PowerVS instance. Requires 'pi_instance_init_linux' to be specified as internet access is required to download ansible collection [ibm.power_linux_sap collection](https://galaxy.ansible.com/ui/repo/published/ibm/power_linux_sap/) to configure these services."
+  description = "Configures network services proxy, NTP, NFS and DNS on PowerVS instance. Requires 'pi_instance_init_linux' to be specified to configure these services. The 'opts' attribute can take in comma separated values."
   type = object(
     {
-      nfs = object({ enable = bool, nfs_server_path = string, nfs_client_path = string })
-      dns = object({ enable = bool, dns_server_ip = string })
-      ntp = object({ enable = bool, ntp_server_ip = string })
+      squid = object({ enable = bool, squid_server_ip_port = string, no_proxy_hosts = string })
+      nfs   = object({ enable = bool, nfs_server_path = string, nfs_client_path = string, opts = string, fstype = string })
+      dns   = object({ enable = bool, dns_server_ip = string })
+      ntp   = object({ enable = bool, ntp_server_ip = string })
     }
   )
 
   default = {
-    nfs = { enable = false, nfs_server_path = "", nfs_client_path = "" }
-    dns = { enable = false, dns_server_ip = "" }
-    ntp = { enable = false, ntp_server_ip = "" }
+    squid = { enable = false, squid_server_ip_port = "", no_proxy_hosts = "" }
+    nfs   = { enable = false, nfs_server_path = "", nfs_client_path = "", opts = "", fstype = "" }
+    dns   = { enable = false, dns_server_ip = "" }
+    ntp   = { enable = false, ntp_server_ip = "" }
   }
-
 }

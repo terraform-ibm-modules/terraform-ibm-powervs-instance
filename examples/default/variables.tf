@@ -66,25 +66,7 @@ variable "powervs_private_subnet_2" {
 variable "powervs_image_names" {
   description = "List of Images to be imported into cloud account from catalog images."
   type        = list(string)
-  default     = ["SLES15-SP4-SAP", "RHEL8-SP6-SAP", "7300-01-01", "IBMi-75-03-2924-1"]
-}
-
-### Not creating cloud connections. Change count to enable
-variable "powervs_cloud_connection" {
-  description = "Cloud connection configuration: speed (50, 100, 200, 500, 1000, 2000, 5000, 10000 Mb/s), count (1 or 2 connections), global_routing (true or false), metered (true or false). Not applicable for PER enabled DC and CCs will not be created."
-  type = object({
-    count          = number
-    speed          = number
-    global_routing = bool
-    metered        = bool
-  })
-
-  default = {
-    count          = 0
-    speed          = 5000
-    global_routing = true
-    metered        = true
-  }
+  default     = ["SLES15-SP5-SAP", "RHEL9-SP2-SAP"]
 }
 
 #####################################################
@@ -100,7 +82,7 @@ variable "powervs_instance_name" {
 variable "powervs_os_image_name" {
   description = "Image Name for PowerVS Instance."
   type        = string
-  default     = "RHEL8-SP6-SAP"
+  default     = "RHEL9-SP2-SAP"
 }
 
 variable "powervs_sap_profile_id" {
