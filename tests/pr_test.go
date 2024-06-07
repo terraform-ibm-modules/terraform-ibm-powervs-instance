@@ -12,7 +12,7 @@ import (
 
 // Use existing resource group
 const resourceGroup = "geretain-test-resources"
-const completeExampleDir = "examples/default"
+const completeExampleDir = "examples/basic"
 
 var sharedInfoSvc *cloudinfo.CloudInfoService
 

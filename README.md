@@ -8,6 +8,17 @@
 [![latest release](https://img.shields.io/github/v/release/terraform-ibm-modules/terraform-ibm-powervs-instance?logo=GitHub&sort=semver)](https://github.com/terraform-ibm-modules/terraform-ibm-powervs-instance/releases/latest)
 [![Renovate enabled](https://img.shields.io/badge/renovate-enabled-brightgreen.svg)](https://renovatebot.com/)
 
+<!-- BEGIN OVERVIEW HOOK -->
+## Overview
+* [terraform-ibm-powervs-instance](#terraform-ibm-powervs-instance)
+* [Submodules](./modules)
+    * [pi-instance](./modules/pi-instance)
+* [Examples](./examples)
+    * [Basic Power Virtual Server infrastructure with a Power Virtual Server instance](./examples/basic)
+    * [Basic Power Virtual Server instance with linux OS initialization](./examples/single-instance-linux)
+* [Contributing](#contributing)
+<!-- END OVERVIEW HOOK -->
+
 ## Summary
 This root module automates and provisions an IBM® Power Virtual Server instance with following components:
 
@@ -19,16 +30,6 @@ This root module automates and provisions an IBM® Power Virtual Server instance
 
 For more information about IBM Power Virtual Server see the [getting started](https://cloud.ibm.com/docs/power-iaas?topic=power-iaas-getting-started) IBM Cloud docs.
 
-<!-- BEGIN OVERVIEW HOOK -->
-## Overview
-* [terraform-ibm-powervs-instance](#terraform-ibm-powervs-instance)
-* [Submodules](./modules)
-    * [pi-instance](./modules/pi-instance)
-* [Examples](./examples)
-    * [Basic Power Virtual Server infrastructure with a Power Virtual Server instance](./examples/default)
-    * [Basic Power Virtual Server instance with linux OS initialization](./examples/single-instance-linux)
-* [Contributing](#contributing)
-<!-- END OVERVIEW HOOK -->
 
 ## terraform-ibm-powervs-instance
 
