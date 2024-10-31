@@ -45,22 +45,22 @@ variable "pi_sap_profile_id" {
 }
 
 variable "pi_server_type" {
-  description = "Processor type e980/s922/e1080/s1022. Required when not creating SAP instances. Conflicts with 'pi_sap_profile_id'."
+  description = "The type of system on which to create the VM. Supported values are e980/s922/e1080/s1022. Required when not creating SAP instances. Conflicts with 'pi_sap_profile_id'."
   type        = string
 }
 
 variable "pi_cpu_proc_type" {
-  description = "Dedicated or shared processors. Required when not creating SAP instances. Conflicts with 'pi_sap_profile_id'."
+  description = "The type of processor mode in which the VM will run with shared, capped or dedicated. Required when not creating SAP instances. Conflicts with 'pi_sap_profile_id'."
   type        = string
 }
 
 variable "pi_number_of_processors" {
-  description = "Number of processors. Required when not creating SAP instances. Conflicts with 'pi_sap_profile_id'."
+  description = "The number of vCPUs to assign to the VM as visible within the guest Operating System. Required when not creating SAP instances. Conflicts with 'pi_sap_profile_id'."
   type        = string
 }
 
 variable "pi_memory_size" {
-  description = "Amount of memory. Required when not creating SAP instances. Conflicts with 'pi_sap_profile_id'."
+  description = "The amount of memory that you want to assign to your instance in GB. Required when not creating SAP instances. Conflicts with 'pi_sap_profile_id'."
   type        = string
 }
 
