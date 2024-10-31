@@ -58,7 +58,8 @@ variable "pi_server_type" {
   default     = null
 
   validation {
-    condition     = var.pi_server_type == null || contains(["e980", "s922", "e1080", "s1022"], var.pi_server_type)
+    condition = var.pi_server_type == null || (
+    var.pi_server_type != null && contains(["e980", "s922", "e1080", "s1022"], var.pi_server_type))
     error_message = "The system must be one of 'e980', 's922', 'e1080', or 's1022'."
   }
 }
@@ -69,7 +70,8 @@ variable "pi_cpu_proc_type" {
   default     = null
 
   validation {
-    condition     = var.pi_cpu_proc_type == null || contains(["shared", "capped", "dedicated"], var.pi_cpu_proc_type)
+    condition = var.pi_cpu_proc_type == null || (
+    var.pi_cpu_proc_type != null && contains(["shared", "capped", "dedicated"], var.pi_cpu_proc_type))
     error_message = "The proc type must be one of 'shared', 'capped' or 'dedicated'."
   }
 
