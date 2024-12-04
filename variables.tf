@@ -179,3 +179,34 @@ variable "pi_network_services_config" {
     ntp   = { enable = false, ntp_server_ip = "" }
   }
 }
+
+variable "pi_os_registration" {
+  description = "Specify whether IBM provided or customer provided linux subscription should be used. For IBM provided subscription set fls=true. For customer provided subscription set a username and a password inside byol. Only one can be used, fls=true + defining username and password will throw an error. Default: fls=true"
+  type = object({
+    byol = object({
+      username = string
+      password = string
+    })
+    fls = bool
+  })
+  sensitive = true
+  default = {
+    byol = {
+      username = ""
+      password = ""
+    }
+    fls = true
+  }
+  validation {
+    condition     = !((var.pi_os_registration.byol.username == "" || var.pi_os_registration.byol.password == "") && var.pi_os_registration.fls == false)
+    error_message = "You need to enable either FLS to use IBM provided linux subscription or specify username and password for byol to bring your own license."
+  }
+  validation {
+    condition     = !(var.pi_os_registration.fls && (var.pi_os_registration.byol.username != "" || var.pi_os_registration.byol.password != ""))
+    error_message = "You can't use byol and fls at the same time. Specify only one."
+  }
+  validation {
+    condition     = var.pi_os_registration.byol.username == "" && var.pi_os_registration.byol.password == "" && var.pi_os_registration.fls
+    error_message = "Bring your own license is not yet supported."
+  }
+}

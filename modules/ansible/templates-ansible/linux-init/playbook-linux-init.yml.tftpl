@@ -7,6 +7,19 @@
 
 ---
 
+- name: Ansible play to perform OS registration
+  hosts: all
+  vars:
+    %{~ if jsondecode(pi_os_registration).byol.username != "" || jsondecode(pi_os_registration).byol.password != "" ~}
+    byol:
+      username: "${jsondecode(pi_os_registration).byol.username}"
+      password: "${jsondecode(pi_os_registration).byol.password}"
+    %{~ endif ~}
+    fls: ${jsondecode(pi_os_registration).fls}
+
+  roles:
+  - { role: ibm.power_linux_sap.powervs_os_registration, when: byol is defined or fls is defined}
+
 - name: Ansible play to configure Network services proxy, DNS, NTP and NFS
   hosts: all
   vars:
