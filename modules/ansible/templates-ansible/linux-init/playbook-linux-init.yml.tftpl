@@ -10,11 +10,6 @@
 - name: Ansible play to perform OS registration
   hosts: all
   vars:
-    %{~ if jsondecode(pi_os_registration).byol.username != "" || jsondecode(pi_os_registration).byol.password != "" ~}
-    byol:
-      username: "${jsondecode(pi_os_registration).byol.username}"
-      password: "${jsondecode(pi_os_registration).byol.password}"
-    %{~ endif ~}
     fls: ${jsondecode(pi_os_registration).fls}
 
   roles:
