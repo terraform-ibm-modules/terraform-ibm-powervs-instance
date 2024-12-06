@@ -7,6 +7,14 @@
 
 ---
 
+- name: Ansible play to perform OS registration
+  hosts: all
+  vars:
+    fls: true
+
+  roles:
+  - { role: ibm.power_linux_sap.powervs_os_registration}
+
 - name: Ansible play to configure Network services proxy, DNS, NTP and NFS
   hosts: all
   vars:
