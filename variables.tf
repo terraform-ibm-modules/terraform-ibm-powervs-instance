@@ -205,8 +205,4 @@ variable "pi_os_registration" {
     condition     = !(var.pi_os_registration.fls && (var.pi_os_registration.byol.username != "" || var.pi_os_registration.byol.password != ""))
     error_message = "You can't use byol and fls at the same time. Specify only one."
   }
-  validation {
-    condition     = var.pi_os_registration.byol.username == "" && var.pi_os_registration.byol.password == "" && var.pi_os_registration.fls
-    error_message = "Bring your own license is not yet supported."
-  }
 }
