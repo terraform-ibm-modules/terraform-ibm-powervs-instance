@@ -10,10 +10,10 @@
 - name: Ansible play to perform OS registration
   hosts: all
   vars:
-    fls: ${jsondecode(pi_os_registration).fls}
+    fls: true
 
   roles:
-  - { role: ibm.power_linux_sap.powervs_os_registration, when: byol is defined or fls is defined}
+  - { role: ibm.power_linux_sap.powervs_os_registration}
 
 - name: Ansible play to configure Network services proxy, DNS, NTP and NFS
   hosts: all
