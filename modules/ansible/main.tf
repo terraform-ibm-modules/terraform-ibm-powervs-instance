@@ -119,12 +119,12 @@ resource "terraform_data" "execute_playbooks" {
   }
 
   # Execute bash shell script to run ansible playbooks
-  provisioner "remote-exec" {
-    inline = [
-      "chmod +x ${local.dst_script_file_path}",
-      local.dst_script_file_path,
-    ]
-  }
+  # provisioner "remote-exec" {
+  #   inline = [
+  #     "chmod +x ${local.dst_script_file_path}",
+  #     local.dst_script_file_path,
+  #   ]
+  # }
 
   # Again delete private ssh key
   provisioner "remote-exec" {
