@@ -69,6 +69,12 @@ variable "powervs_image_names" {
   default     = ["SLES15-SP5-SAP", "RHEL9-SP2-SAP"]
 }
 
+variable "powervs_user_tags" {
+  description = "List of Tag names for IBM Cloud PowerVS instances. Can be set to null."
+  type        = list(string)
+  default     = ["pi-basic"]
+}
+
 #####################################################
 # PowerVS Instance Parameters
 #####################################################

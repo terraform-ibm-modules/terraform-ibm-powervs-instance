@@ -21,7 +21,7 @@ It provisions the following infrastructure:
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_powervs_instance"></a> [powervs\_instance](#module\_powervs\_instance) | ../../ | n/a |
-| <a name="module_powervs_workspace"></a> [powervs\_workspace](#module\_powervs\_workspace) | terraform-ibm-modules/powervs-workspace/ibm | 2.3.0 |
+| <a name="module_powervs_workspace"></a> [powervs\_workspace](#module\_powervs\_workspace) | terraform-ibm-modules/powervs-workspace/ibm | 2.4.0 |
 | <a name="module_resource_group"></a> [resource\_group](#module\_resource\_group) | terraform-ibm-modules/resource-group/ibm | 1.1.6 |
 
 ### Resources
@@ -47,6 +47,7 @@ No resources.
 | <a name="input_powervs_server_type"></a> [powervs\_server\_type](#input\_powervs\_server\_type) | The type of system on which to create the VM. Supported values are e980/s922/e1080/s1022. Required when not creating SAP instances. Conflicts with 'powervs\_sap\_profile\_id'. | `string` | `null` | no |
 | <a name="input_powervs_ssh_public_key"></a> [powervs\_ssh\_public\_key](#input\_powervs\_ssh\_public\_key) | Value of the Public SSH key to create. | `string` | n/a | yes |
 | <a name="input_powervs_storage_config"></a> [powervs\_storage\_config](#input\_powervs\_storage\_config) | Custom File systems to be created and attached to PowerVS instance. 'disk\_size' is in GB. 'count' specify over how many storage volumes the file system will be striped. 'tier' specifies the storage tier in PowerVS workspace. 'mount' specifies the mount point on the OS. | <pre>list(object({<br/>    name  = string<br/>    size  = string<br/>    count = string<br/>    tier  = string<br/>    mount = string<br/>  }))</pre> | <pre>[<br/>  {<br/>    "count": "2",<br/>    "mount": "/data",<br/>    "name": "data",<br/>    "size": "100",<br/>    "tier": "tier1"<br/>  },<br/>  {<br/>    "count": "2",<br/>    "mount": "/log",<br/>    "name": "log",<br/>    "size": "20",<br/>    "tier": "tier3"<br/>  },<br/>  {<br/>    "count": "1",<br/>    "mount": "/shared",<br/>    "name": "shared",<br/>    "size": "20",<br/>    "tier": "tier1"<br/>  }<br/>]</pre> | no |
+| <a name="input_powervs_user_tags"></a> [powervs\_user\_tags](#input\_powervs\_user\_tags) | List of Tag names for IBM Cloud PowerVS instances. Can be set to null. | `list(string)` | <pre>[<br/>  "pi-basic"<br/>]</pre> | no |
 | <a name="input_powervs_workspace_name"></a> [powervs\_workspace\_name](#input\_powervs\_workspace\_name) | Name of IBM Cloud PowerVS workspace which will be created. | `string` | `"powervs-workspace"` | no |
 | <a name="input_powervs_zone"></a> [powervs\_zone](#input\_powervs\_zone) | IBM Cloud PowerVS zone. | `string` | n/a | yes |
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | Prefix for resources which will be created. | `string` | n/a | yes |

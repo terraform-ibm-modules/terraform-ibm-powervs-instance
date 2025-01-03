@@ -131,6 +131,12 @@ variable "pi_existing_volume_ids" {
   default     = null
 }
 
+variable "pi_user_tags" {
+  description = "List of Tag names for IBM Cloud PowerVS instances. Can be set to null."
+  type        = list(string)
+  default     = null
+}
+
 #####################################################
 # PowerVS Instance Initialization
 #####################################################
