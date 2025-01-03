@@ -70,7 +70,7 @@ variable "powervs_image_names" {
 }
 
 variable "powervs_user_tags" {
-  description = "List of Tag names for IBM Cloud PowerVS instances. Can be set to null."
+  description = "List of Tag names for IBM Cloud PowerVS instance and volumes. Can be set to null."
   type        = list(string)
   default     = ["pi-basic"]
 }
