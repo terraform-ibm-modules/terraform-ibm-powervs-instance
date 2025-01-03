@@ -21,7 +21,7 @@ locals {
 module "powervs_workspace" {
   depends_on = [module.resource_group]
   source     = "terraform-ibm-modules/powervs-workspace/ibm"
-  version    = "2.3.0"
+  version    = "2.4.0"
 
   pi_zone                = var.powervs_zone
   pi_resource_group_name = module.resource_group.resource_group_name
@@ -30,6 +30,7 @@ module "powervs_workspace" {
   pi_ssh_public_key      = local.powervs_ssh_public_key
   pi_private_subnet_1    = var.powervs_private_subnet_1
   pi_private_subnet_2    = var.powervs_private_subnet_2
+  pi_tags                = var.powervs_user_tags
 }
 
 #####################################################
@@ -60,4 +61,5 @@ module "powervs_instance" {
   pi_memory_size             = var.powervs_memory_size
   pi_cpu_proc_type           = var.powervs_cpu_proc_type
   pi_storage_config          = var.powervs_storage_config
+  pi_user_tags               = var.powervs_user_tags
 }

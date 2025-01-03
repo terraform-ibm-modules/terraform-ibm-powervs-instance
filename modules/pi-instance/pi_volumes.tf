@@ -28,6 +28,8 @@ resource "ibm_pi_volume" "create_volume" {
   pi_volume_pool       = local.volume_list[count.index].pool
   pi_volume_shareable  = false
   pi_cloud_instance_id = var.pi_workspace_guid
+  pi_user_tags         = var.pi_user_tags != null ? var.pi_user_tags : []
+
 
   timeouts {
     create = "15m"

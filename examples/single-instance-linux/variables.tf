@@ -23,6 +23,11 @@ variable "powervs_ssh_public_key_name" {
   type        = string
 }
 
+variable "powervs_user_tags" {
+  description = "List of Tag names for IBM Cloud PowerVS instance and volumes. Can be set to null."
+  type        = list(string)
+}
+
 #####################################################
 # PowerVS Instance Parameters
 #####################################################

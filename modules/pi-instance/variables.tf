@@ -93,3 +93,8 @@ variable "pi_existing_volume_ids" {
   description = "List of existing volume ids that must be attached to the instance."
   type        = list(string)
 }
+
+variable "pi_user_tags" {
+  description = "List of Tag names for IBM Cloud PowerVS instance and volumes. Can be set to null."
+  type        = list(string)
+}

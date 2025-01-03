@@ -21,4 +21,5 @@ module "powervs_instance" {
   pi_existing_volume_ids     = var.powervs_existing_volume_ids
   pi_instance_init_linux     = var.powervs_instance_init_linux
   pi_network_services_config = var.powervs_network_services_config
+  pi_user_tags               = var.powervs_user_tags
 }
