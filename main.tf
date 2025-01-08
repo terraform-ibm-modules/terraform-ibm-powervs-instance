@@ -35,10 +35,11 @@ module "pi_instance_init_linux" {
 
   src_playbook_template_name = "linux-init/playbook-linux-init.yml.tftpl"
   dst_playbook_file_name     = "${var.pi_instance_name}-playbook-linux-init.yml"
-  playbook_template_vars     = { "pi_storage_config" : jsonencode(module.pi_instance.pi_storage_configuration), "client_config" : jsonencode(var.pi_network_services_config) }
+  playbook_template_vars     = { "pi_storage_config" : jsonencode(module.pi_instance.pi_storage_configuration), "client_config" : jsonencode(var.pi_network_services_config), "pi_os_registration" : jsonencode(var.pi_os_registration) }
 
   src_inventory_template_name = "pi-instance-inventory.tftpl"
   dst_inventory_file_name     = "${var.pi_instance_name}-instance-inventory"
   inventory_template_vars     = { "pi_instance_management_ip" : module.pi_instance.pi_instance_primary_ip }
 
+  ansible_vault_password = var.ansible_vault_password
 }
