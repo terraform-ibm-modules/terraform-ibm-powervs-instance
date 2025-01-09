@@ -142,7 +142,7 @@ variable "pi_user_tags" {
 #####################################################
 
 variable "pi_instance_init_linux" {
-  description = "Configures a PowerVS linux instance to have internet access by setting proxy on it, updates os and create filesystems using ansible collection [ibm.power_linux_sap collection](https://galaxy.ansible.com/ui/repo/published/ibm/power_linux_sap/) where 'bastion_host_ip' is public IP of bastion/jump host to access the 'ansible_host_or_ip' private IP of ansible node. This ansible host must have access to the power virtual server instance and ansible host OS must be RHEL distribution."
+  description = "Configures a PowerVS linux instance to have internet access by setting proxy on it, updates os and create filesystems using ansible collection [ibm.power_linux_sap collection](https://galaxy.ansible.com/ui/repo/published/ibm/power_linux_sap/) where 'bastion_host_ip' is public IP of bastion/jump host to access the 'ansible_host_or_ip' private IP of ansible node. Additionally, specify whether IBM provided or customer provided linux subscription should be used. For IBM provided subscription leave custom_os_registration empty. For customer provided subscription set a username and a password inside custom_os_registration. Customer provided linux subscription requires the use of either an IBM provided image prefixed with byol or a custom image. The ansible host must have access to the power virtual server instance and ansible host OS must be RHEL distribution."
   sensitive   = true
   type = object(
     {
@@ -150,6 +150,10 @@ variable "pi_instance_init_linux" {
       bastion_host_ip    = string
       ansible_host_or_ip = string
       ssh_private_key    = string
+      custom_os_registration = optional(object({
+        username = string
+        password = string
+      }))
     }
   )
 
@@ -168,40 +172,13 @@ EOF
 }
 
 variable "ansible_vault_password" {
-  description = "Vault password to encrypt OS registration parameters. For optimal security, set the vault password to 8-16 characters, including a mix of uppercase, lowercase, numbers, and special characters. Avoid non-printable characters. Required only if you bring your own linux license."
+  description = "Vault password to encrypt OS registration parameters. Only required with customer provided linux subscription (specified in pi_instance_init_linux.custom_os_registration). For optimal security, set the vault password to 8-16 characters, including a mix of uppercase, lowercase, numbers, and special characters. Avoid non-printable characters."
   type        = string
   sensitive   = true
   default     = null
   validation {
-    condition     = var.pi_os_registration.fls ? true : var.ansible_vault_password != null
-    error_message = "var.ansible_vault_password is required when you don't use IBM provided linux subscription (fls)."
-  }
-}
-
-variable "pi_os_registration" {
-  description = "Specify whether IBM provided or customer provided linux subscription should be used. For IBM provided subscription set fls=true (default). For customer provided subscription set a username and a password inside byol. Only one can be used, fls=true + defining username and password will throw an error."
-  type = object({
-    byol = object({
-      username = string
-      password = string
-    })
-    fls = bool
-  })
-  sensitive = true
-  default = {
-    byol = {
-      username = ""
-      password = ""
-    }
-    fls = true
-  }
-  validation {
-    condition     = !((var.pi_os_registration.byol.username == "" || var.pi_os_registration.byol.password == "") && var.pi_os_registration.fls == false)
-    error_message = "You need to enable either FLS to use IBM provided linux subscription or specify username and password for byol to bring your own license."
-  }
-  validation {
-    condition     = !(var.pi_os_registration.fls && (var.pi_os_registration.byol.username != "" || var.pi_os_registration.byol.password != ""))
-    error_message = "You can't use byol and fls at the same time. Specify only one."
+    condition     = var.pi_instance_init_linux.custom_os_registration == null ? true : var.ansible_vault_password != null
+    error_message = "Specifying custom_os_registration requires an ansible_vault_password so your credentials are stored securely."
   }
 }
 
