@@ -10,14 +10,15 @@
 - name: Ansible play to perform OS registration
   hosts: all
   vars:
-    %{~ if pi_os_registration != "null" ~}
+    %{~ if pi_os_registration == "null" ~}
+    fls: true
+    %{~ else ~}
     byol:
       username: "${jsondecode(pi_os_registration).username}"
       password: "${jsondecode(pi_os_registration).password}"
       server_proxy_hostname: "${split(":", jsondecode(client_config).squid.squid_server_ip_port)[0]}"
       server_proxy_port: "${split(":", jsondecode(client_config).squid.squid_server_ip_port)[1]}"
     %{~ endif ~}
-    fls: ${pi_os_registration != "null"}
 
   roles:
   - { role: ibm.power_linux_sap.powervs_os_registration, when: byol is defined or fls is defined}
