@@ -13,9 +13,10 @@ export ANSIBLE_LOG_PATH=$${ansible_log_path}/$${ansible_playbook_name}.$(date "+
 export ANSIBLE_PRIVATE_KEY_FILE=$${ansible_private_key_file}
 
 #Execute ansible playbook
-unbuffer ansible-playbook -i $${ansible_inventory} $${ansible_playbook}
+unbuffer ansible-playbook -i $${ansible_inventory} $${ansible_playbook} %{ if ansible_vault_password != null}--vault-password-file password_file %{ endif }
 if [ $? -ne 0 ]; then
     rm -rf $${ansible_private_key_file}
+    %{ if ansible_vault_password != null}rm -rf password_file %{ endif }
     exit 1
 fi
 echo \"Playbook command successful\"

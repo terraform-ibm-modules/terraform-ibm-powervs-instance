@@ -53,3 +53,10 @@ variable "inventory_template_vars" {
   description = "Map values for the inventory template."
   type        = map(any)
 }
+
+variable "ansible_vault_password" {
+  description = "Vault password to encrypt OS registration parameters. For optimal security, set the vault password to 8-16 characters, including a mix of uppercase, lowercase, numbers, and special characters. Avoid non-printable characters. Required only if you bring your own linux license."
+  type        = string
+  sensitive   = true
+  default     = null
+}

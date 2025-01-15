@@ -66,6 +66,7 @@ resource "terraform_data" "trigger_ansible_vars" {
 
 resource "terraform_data" "execute_playbooks" {
   depends_on = [terraform_data.setup_ansible_host]
+  count      = var.ansible_vault_password != null ? 0 : 1
 
   connection {
     type         = "ssh"
@@ -103,7 +104,8 @@ resource "terraform_data" "execute_playbooks" {
         "ansible_playbook_file" : local.dst_playbook_file_path,
         "ansible_log_path" : local.dst_files_dir,
         "ansible_inventory" : local.dst_inventory_file_path
-        "ansible_private_key_file" : local.private_key_file
+        "ansible_private_key_file" : local.private_key_file,
+        "ansible_vault_password" : var.ansible_vault_password
     })
     destination = local.dst_script_file_path
   }
@@ -132,4 +134,90 @@ resource "terraform_data" "execute_playbooks" {
       "rm -rf ${local.private_key_file}"
     ]
   }
+}
+
+resource "terraform_data" "execute_playbooks_with_vault" {
+  depends_on = [terraform_data.setup_ansible_host]
+  count      = var.ansible_vault_password != null ? 1 : 0
+
+  connection {
+    type         = "ssh"
+    user         = "root"
+    bastion_host = var.bastion_host_ip
+    host         = var.ansible_host_or_ip
+    private_key  = var.ssh_private_key
+    agent        = false
+    timeout      = "5m"
+  }
+
+  triggers_replace = terraform_data.trigger_ansible_vars
+
+  # Create terraform scripts directory
+  provisioner "remote-exec" {
+    inline = ["mkdir -p ${local.dst_files_dir}", "chmod 777 ${local.dst_files_dir}", ]
+  }
+
+  # Copy and create ansible playbook template file on ansible host
+  provisioner "file" {
+    content     = templatefile(local.src_playbook_tftpl_path, var.playbook_template_vars)
+    destination = local.dst_playbook_file_path
+  }
+
+  #########  Encrypting the ansible playbook file when ansible_vault_password is set (only set if os_registration parameters are included)  #########
+  provisioner "remote-exec" {
+    inline = [
+      "echo ${var.ansible_vault_password} > password_file",
+      "ansible-vault encrypt ${local.dst_playbook_file_path} --vault-password-file password_file"
+    ]
+  }
+
+  # Copy and create ansible inventory template file on ansible host
+  provisioner "file" {
+    content     = templatefile(local.src_inventory_tftpl_path, var.inventory_template_vars)
+    destination = local.dst_inventory_file_path
+  }
+
+  # Copy and create ansible shell template file which will trigger the playbook on ansible host
+  provisioner "file" {
+    content = templatefile(local.src_script_tftpl_path,
+      {
+        "ansible_playbook_file" : local.dst_playbook_file_path,
+        "ansible_log_path" : local.dst_files_dir,
+        "ansible_inventory" : local.dst_inventory_file_path
+        "ansible_private_key_file" : local.private_key_file,
+        "ansible_vault_password" : var.ansible_vault_password
+    })
+    destination = local.dst_script_file_path
+  }
+
+  # Write ssh user's ssh private key
+  provisioner "remote-exec" {
+    inline = [
+      "mkdir -p /root/.ssh/",
+      "chmod 700 /root/.ssh",
+      "echo '${var.ssh_private_key}' > ${local.private_key_file}",
+      "chmod 600 ${local.private_key_file}",
+    ]
+  }
+
+  # Execute bash shell script to run ansible playbooks
+  provisioner "remote-exec" {
+    inline = [
+      "chmod +x ${local.dst_script_file_path}",
+      local.dst_script_file_path,
+    ]
+  }
+
+  # Again delete private ssh key and files with sensitive information
+  provisioner "remote-exec" {
+    inline = [
+      "rm -rf ${local.private_key_file}",
+      "rm -rf password_file"
+    ]
+  }
+}
+
+moved {
+  from = terraform_data.execute_playbooks
+  to   = terraform_data.execute_playbooks[0]
 }
