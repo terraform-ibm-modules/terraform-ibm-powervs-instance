@@ -216,3 +216,8 @@ resource "terraform_data" "execute_playbooks_with_vault" {
     ]
   }
 }
+
+moved {
+  from = terraform_data.execute_playbooks
+  to   = terraform_data.execute_playbooks[0]
+}
