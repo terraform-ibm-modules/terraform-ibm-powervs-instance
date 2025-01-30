@@ -176,6 +176,7 @@ variable "ansible_vault_password" {
   type        = string
   sensitive   = true
   default     = null
+
   validation {
     condition     = var.pi_instance_init_linux.custom_os_registration == null ? true : var.ansible_vault_password != null
     error_message = "Specifying custom_os_registration requires an ansible_vault_password so your credentials are stored securely."
@@ -198,5 +199,25 @@ variable "pi_network_services_config" {
     nfs   = { enable = false, nfs_server_path = "", nfs_client_path = "", opts = "", fstype = "" }
     dns   = { enable = false, dns_server_ip = "" }
     ntp   = { enable = false, ntp_server_ip = "" }
+  }
+
+  validation {
+    condition     = !var.pi_network_services_config.squid.enable || can(regex("^\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}:\\d+$", var.pi_network_services_config.squid.squid_server_ip_port))
+    error_message = "squid_server_ip_port must be in the format: x.x.x.x:y, where x=ip and y=port"
+  }
+
+  validation {
+    condition     = !var.pi_network_services_config.nfs.enable || (var.pi_network_services_config.nfs.nfs_server_path != "" && var.pi_network_services_config.nfs.nfs_client_path != "" && var.pi_network_services_config.nfs.opts != "" && var.pi_network_services_config.nfs.fstype != "")
+    error_message = "Enabling NFS requires that nfs_server_path, nfs_client_path, opts, and fstype are specified."
+  }
+
+  validation {
+    condition     = !var.pi_network_services_config.dns.enable || can(regex("^\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}$", var.pi_network_services_config.dns.dns_server_ip))
+    error_message = "Enabling DNS requires dns_server_ip to be a valid IPv4 address."
+  }
+
+  validation {
+    condition     = !var.pi_network_services_config.ntp.enable || can(regex("^\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}$", var.pi_network_services_config.ntp.ntp_server_ip))
+    error_message = "Enabling NTP requires ntp_server_ip to be a valid IPv4 address."
   }
 }
