@@ -55,8 +55,28 @@ variable "inventory_template_vars" {
 }
 
 variable "ansible_vault_password" {
-  description = "Vault password to encrypt OS registration parameters. For optimal security, set the vault password to 8-16 characters, including a mix of uppercase, lowercase, numbers, and special characters. Avoid non-printable characters. Required only if you bring your own linux license."
+  description = "Vault password to encrypt OS registration parameters. Required only if you bring your own linux license. Password requirements: 15-100 characters and at least one uppercase letter, one lowercase letter, one number, one of the following special characters: \"!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~\". Avoid non-printable characters."
   type        = string
   sensitive   = true
   default     = null
+  validation {
+    condition     = var.ansible_vault_password == null ? true : (length(var.ansible_vault_password) >= 15 && length(var.ansible_vault_password) <= 100)
+    error_message = "ansible_vault_password needs to be between 15 and 100 characters in length."
+  }
+  validation {
+    condition     = var.ansible_vault_password == null ? true : can(regex("[!\"#$%&'()*+,\\-.\\/:;<=>?@[\\]^_`{|}~]", var.ansible_vault_password))
+    error_message = "ansible_vault_password needs to contain at least one of the following special characters: \"!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~\"."
+  }
+  validation {
+    condition     = var.ansible_vault_password == null ? true : can(regex("[A-Z]", var.ansible_vault_password))
+    error_message = "ansible_vault_password needs to contain at least one uppercase character (A-Z)."
+  }
+  validation {
+    condition     = var.ansible_vault_password == null ? true : can(regex("[a-z]", var.ansible_vault_password))
+    error_message = "ansible_vault_password needs to contain at least one lowercase character (a-z)."
+  }
+  validation {
+    condition     = var.ansible_vault_password == null ? true : can(regex("[0-9]", var.ansible_vault_password))
+    error_message = "ansible_vault_password needs to contain at least one number (0-9)."
+  }
 }
