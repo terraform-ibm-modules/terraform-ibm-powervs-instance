@@ -5,21 +5,30 @@ ansible_playbook=${ansible_playbook_file}
 ansible_log_path=${ansible_log_path}
 ansible_inventory=${ansible_inventory}
 ansible_private_key_file=${ansible_private_key_file}
+ansible_vault_file=${ansible_vault_file}
 
 # Create ansible.cfg file
 ansible_playbook_name=$(basename $${ansible_playbook})
 echo -e "[defaults]\nhost_key_checking=False" >ansible.cfg
+
+# Set Ansible environment
 export ANSIBLE_LOG_PATH=$${ansible_log_path}/$${ansible_playbook_name}.$(date "+%Y.%m.%d-%H.%M.%S").log
 export ANSIBLE_PRIVATE_KEY_FILE=$${ansible_private_key_file}
 
-#Execute ansible playbook
-unbuffer ansible-playbook -i $${ansible_inventory} $${ansible_playbook} %{ if ansible_vault_password != null}--vault-password-file password_file %{ endif }
+# Execute ansible playbook with or without vault file
+if [ -s $${ansible_vault_file} ]; then
+  unbuffer ansible-playbook -i $${ansible_inventory} $${ansible_playbook} --vault-password-file $${ansible_vault_file}
+else
+  unbuffer ansible-playbook -i $${ansible_inventory} $${ansible_playbook}
+fi
+
 if [ $? -ne 0 ]; then
     rm -rf $${ansible_private_key_file}
-    %{ if ansible_vault_password != null}rm -rf password_file %{ endif }
+    rm -rf $${ansible_vault_file}
     exit 1
 fi
 echo \"Playbook command successful\"
 
-# Delete private ssh key
+# Delete sensitive keys
 rm -rf $${ansible_private_key_file}
+rm -rf $${ansible_vault_file}
