@@ -17,7 +17,8 @@ resource "random_id" "filename" {
 }
 
 locals {
-  private_key_file = "/root/.ssh/id_rsa_${substr(random_id.filename.b64_url, 0, 4)}"
+  private_key_file   = "/root/.ssh/id_rsa_${substr(random_id.filename.b64_url, 0, 4)}"
+  ansible_vault_file = "/root/ansible_vault_file_${substr(random_id.filename.b64_url, 0, 4)}"
 }
 
 ##############################################################
@@ -105,7 +106,7 @@ resource "terraform_data" "execute_playbooks" {
         "ansible_log_path" : local.dst_files_dir,
         "ansible_inventory" : local.dst_inventory_file_path
         "ansible_private_key_file" : local.private_key_file,
-        "ansible_vault_password" : var.ansible_vault_password
+        "ansible_vault_file" : local.ansible_vault_file
     })
     destination = local.dst_script_file_path
   }
@@ -166,8 +167,8 @@ resource "terraform_data" "execute_playbooks_with_vault" {
   #########  Encrypting the ansible playbook file when ansible_vault_password is set (only set if os_registration parameters are included)  #########
   provisioner "remote-exec" {
     inline = [
-      "echo ${var.ansible_vault_password} > password_file",
-      "ansible-vault encrypt ${local.dst_playbook_file_path} --vault-password-file password_file"
+      "echo ${var.ansible_vault_password} > ${local.ansible_vault_file}",
+      "ansible-vault encrypt ${local.dst_playbook_file_path} --vault-password-file ${local.ansible_vault_file}"
     ]
   }
 
@@ -185,7 +186,7 @@ resource "terraform_data" "execute_playbooks_with_vault" {
         "ansible_log_path" : local.dst_files_dir,
         "ansible_inventory" : local.dst_inventory_file_path
         "ansible_private_key_file" : local.private_key_file,
-        "ansible_vault_password" : var.ansible_vault_password
+        "ansible_vault_file" : local.ansible_vault_file
     })
     destination = local.dst_script_file_path
   }
@@ -212,12 +213,7 @@ resource "terraform_data" "execute_playbooks_with_vault" {
   provisioner "remote-exec" {
     inline = [
       "rm -rf ${local.private_key_file}",
-      "rm -rf password_file"
+      "rm -rf ${local.ansible_vault_file}"
     ]
   }
-}
-
-moved {
-  from = terraform_data.execute_playbooks
-  to   = terraform_data.execute_playbooks[0]
 }
