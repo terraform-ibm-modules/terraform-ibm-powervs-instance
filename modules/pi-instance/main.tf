@@ -27,6 +27,7 @@ resource "ibm_pi_instance" "instance" {
   pi_anti_affinity_volumes   = var.pi_anti_affinity != null ? var.pi_anti_affinity.anti_affinity_volumes : null
   pi_volume_ids              = var.pi_existing_volume_ids != null ? var.pi_existing_volume_ids : null
   pi_user_tags               = var.pi_user_tags != null ? var.pi_user_tags : []
+  pi_user_data               = var.pi_user_data
 
   dynamic "pi_network" {
     for_each = var.pi_networks
@@ -41,7 +42,7 @@ resource "ibm_pi_instance" "instance" {
   }
 
   lifecycle {
-    ignore_changes = [pi_cloud_instance_id, pi_image_id]
+    ignore_changes = [pi_cloud_instance_id, pi_image_id, pi_user_data]
   }
 }
 

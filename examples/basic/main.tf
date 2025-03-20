@@ -62,4 +62,5 @@ module "powervs_instance" {
   pi_cpu_proc_type           = var.powervs_cpu_proc_type
   pi_storage_config          = var.powervs_storage_config
   pi_user_tags               = var.powervs_user_tags
+  pi_user_data               = var.powervs_user_data
 }

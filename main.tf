@@ -21,7 +21,7 @@ module "pi_instance" {
   pi_affinity                = var.pi_affinity
   pi_anti_affinity           = var.pi_anti_affinity
   pi_user_tags               = var.pi_user_tags != null ? var.pi_user_tags : []
-
+  pi_user_data               = var.pi_user_data
 }
 
 module "pi_instance_init_linux" {
