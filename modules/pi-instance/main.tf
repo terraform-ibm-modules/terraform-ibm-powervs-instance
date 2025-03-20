@@ -15,18 +15,24 @@ resource "ibm_pi_instance" "instance" {
   pi_health_status         = "OK"
   pi_storage_pool_affinity = false
 
-  pi_placement_group_id = var.pi_replicants == null ? var.pi_placement_group_id : null
-  pi_replicants         = var.pi_replicants != null ? var.pi_replicants.count : null
-  pi_replication_policy = var.pi_replicants != null ? var.pi_replicants.policy : null
-  pi_storage_pool       = var.pi_boot_image_storage_pool
-  pi_storage_type       = var.pi_boot_image_storage_tier
-  pi_volume_ids         = var.pi_existing_volume_ids != null ? var.pi_existing_volume_ids : null
-  pi_user_tags          = var.pi_user_tags != null ? var.pi_user_tags : []
+  pi_placement_group_id      = var.pi_replicants == null ? var.pi_placement_group_id : null
+  pi_replicants              = var.pi_replicants != null ? var.pi_replicants.count : null
+  pi_replication_policy      = var.pi_replicants != null ? var.pi_replicants.policy : null
+  pi_storage_pool            = var.pi_boot_image_storage_pool
+  pi_storage_type            = var.pi_boot_image_storage_tier
+  pi_affinity_policy         = var.pi_affinity_policy
+  pi_affinity_instance       = var.pi_affinity != null ? var.pi_affinity.affinity_instance : null
+  pi_affinity_volume         = var.pi_affinity != null ? var.pi_affinity.affinity_volume : null
+  pi_anti_affinity_instances = var.pi_anti_affinity != null ? var.pi_anti_affinity.anti_affinity_instances : null
+  pi_anti_affinity_volumes   = var.pi_anti_affinity != null ? var.pi_anti_affinity.anti_affinity_volumes : null
+  pi_volume_ids              = var.pi_existing_volume_ids != null ? var.pi_existing_volume_ids : null
+  pi_user_tags               = var.pi_user_tags != null ? var.pi_user_tags : []
 
   dynamic "pi_network" {
     for_each = var.pi_networks
     content {
       network_id = pi_network.value.id
+      ip_address = pi_network.value.ip != null && pi_network.value.ip != "" ? pi_network.value.ip : null
     }
   }
 

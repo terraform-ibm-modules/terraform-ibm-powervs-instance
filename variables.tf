@@ -42,6 +42,7 @@ variable "pi_networks" {
       name = string
       id   = string
       cidr = optional(string)
+      ip   = optional(string)
     })
   )
 }
@@ -96,6 +97,35 @@ variable "pi_replicants" {
   default = null
 }
 
+variable "pi_affinity_policy" {
+  description = "The affinity policy for PVM instance being created. Allowed values: 'affinity', 'anti-affinity'. If 'affinity', provide pi_affinity input; if 'anti-affinity', provide pi_anti_affinity input. Affinity policy will be ignored if 'pi_boot_image_storage_pool' is specified."
+  type        = string
+  default     = null
+
+  validation {
+    condition     = var.pi_affinity_policy == null || var.pi_affinity_policy == "affinity" || var.pi_affinity_policy == "anti-affinity"
+    error_message = "Invalid value for pi_affinity_policy. Allowed values are 'affinity' or 'anti-affinity'."
+  }
+}
+
+variable "pi_affinity" {
+  description = "The object of anti-affinity instances/volumes. The affinity_instance is a pvmInstance name required if requesting affinity and affinity_volume is not provided. The anti_affinity_volumes is a list of volumes to base storage anti-affinity policy against; required if requesting affinity and affinity_instance is not provided"
+  type = object({
+    affinity_instance = optional(string)
+    affinity_volume   = optional(string)
+  })
+  default = null
+}
+
+variable "pi_anti_affinity" {
+  description = "An object of anti-affinity instances/volumes. The anti_affinity_instances is a list of pvmInstances required if requesting anti-affinity and anti_affinity_volumes is not provided. The anti_affinity_volumes is a list of volumes to base storage anti-affinity policy against; required if requesting anti-affinity and pi_anti_affinity_instances is not provided"
+  type = object({
+    anti_affinity_instances = optional(list(string))
+    anti_affinity_volumes   = optional(list(string))
+  })
+  default = null
+}
+
 variable "pi_placement_group_id" {
   description = "The ID of the placement group that the instance is in or empty quotes '' to indicate it is not in a placement group. pi_replicants cannot be used when specifying a placement group ID."
   type        = string
@@ -105,12 +135,13 @@ variable "pi_placement_group_id" {
 variable "pi_storage_config" {
   description = "File systems to be created and attached to PowerVS instance. 'size' is in GB. 'count' specify over how many storage volumes the file system will be striped. 'tier' specifies the storage tier in PowerVS workspace, 'mount' specifies the mount point on the OS."
   type = list(object({
-    name  = string
-    size  = string
-    count = string
-    tier  = string
-    mount = string
-    pool  = optional(string)
+    name     = string
+    size     = string
+    count    = string
+    tier     = string
+    mount    = string
+    pool     = optional(string)
+    sharable = optional(bool)
   }))
 
   default = null

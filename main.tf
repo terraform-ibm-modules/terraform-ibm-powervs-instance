@@ -17,6 +17,9 @@ module "pi_instance" {
   pi_storage_config          = var.pi_storage_config
   pi_placement_group_id      = var.pi_placement_group_id
   pi_replicants              = var.pi_replicants
+  pi_affinity_policy         = var.pi_affinity_policy
+  pi_affinity                = var.pi_affinity
+  pi_anti_affinity           = var.pi_anti_affinity
   pi_user_tags               = var.pi_user_tags != null ? var.pi_user_tags : []
 
 }

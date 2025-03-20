@@ -35,6 +35,7 @@ variable "pi_networks" {
       name = string
       id   = string
       cidr = optional(string)
+      ip   = optional(string)
     })
   )
 }
@@ -70,6 +71,30 @@ variable "pi_replicants" {
     count  = number
     policy = string
   })
+}
+
+variable "pi_affinity_policy" {
+  description = "The affinity policy for pvm instance being created. Allowed values - 'affinity', 'anti-affinity'. If 'affinity', provide pi_affinity input; else 'anti-affinity', provide pi_anti_affinity input. Affinity policy will be ignored if the 'pi_boot_image_storage_pool' is specified."
+  type        = string
+  default     = null
+}
+
+variable "pi_affinity" {
+  description = "The object for affinity policy with instance/volume. The affinity_instance is a pvmInstance name required if requesting affinity and affinity_volume is not provided. The affinity_volumes is a list of volumes to base storage affinity policy against; required if requesting affinity and affinity_instance is not provided"
+  type = object({
+    affinity_instance = string
+    affinity_volume   = string
+  })
+  default = null
+}
+
+variable "pi_anti_affinity" {
+  description = "An object for anti-affinity policy with instances/volumes. The anti_affinity_instances is a list of pvmInstances required if requesting anti-affinity and anti_affinity_volumes is not be provided. The anti_affinity_volumes is a list of volumes to base storage anti-affinity policy against; required if requesting anti-affinity and pi_anti_affinity_instances is not provided"
+  type = object({
+    anti_affinity_instances = list(string)
+    anti_affinity_volumes   = list(string)
+  })
+  default = null
 }
 
 variable "pi_placement_group_id" {
