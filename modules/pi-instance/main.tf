@@ -36,7 +36,7 @@ resource "ibm_pi_instance" "instance" {
   }
 
   lifecycle {
-    ignore_changes = [pi_cloud_instance_id, pi_image_id]
+    ignore_changes = [pi_cloud_instance_id, pi_image_id, pi_user_data]
   }
 }
 
