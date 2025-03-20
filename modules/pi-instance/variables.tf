@@ -74,13 +74,13 @@ variable "pi_replicants" {
 }
 
 variable "pi_affinity_policy" {
-  description = "The affinity policy for pvm instance being created. Allowed values - 'affinity', 'anti-affinity'. If 'affinity', provide pi_affinity input; else 'anti-affinity', provide pi_anti_affinity input. Affinity policy will be ignored if the 'pi_boot_image_storage_pool' is specified."
+  description = "Specifies the affinity policy for the PVM instance. Allowed values: 'affinity' or 'anti-affinity'. If set to 'affinity', provide the 'pi_affinity' input. If set to 'anti-affinity', provide the 'pi_anti_affinity' input. This policy will be ignored if 'pi_boot_image_storage_pool' is specified."
   type        = string
   default     = null
 }
 
 variable "pi_affinity" {
-  description = "The object for affinity policy with instance/volume. The affinity_instance is a pvmInstance name required if requesting affinity and affinity_volume is not provided. The affinity_volumes is a list of volumes to base storage affinity policy against; required if requesting affinity and affinity_instance is not provided"
+  description = "Defines affinity settings for instances or volumes. If requesting affinity, either 'affinity_instance' or 'affinity_volume' must be provided. 'affinity_instance' specifies the name of the target PVM instance, while 'affinity_volume' designates a volume to establish storage affinity."
   type = object({
     affinity_instance = string
     affinity_volume   = string
@@ -89,7 +89,7 @@ variable "pi_affinity" {
 }
 
 variable "pi_anti_affinity" {
-  description = "An object for anti-affinity policy with instances/volumes. The anti_affinity_instances is a list of pvmInstances required if requesting anti-affinity and anti_affinity_volumes is not be provided. The anti_affinity_volumes is a list of volumes to base storage anti-affinity policy against; required if requesting anti-affinity and pi_anti_affinity_instances is not provided"
+  description = "Defines anti-affinity settings for instances or volumes. If requesting anti-affinity, either 'anti_affinity_instances' or 'anti_affinity_volumes' must be provided. 'anti_affinity_instances' is a list of PVM instance names to enforce anti-affinity, while 'anti_affinity_volumes' is a list of volumes to apply the storage anti-affinity policy."
   type = object({
     anti_affinity_instances = list(string)
     anti_affinity_volumes   = list(string)
