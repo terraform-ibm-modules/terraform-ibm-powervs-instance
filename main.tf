@@ -18,7 +18,7 @@ module "pi_instance" {
   pi_placement_group_id      = var.pi_placement_group_id
   pi_replicants              = var.pi_replicants
   pi_user_tags               = var.pi_user_tags != null ? var.pi_user_tags : []
-
+  pi_user_data               = var.pi_user_data
 }
 
 module "pi_instance_init_linux" {

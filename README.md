@@ -65,6 +65,7 @@ module "pi_instance" {
     pi_instance_init_linux     = var.pi_instance_init_linux      #(optional, default check vars)
     pi_network_services_config = var.pi_network_services_config  #(optional, default check vars)
     pi_user_tags               = var.pi_user_tags                #(optional, default null)
+    pi_user_data               = var.pi_user_data                #(optional, default null)
     ansible_vault_password     = var.ansible_vault_password      #(optional, default null)
 }
 ```
@@ -130,6 +131,7 @@ No resources.
 | <a name="input_pi_server_type"></a> [pi\_server\_type](#input\_pi\_server\_type) | The type of system on which to create the VM. Supported values are e980/s922/e1080/s1022. Required when not creating SAP instances. Conflicts with 'pi\_sap\_profile\_id'. | `string` | `null` | no |
 | <a name="input_pi_ssh_public_key_name"></a> [pi\_ssh\_public\_key\_name](#input\_pi\_ssh\_public\_key\_name) | Existing PowerVS SSH Public key name. Run 'ibmcloud pi keys' to list available keys. | `string` | n/a | yes |
 | <a name="input_pi_storage_config"></a> [pi\_storage\_config](#input\_pi\_storage\_config) | File systems to be created and attached to PowerVS instance. 'size' is in GB. 'count' specify over how many storage volumes the file system will be striped. 'tier' specifies the storage tier in PowerVS workspace, 'mount' specifies the mount point on the OS. | <pre>list(object({<br/>    name  = string<br/>    size  = string<br/>    count = string<br/>    tier  = string<br/>    mount = string<br/>    pool  = optional(string)<br/>  }))</pre> | `null` | no |
+| <a name="input_pi_user_data"></a> [pi\_user\_data](#input\_pi\_user\_data) | The user data cloud-init to pass to the instance during creation. It can be a base64 encoded or an unencoded string. If it is an unencoded string, the provider will encode it before it passing it down. | `string` | `null` | no |
 | <a name="input_pi_user_tags"></a> [pi\_user\_tags](#input\_pi\_user\_tags) | List of Tag names for IBM Cloud PowerVS instance and volumes. Can be set to null. | `list(string)` | `null` | no |
 | <a name="input_pi_workspace_guid"></a> [pi\_workspace\_guid](#input\_pi\_workspace\_guid) | Existing GUID of the PowerVS workspace. The GUID of the service instance associated with an account. | `string` | n/a | yes |
 

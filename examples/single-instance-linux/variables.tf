@@ -29,6 +29,12 @@ variable "powervs_user_tags" {
   default     = null
 }
 
+variable "powervs_user_data" {
+  description = "The user data cloud-init to pass to the instance during creation. It can be a base64 encoded or an unencoded string. If it is an unencoded string, the provider will encode it before it passing it down."
+  type        = string
+  default     = null
+}
+
 #####################################################
 # PowerVS Instance Parameters
 #####################################################
