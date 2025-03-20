@@ -22,4 +22,5 @@ module "powervs_instance" {
   pi_instance_init_linux     = var.powervs_instance_init_linux
   pi_network_services_config = var.powervs_network_services_config
   pi_user_tags               = var.powervs_user_tags
+  pi_user_data               = var.powervs_user_data
 }
