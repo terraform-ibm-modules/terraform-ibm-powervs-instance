@@ -116,7 +116,7 @@ variable "pi_affinity" {
   })
   default = null
   validation {
-    condition = var.pi_affinity_policy != "affinity" || (var.pi_affinity != null || (
+    condition = var.pi_affinity_policy != "affinity" || (var.pi_affinity != null && (
       (try(var.pi_affinity.affinity_instance, null) != null && try(var.pi_affinity.affinity_instance, "") != "" && try(var.pi_affinity.affinity_volume, null) == null) ||
       (try(var.pi_affinity.affinity_instance, null) == null && try(var.pi_affinity.affinity_volume, null) != null && try(var.pi_affinity.affinity_volume, "") != "")
     ))
@@ -132,7 +132,7 @@ variable "pi_anti_affinity" {
   })
   default = null
   validation {
-    condition = var.pi_affinity_policy != "anti-affinity" || (var.pi_anti_affinity != null || (
+    condition = var.pi_affinity_policy != "anti-affinity" || (var.pi_anti_affinity != null && (
       (try(var.pi_anti_affinity.anti_affinity_instances, null) != null && try(var.pi_anti_affinity.anti_affinity_volumes, null) == null) ||
       (try(var.pi_anti_affinity.anti_affinity_instances, null) == null && try(var.pi_anti_affinity.anti_affinity_volumes, null) != null)
     ))
