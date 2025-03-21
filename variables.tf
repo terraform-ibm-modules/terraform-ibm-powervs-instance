@@ -109,7 +109,7 @@ variable "pi_affinity_policy" {
 }
 
 variable "pi_affinity" {
-  description = "Defines affinity settings for instances or volumes. If requesting affinity, either 'affinity_instance' or 'affinity_volume' must be provided. 'affinity_instance' specifies the name of the target PVM instance, while 'affinity_volume' designates a volume to establish storage affinity."
+  description = "Defines affinity settings for instances or volumes. If requesting affinity, set this object with either one of 'affinity_instance' or 'affinity_volume'. Otherwise value must be null. 'affinity_instance' specifies the name of the target PVM instance, while 'affinity_volume' designates a volume to establish storage affinity."
   type = object({
     affinity_instance = optional(string)
     affinity_volume   = optional(string)
@@ -120,12 +120,12 @@ variable "pi_affinity" {
       (try(var.pi_affinity.affinity_instance, null) != null && try(var.pi_affinity.affinity_instance, "") != "" && try(var.pi_affinity.affinity_volume, null) == null) ||
       (try(var.pi_affinity.affinity_instance, null) == null && try(var.pi_affinity.affinity_volume, null) != null && try(var.pi_affinity.affinity_volume, "") != "")
     )
-    error_message = "Invalid value for pi_affinity. Either one of 'affinity_instance' or 'affinity_volume' must be provided with non-empty value, but not both."
+    error_message = "Invalid value for pi_affinity. If requesting affinity, either one of 'affinity_instance' or 'affinity_volume' must be provided with non-empty value, but not both. Otherwise pi_affinity must be set to null."
   }
 }
 
 variable "pi_anti_affinity" {
-  description = "Defines anti-affinity settings for instances or volumes. If requesting anti-affinity, either 'anti_affinity_instances' or 'anti_affinity_volumes' must be provided. 'anti_affinity_instances' is a list of PVM instance names to enforce anti-affinity, while 'anti_affinity_volumes' is a list of volumes to apply the storage anti-affinity policy."
+  description = "Defines anti-affinity settings for instances or volumes. If requesting anti-affinity, set this object with either one of 'anti_affinity_instances' or 'anti_affinity_volumes'. Otherwise value must be null. 'anti_affinity_instances' is a list of PVM instance names to enforce anti-affinity, while 'anti_affinity_volumes' is a list of volumes to apply the storage anti-affinity policy."
   type = object({
     anti_affinity_instances = optional(list(string))
     anti_affinity_volumes   = optional(list(string))
@@ -136,7 +136,7 @@ variable "pi_anti_affinity" {
       (try(var.pi_affinity.anti_affinity_instances, null) != null && length(try(var.pi_affinity.anti_affinity_instances, [])) > 0 && try(var.pi_affinity.anti_affinity_volumes, null) == null) ||
       (try(var.pi_affinity.anti_affinity_instances, null) == null && try(var.pi_affinity.anti_affinity_volumes, null) != null && length(try(var.pi_affinity.anti_affinity_volumes, [])) > 0)
     )
-    error_message = "Invalid value for pi_anti_affinity. Either one of 'anti_affinity_instances' or 'anti_affinity_volumes' must be provided non-empty value, but not both."
+    error_message = "Invalid value for pi_anti_affinity. If requesting anti-affinity, either one of 'anti_affinity_instances' or 'anti_affinity_volumes' must be provided non-empty value, but not both. Otherwise pi_anti_affinity must be set to null."
   }
 }
 
