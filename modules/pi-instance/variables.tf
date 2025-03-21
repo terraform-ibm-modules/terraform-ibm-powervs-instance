@@ -76,7 +76,6 @@ variable "pi_replicants" {
 variable "pi_affinity_policy" {
   description = "Specifies the affinity policy for the PVM instance. Allowed values: 'affinity' or 'anti-affinity'. If set to 'affinity', provide the 'pi_affinity' input. If set to 'anti-affinity', provide the 'pi_anti_affinity' input. This policy will be ignored if 'pi_boot_image_storage_pool' is specified."
   type        = string
-  default     = null
 }
 
 variable "pi_affinity" {
@@ -85,7 +84,6 @@ variable "pi_affinity" {
     affinity_instance = string
     affinity_volume   = string
   })
-  default = null
 }
 
 variable "pi_anti_affinity" {
@@ -94,7 +92,6 @@ variable "pi_anti_affinity" {
     anti_affinity_instances = list(string)
     anti_affinity_volumes   = list(string)
   })
-  default = null
 }
 
 variable "pi_placement_group_id" {
@@ -103,7 +100,7 @@ variable "pi_placement_group_id" {
 }
 
 variable "pi_storage_config" {
-  description = "File systems to be created and attached to PowerVS instance. 'size' is in GB. 'count' specify over how many storage volumes the file system will be striped. 'tier' specifies the storage tier in PowerVS workspace, 'mount' specifies the mount point on the OS."
+  description = "File systems to be created and attached to PowerVS instance. 'size' is in GB. 'count' specify over how many storage volumes the file system will be striped. 'tier' specifies the storage tier in PowerVS workspace, 'mount' specifies the mount point on the OS. 'pool' specifies the volume pool where the volume will be created. 'sharable' specifies if volume can be shared across PVM instances."
   type = list(object({
     name     = string
     size     = string

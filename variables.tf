@@ -104,7 +104,7 @@ variable "pi_affinity_policy" {
 
   validation {
     condition     = var.pi_affinity_policy == null || var.pi_affinity_policy == "affinity" || var.pi_affinity_policy == "anti-affinity"
-    error_message = "Invalid value for pi_affinity_policy. Allowed values are 'affinity' or 'anti-affinity'."
+    error_message = "Invalid value for pi_affinity_policy. Allowed values are 'null', 'affinity' or 'anti-affinity'."
   }
 }
 
@@ -115,6 +115,13 @@ variable "pi_affinity" {
     affinity_volume   = optional(string)
   })
   default = null
+  validation {
+    condition = var.pi_affinity == null || (
+      (try(var.pi_affinity.affinity_instance, null) != null && try(var.pi_affinity.affinity_instance, "") != "" && try(var.pi_affinity.affinity_volume, null) == null) ||
+      (try(var.pi_affinity.affinity_instance, null) == null && try(var.pi_affinity.affinity_volume, null) != null && try(var.pi_affinity.affinity_volume, "") != "")
+    )
+    error_message = "Invalid value for pi_affinity. Either one of 'affinity_instance' or 'affinity_volume' must be provided with non-empty value, but not both."
+  }
 }
 
 variable "pi_anti_affinity" {
@@ -124,6 +131,13 @@ variable "pi_anti_affinity" {
     anti_affinity_volumes   = optional(list(string))
   })
   default = null
+  validation {
+    condition = var.pi_anti_affinity == null || (
+      (try(var.pi_affinity.anti_affinity_instances, null) != null && try(var.pi_affinity.anti_affinity_volumes, null) == null) ||
+      (try(var.pi_affinity.anti_affinity_instances, null) == null && try(var.pi_affinity.anti_affinity_volumes, null) != null)
+    )
+    error_message = "Invalid value for pi_anti_affinity. Either one of 'anti_affinity_instances' or 'anti_affinity_volumes' must be provided non-empty value, but not both."
+  }
 }
 
 variable "pi_placement_group_id" {
