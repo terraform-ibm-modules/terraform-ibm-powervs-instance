@@ -133,8 +133,8 @@ variable "pi_anti_affinity" {
   default = null
   validation {
     condition = var.pi_anti_affinity == null || (
-      (try(var.pi_affinity.anti_affinity_instances, null) != null && try(var.pi_affinity.anti_affinity_volumes, null) == null) ||
-      (try(var.pi_affinity.anti_affinity_instances, null) == null && try(var.pi_affinity.anti_affinity_volumes, null) != null)
+      (try(var.pi_affinity.anti_affinity_instances, null) != null && length(try(var.pi_affinity.anti_affinity_instances, [])) > 0 && try(var.pi_affinity.anti_affinity_volumes, null) == null) ||
+      (try(var.pi_affinity.anti_affinity_instances, null) == null && try(var.pi_affinity.anti_affinity_volumes, null) != null && length(try(var.pi_affinity.anti_affinity_volumes, [])) > 0)
     )
     error_message = "Invalid value for pi_anti_affinity. Either one of 'anti_affinity_instances' or 'anti_affinity_volumes' must be provided non-empty value, but not both."
   }
