@@ -116,11 +116,11 @@ variable "pi_affinity" {
   })
   default = null
   validation {
-    condition = var.pi_affinity == null || (
+    condition = var.pi_affinity_policy != "affinity" || (var.pi_affinity != null || (
       (try(var.pi_affinity.affinity_instance, null) != null && try(var.pi_affinity.affinity_instance, "") != "" && try(var.pi_affinity.affinity_volume, null) == null) ||
       (try(var.pi_affinity.affinity_instance, null) == null && try(var.pi_affinity.affinity_volume, null) != null && try(var.pi_affinity.affinity_volume, "") != "")
-    )
-    error_message = "Invalid value for pi_affinity. If requesting affinity, either one of 'affinity_instance' or 'affinity_volume' must be provided with non-empty value, but not both. Otherwise pi_affinity must be set to null."
+    ))
+    error_message = "Invalid value for pi_affinity. If requesting affinity, set pi_affinity with either one of 'affinity_instance' or 'affinity_volume' must be provided with non-empty value, but not both. Otherwise pi_affinity must be set to null."
   }
 }
 
@@ -132,11 +132,11 @@ variable "pi_anti_affinity" {
   })
   default = null
   validation {
-    condition = var.pi_anti_affinity == null || (
-      (try(var.pi_affinity.anti_affinity_instances, null) != null && length(try(var.pi_affinity.anti_affinity_instances, [])) > 0 && try(var.pi_affinity.anti_affinity_volumes, null) == null) ||
-      (try(var.pi_affinity.anti_affinity_instances, null) == null && try(var.pi_affinity.anti_affinity_volumes, null) != null && length(try(var.pi_affinity.anti_affinity_volumes, [])) > 0)
-    )
-    error_message = "Invalid value for pi_anti_affinity. If requesting anti-affinity, either one of 'anti_affinity_instances' or 'anti_affinity_volumes' must be provided with non-empty value, but not both. Otherwise pi_anti_affinity must be set to null."
+    condition = var.pi_affinity_policy != "anti-affinity" || (var.pi_anti_affinity != null || (
+      (try(var.pi_anti_affinity.anti_affinity_instances, null) != null && try(var.pi_anti_affinity.anti_affinity_volumes, null) == null) ||
+      (try(var.pi_anti_affinity.anti_affinity_instances, null) == null && try(var.pi_anti_affinity.anti_affinity_volumes, null) != null)
+    ))
+    error_message = "Invalid value for pi_anti_affinity. If requesting anti-affinity, set pi_anti_affinity with either one of 'anti_affinity_instances' or 'anti_affinity_volumes' must be provided with non-empty value, but not both. Otherwise pi_anti_affinity must be set to null."
   }
 }
 
