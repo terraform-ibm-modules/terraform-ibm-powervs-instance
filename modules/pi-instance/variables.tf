@@ -35,6 +35,7 @@ variable "pi_networks" {
       name = string
       id   = string
       cidr = optional(string)
+      ip   = optional(string)
     })
   )
 }
@@ -72,20 +73,42 @@ variable "pi_replicants" {
   })
 }
 
+variable "pi_affinity_policy" {
+  description = "Specifies the affinity policy for the PVM instance. Allowed values: 'affinity' or 'anti-affinity'. If set to 'affinity', provide the 'pi_affinity' input. If set to 'anti-affinity', provide the 'pi_anti_affinity' input. This policy will be ignored if 'pi_boot_image_storage_pool' is specified."
+  type        = string
+}
+
+variable "pi_affinity" {
+  description = "Defines affinity settings for instances or volumes. If requesting affinity, either 'affinity_instance' or 'affinity_volume' must be provided. 'affinity_instance' specifies the name of the target PVM instance, while 'affinity_volume' designates a volume to establish storage affinity."
+  type = object({
+    affinity_instance = string
+    affinity_volume   = string
+  })
+}
+
+variable "pi_anti_affinity" {
+  description = "Defines anti-affinity settings for instances or volumes. If requesting anti-affinity, either 'anti_affinity_instances' or 'anti_affinity_volumes' must be provided. 'anti_affinity_instances' is a list of PVM instance names to enforce anti-affinity, while 'anti_affinity_volumes' is a list of volumes to apply the storage anti-affinity policy."
+  type = object({
+    anti_affinity_instances = list(string)
+    anti_affinity_volumes   = list(string)
+  })
+}
+
 variable "pi_placement_group_id" {
   description = "The ID of the placement group that the instance is in or empty quotes '' to indicate it is not in a placement group. pi_replicants cannot be used when specifying a placement group ID."
   type        = string
 }
 
 variable "pi_storage_config" {
-  description = "File systems to be created and attached to PowerVS instance. 'size' is in GB. 'count' specify over how many storage volumes the file system will be striped. 'tier' specifies the storage tier in PowerVS workspace, 'mount' specifies the mount point on the OS."
+  description = "File systems to be created and attached to PowerVS instance. 'size' is in GB. 'count' specify over how many storage volumes the file system will be striped. 'tier' specifies the storage tier in PowerVS workspace, 'mount' specifies the mount point on the OS. 'pool' specifies the volume pool where the volume will be created. 'sharable' specifies if volume can be shared across PVM instances."
   type = list(object({
-    name  = string
-    size  = string
-    count = string
-    tier  = string
-    mount = string
-    pool  = optional(string)
+    name     = string
+    size     = string
+    count    = string
+    tier     = string
+    mount    = string
+    pool     = optional(string)
+    sharable = optional(bool)
   }))
 }
 
