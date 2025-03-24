@@ -13,8 +13,8 @@ variable "pi_instance_name" {
   type        = string
 
   validation {
-    condition     = length(var.pi_instance_name) <= 16
-    error_message = "Maximum length of Instance name must be less or equal to 16 characters only."
+    condition     = length(var.pi_instance_name) <= 47
+    error_message = "Maximum length of Instance name must be less or equal to 47 characters only."
   }
 }
 
