@@ -21,10 +21,10 @@ resource "ibm_pi_instance" "instance" {
   pi_storage_pool            = var.pi_boot_image_storage_pool
   pi_storage_type            = var.pi_boot_image_storage_tier
   pi_affinity_policy         = var.pi_affinity_policy
-  pi_affinity_instance       = var.pi_affinity != null ? var.pi_affinity.affinity_instance : null
-  pi_affinity_volume         = var.pi_affinity != null ? var.pi_affinity.affinity_volume : null
-  pi_anti_affinity_instances = var.pi_anti_affinity != null ? var.pi_anti_affinity.anti_affinity_instances : null
-  pi_anti_affinity_volumes   = var.pi_anti_affinity != null ? var.pi_anti_affinity.anti_affinity_volumes : null
+  pi_affinity_instance       = var.pi_affinity_policy == "affinity" && var.pi_affinity != null ? var.pi_affinity.affinity_instance : null
+  pi_affinity_volume         = var.pi_affinity_policy == "affinity" && var.pi_affinity != null ? var.pi_affinity.affinity_volume : null
+  pi_anti_affinity_instances = var.pi_affinity_policy == "anti-affinity" && var.pi_anti_affinity != null ? var.pi_anti_affinity.anti_affinity_instances : null
+  pi_anti_affinity_volumes   = var.pi_affinity_policy == "anti-affinity" && var.pi_anti_affinity != null ? var.pi_anti_affinity.anti_affinity_volumes : null
   pi_volume_ids              = var.pi_existing_volume_ids != null ? var.pi_existing_volume_ids : null
   pi_user_tags               = var.pi_user_tags != null ? var.pi_user_tags : []
   pi_user_data               = var.pi_user_data

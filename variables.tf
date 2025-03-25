@@ -116,11 +116,16 @@ variable "pi_affinity" {
   })
   default = null
   validation {
-    condition = var.pi_affinity_policy != "affinity" || (var.pi_affinity != null && (
+    condition = (var.pi_affinity_policy != "affinity" && var.pi_affinity == null) || (var.pi_affinity_policy == "affinity" && var.pi_affinity != null && (
       (try(var.pi_affinity.affinity_instance, null) != null && try(var.pi_affinity.affinity_instance, "") != "" && try(var.pi_affinity.affinity_volume, null) == null) ||
       (try(var.pi_affinity.affinity_instance, null) == null && try(var.pi_affinity.affinity_volume, null) != null && try(var.pi_affinity.affinity_volume, "") != "")
     ))
-    error_message = "Invalid value for pi_affinity. If requesting affinity, set pi_affinity with either one of 'affinity_instance' or 'affinity_volume' must be provided with non-empty value, but not both. Otherwise pi_affinity must be set to null."
+    error_message = <<EOT
+      Invalid affinity configuration:
+      - If 'pi_affinity_policy' is not set to 'affinity', 'pi_affinity' must be null.
+      - If 'pi_affinity_policy' is set to 'affinity', 'pi_affinity' must not be null and must contain either 'affinity_instance' or 'affinity_volume', but not both.
+      - 'affinity_instance' and 'affinity_volume' must be non-empty strings if provided.
+    EOT
   }
 }
 
@@ -132,11 +137,16 @@ variable "pi_anti_affinity" {
   })
   default = null
   validation {
-    condition = var.pi_affinity_policy != "anti-affinity" || (var.pi_anti_affinity != null && (
+    condition = (var.pi_affinity_policy != "anti-affinity" && var.pi_anti_affinity == null) || (var.pi_affinity_policy == "anti-affinity" && var.pi_anti_affinity != null && (
       (try(var.pi_anti_affinity.anti_affinity_instances, null) != null && try(var.pi_anti_affinity.anti_affinity_volumes, null) == null) ||
       (try(var.pi_anti_affinity.anti_affinity_instances, null) == null && try(var.pi_anti_affinity.anti_affinity_volumes, null) != null)
     ))
-    error_message = "Invalid value for pi_anti_affinity. If requesting anti-affinity, set pi_anti_affinity with either one of 'anti_affinity_instances' or 'anti_affinity_volumes' must be provided with non-empty value, but not both. Otherwise pi_anti_affinity must be set to null."
+    error_message = <<EOT
+      Invalid anti-affinity configuration:
+      - If 'pi_affinity_policy' is not set to 'anti-affinity', 'pi_anti_affinity' must be null.
+      - If 'pi_affinity_policy' is set to 'anti-affinity', 'pi_anti_affinity' must not be null and must contain either 'anti_affinity_instances' or 'anti_affinity_volumes', but not both.
+      - 'anti_affinity_instances' and 'anti_affinity_volumes' must be non-empty lists if provided.
+    EOT
   }
 }
 
