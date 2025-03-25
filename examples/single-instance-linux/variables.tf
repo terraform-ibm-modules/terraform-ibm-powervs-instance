@@ -105,11 +105,13 @@ variable "powervs_networks" {
 variable "powervs_storage_config" {
   description = "Custom File systems to be created and attached to PowerVS instance. 'disk_size' is in GB. 'count' specify over how many storage volumes the file system will be striped. 'tier' specifies the storage tier in PowerVS workspace. 'mount' specifies the mount point on the OS."
   type = list(object({
-    name  = string
-    size  = string
-    count = string
-    tier  = string
-    mount = string
+    name     = string
+    size     = string
+    count    = string
+    tier     = string
+    mount    = string
+    pool     = optional(string)
+    sharable = optional(bool)
   }))
   default = [
     {
