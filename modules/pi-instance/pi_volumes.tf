@@ -8,11 +8,12 @@ locals {
   volume_list = local.create_volumes ? flatten([
     for vol in var.pi_storage_config : [
       for i in range(1, vol.count + 1) : {
-        name  = "${vol.name}-${i}"
-        size  = vol.size
-        tier  = vol.tier
-        mount = vol.mount
-        pool  = can(vol.pool) ? vol.pool : null
+        name     = "${vol.name}-${i}"
+        size     = vol.size
+        tier     = vol.tier
+        mount    = vol.mount
+        pool     = can(vol.pool) ? vol.pool : null
+        sharable = can(vol.sharable) ? vol.sharable : false
       }
     ]
   ]) : []
@@ -26,7 +27,7 @@ resource "ibm_pi_volume" "create_volume" {
   pi_volume_size       = local.volume_list[count.index].size
   pi_volume_type       = local.volume_list[count.index].tier
   pi_volume_pool       = local.volume_list[count.index].pool
-  pi_volume_shareable  = false
+  pi_volume_shareable  = local.volume_list[count.index].sharable
   pi_cloud_instance_id = var.pi_workspace_guid
   pi_user_tags         = var.pi_user_tags != null ? var.pi_user_tags : []
 

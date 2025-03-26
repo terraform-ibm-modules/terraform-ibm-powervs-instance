@@ -42,6 +42,7 @@ variable "pi_networks" {
       name = string
       id   = string
       cidr = optional(string)
+      ip   = optional(string)
     })
   )
 }
@@ -96,6 +97,59 @@ variable "pi_replicants" {
   default = null
 }
 
+variable "pi_affinity_policy" {
+  description = "Specifies the affinity policy for the PVM instance. Allowed values: 'affinity' or 'anti-affinity'. If set to 'affinity', provide the 'pi_affinity' input. If set to 'anti-affinity', provide the 'pi_anti_affinity' input. This policy will be ignored if 'pi_boot_image_storage_pool' is specified."
+  type        = string
+  default     = null
+
+  validation {
+    condition     = var.pi_affinity_policy == null || var.pi_affinity_policy == "affinity" || var.pi_affinity_policy == "anti-affinity"
+    error_message = "Invalid value for pi_affinity_policy. Allowed values are 'null', 'affinity' or 'anti-affinity'."
+  }
+}
+
+variable "pi_affinity" {
+  description = "Defines affinity settings for instances or volumes. If requesting affinity, set this object with either one of 'affinity_instance' or 'affinity_volume'. Otherwise value must be null. 'affinity_instance' specifies the name of the target PVM instance, while 'affinity_volume' designates a volume to establish storage affinity."
+  type = object({
+    affinity_instance = optional(string)
+    affinity_volume   = optional(string)
+  })
+  default = null
+  validation {
+    condition = (var.pi_affinity_policy != "affinity" && var.pi_affinity == null) || (var.pi_affinity_policy == "affinity" && var.pi_affinity != null && (
+      (try(var.pi_affinity.affinity_instance, null) != null && try(var.pi_affinity.affinity_instance, "") != "" && try(var.pi_affinity.affinity_volume, null) == null) ||
+      (try(var.pi_affinity.affinity_instance, null) == null && try(var.pi_affinity.affinity_volume, null) != null && try(var.pi_affinity.affinity_volume, "") != "")
+    ))
+    error_message = <<EOT
+      Invalid affinity configuration:
+      - If 'pi_affinity_policy' is not set to 'affinity', 'pi_affinity' must be null.
+      - If 'pi_affinity_policy' is set to 'affinity', 'pi_affinity' must not be null and must contain either 'affinity_instance' or 'affinity_volume', but not both.
+      - 'affinity_instance' and 'affinity_volume' must be non-empty strings if provided.
+    EOT
+  }
+}
+
+variable "pi_anti_affinity" {
+  description = "Defines anti-affinity settings for instances or volumes. If requesting anti-affinity, set this object with either one of 'anti_affinity_instances' or 'anti_affinity_volumes'. Otherwise value must be null. 'anti_affinity_instances' is a list of PVM instance names to enforce anti-affinity, while 'anti_affinity_volumes' is a list of volumes to apply the storage anti-affinity policy."
+  type = object({
+    anti_affinity_instances = optional(list(string))
+    anti_affinity_volumes   = optional(list(string))
+  })
+  default = null
+  validation {
+    condition = (var.pi_affinity_policy != "anti-affinity" && var.pi_anti_affinity == null) || (var.pi_affinity_policy == "anti-affinity" && var.pi_anti_affinity != null && (
+      (try(var.pi_anti_affinity.anti_affinity_instances, null) != null && try(var.pi_anti_affinity.anti_affinity_volumes, null) == null) ||
+      (try(var.pi_anti_affinity.anti_affinity_instances, null) == null && try(var.pi_anti_affinity.anti_affinity_volumes, null) != null)
+    ))
+    error_message = <<EOT
+      Invalid anti-affinity configuration:
+      - If 'pi_affinity_policy' is not set to 'anti-affinity', 'pi_anti_affinity' must be null.
+      - If 'pi_affinity_policy' is set to 'anti-affinity', 'pi_anti_affinity' must not be null and must contain either 'anti_affinity_instances' or 'anti_affinity_volumes', but not both.
+      - 'anti_affinity_instances' and 'anti_affinity_volumes' must be non-empty lists if provided.
+    EOT
+  }
+}
+
 variable "pi_placement_group_id" {
   description = "The ID of the placement group that the instance is in or empty quotes '' to indicate it is not in a placement group. pi_replicants cannot be used when specifying a placement group ID."
   type        = string
@@ -103,14 +157,15 @@ variable "pi_placement_group_id" {
 }
 
 variable "pi_storage_config" {
-  description = "File systems to be created and attached to PowerVS instance. 'size' is in GB. 'count' specify over how many storage volumes the file system will be striped. 'tier' specifies the storage tier in PowerVS workspace, 'mount' specifies the mount point on the OS."
+  description = "File systems to be created and attached to PowerVS instance. 'size' is in GB. 'count' specify over how many storage volumes the file system will be striped. 'tier' specifies the storage tier in PowerVS workspace, 'mount' specifies the mount point on the OS. 'pool' specifies the volume pool where the volume will be created. 'sharable' specifies if volume can be shared across PVM instances."
   type = list(object({
-    name  = string
-    size  = string
-    count = string
-    tier  = string
-    mount = string
-    pool  = optional(string)
+    name     = string
+    size     = string
+    count    = string
+    tier     = string
+    mount    = string
+    pool     = optional(string)
+    sharable = optional(bool)
   }))
 
   default = null
