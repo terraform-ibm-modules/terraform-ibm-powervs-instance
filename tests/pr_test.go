@@ -52,7 +52,7 @@ func TestRunBranchExample(t *testing.T) {
 func TestRunMainExample(t *testing.T) {
 	t.Parallel()
 
-	options := setupOptions(t, "pim", completeExampleDir, "dal10")
+	options := setupOptions(t, "pim", completeExampleDir, "sao04")
 
 	output, err := options.RunTestUpgrade()
 	if !options.UpgradeTestSkipped {
