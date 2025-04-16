@@ -60,6 +60,11 @@ variable "pi_number_of_processors" {
   type        = string
 }
 
+variable "pi_license_repository_capacity" {
+  description = "The VTL license repository capacity as TB value. Only use with VTL instances."
+  type        = number
+}
+
 variable "pi_memory_size" {
   description = "The amount of memory that you want to assign to your instance in GB. Required when not creating SAP instances. Conflicts with 'pi_sap_profile_id'."
   type        = string

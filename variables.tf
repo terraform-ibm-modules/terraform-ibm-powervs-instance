@@ -150,6 +150,12 @@ variable "pi_anti_affinity" {
   }
 }
 
+variable "pi_license_repository_capacity" {
+  description = "The VTL license repository capacity as TB value. Only use with VTL instances."
+  type        = number
+  default     = null
+}
+
 variable "pi_placement_group_id" {
   description = "The ID of the placement group that the instance is in or empty quotes '' to indicate it is not in a placement group. pi_replicants cannot be used when specifying a placement group ID."
   type        = string
