@@ -46,30 +46,31 @@ module "pi_instance" {
     source     = "terraform-ibm-modules/powervs-instance/ibm"
     version    = "x.x.x" # Replace "x.x.x" with a GIT release version to lock into a specific release
 
-    pi_workspace_guid          = var.pi_workspace_guid
-    pi_ssh_public_key_name     = var.pi_ssh_public_key_name
-    pi_image_id                = var.pi_image_id
-    pi_networks                = var.pi_networks
-    pi_instance_name           = var.pi_instance_name
-    pi_sap_profile_id          = var.pi_sap_profile_id           #(optional, default null)
-    pi_server_type             = var.pi_server_type              #(optional, default null)
-    pi_number_of_processors    = var.pi_number_of_processors     #(optional, default null)
-    pi_memory_size             = var.pi_memory_size              #(optional, default null)
-    pi_cpu_proc_type           = var.pi_cpu_proc_type            #(optional, default check vars)
-    pi_boot_image_storage_pool = vat.pi_boot_image_storage_pool  #(optional, default null)
-    pi_boot_image_storage_tier = var.pi_boot_image_storage_tier  #(optional, default null)
-    pi_replicants              = var.pi_replicants               #(optional, default null)
-    pi_placement_group_id      = var.pi_placement_group_id       #(optional, default null)
-    pi_existing_volume_ids     = var.pi_existing_volume_ids      #(optional, default null)
-    pi_affinity_policy         = var.pi_affinity_policy          #(optional, default null)
-    pi_affinity                = var.pi_affinity                 #(optional, default check vars)
-    pi_anti_affinity           = var.pi_anti_affinity            #(optional, default check vars)
-    pi_storage_config          = var.pi_storage_config           #(optional, default check vars)
-    pi_instance_init_linux     = var.pi_instance_init_linux      #(optional, default check vars)
-    pi_network_services_config = var.pi_network_services_config  #(optional, default check vars)
-    pi_user_tags               = var.pi_user_tags                #(optional, default null)
-    pi_user_data               = var.pi_user_data                #(optional, default null)
-    ansible_vault_password     = var.ansible_vault_password      #(optional, default null)
+    pi_workspace_guid               = var.pi_workspace_guid
+    pi_ssh_public_key_name          = var.pi_ssh_public_key_name
+    pi_image_id                     = var.pi_image_id
+    pi_networks                     = var.pi_networks
+    pi_instance_name                = var.pi_instance_name
+    pi_sap_profile_id               = var.pi_sap_profile_id           #(optional, default null)
+    pi_server_type                  = var.pi_server_type              #(optional, default null)
+    pi_number_of_processors         = var.pi_number_of_processors     #(optional, default null)
+    pi_memory_size                  = var.pi_memory_size              #(optional, default null)
+    pi_cpu_proc_type                = var.pi_cpu_proc_type            #(optional, default check vars)
+    pi_boot_image_storage_pool      = vat.pi_boot_image_storage_pool  #(optional, default null)
+    pi_boot_image_storage_tier      = var.pi_boot_image_storage_tier  #(optional, default null)
+    pi_replicants                   = var.pi_replicants               #(optional, default null)
+    pi_placement_group_id           = var.pi_placement_group_id       #(optional, default null)
+    pi_existing_volume_ids          = var.pi_existing_volume_ids      #(optional, default null)
+    pi_affinity_policy              = var.pi_affinity_policy          #(optional, default null)
+    pi_affinity                     = var.pi_affinity                 #(optional, default check vars)
+    pi_anti_affinity                = var.pi_anti_affinity            #(optional, default check vars)
+    pi_storage_config               = var.pi_storage_config           #(optional, default check vars)
+    pi_user_tags                    = var.pi_user_tags                #(optional, default null)
+    pi_user_data                    = var.pi_user_data                #(optional, default null)
+    pi_license_repository_capacity  = var.pi_license_repository_capacity #(optional, default null)
+    pi_instance_init_linux          = var.pi_instance_init_linux      #(optional, default check vars)
+    pi_network_services_config      = var.pi_network_services_config  #(optional, default check vars)
+    ansible_vault_password          = var.ansible_vault_password      #(optional, default null)
 }
 ```
 
@@ -127,6 +128,7 @@ No resources.
 | <a name="input_pi_image_id"></a> [pi\_image\_id](#input\_pi\_image\_id) | Image ID used for PowerVS instance. Run 'ibmcloud pi images' to list available images. | `string` | n/a | yes |
 | <a name="input_pi_instance_init_linux"></a> [pi\_instance\_init\_linux](#input\_pi\_instance\_init\_linux) | Configures a PowerVS linux instance to have internet access by setting proxy on it, updates os and create filesystems using ansible collection [ibm.power\_linux\_sap collection](https://galaxy.ansible.com/ui/repo/published/ibm/power_linux_sap/) where 'bastion\_host\_ip' is public IP of bastion/jump host to access the 'ansible\_host\_or\_ip' private IP of ansible node. Additionally, specify whether IBM provided or customer provided linux subscription should be used. For IBM provided subscription leave custom\_os\_registration empty. For customer provided subscription set a username and a password inside custom\_os\_registration. Customer provided linux subscription requires the use of either an IBM provided image ending in BYOL or a custom image. The ansible host must have access to the power virtual server instance and ansible host OS must be RHEL distribution. | <pre>object(<br/>    {<br/>      enable             = bool<br/>      bastion_host_ip    = string<br/>      ansible_host_or_ip = string<br/>      ssh_private_key    = string<br/>      custom_os_registration = optional(object({<br/>        username = string<br/>        password = string<br/>      }))<br/>    }<br/>  )</pre> | <pre>{<br/>  "ansible_host_or_ip": "",<br/>  "bastion_host_ip": "",<br/>  "enable": false,<br/>  "ssh_private_key": ""<br/>}</pre> | no |
 | <a name="input_pi_instance_name"></a> [pi\_instance\_name](#input\_pi\_instance\_name) | Name of instance which will be created. | `string` | n/a | yes |
+| <a name="input_pi_license_repository_capacity"></a> [pi\_license\_repository\_capacity](#input\_pi\_license\_repository\_capacity) | The VTL license repository capacity as TB value. Only use with VTL instances. | `number` | `null` | no |
 | <a name="input_pi_memory_size"></a> [pi\_memory\_size](#input\_pi\_memory\_size) | The amount of memory that you want to assign to your instance in GB. Required when not creating SAP instances. Conflicts with 'pi\_sap\_profile\_id'. | `string` | `null` | no |
 | <a name="input_pi_network_services_config"></a> [pi\_network\_services\_config](#input\_pi\_network\_services\_config) | Configures network services proxy, NTP, NFS and DNS on PowerVS instance. Requires 'pi\_instance\_init\_linux' to be specified to configure these services. The 'opts' attribute can take in comma separated values. | <pre>object(<br/>    {<br/>      squid = object({ enable = bool, squid_server_ip_port = string, no_proxy_hosts = string })<br/>      nfs   = object({ enable = bool, nfs_server_path = string, nfs_client_path = string, opts = string, fstype = string })<br/>      dns   = object({ enable = bool, dns_server_ip = string })<br/>      ntp   = object({ enable = bool, ntp_server_ip = string })<br/>    }<br/>  )</pre> | <pre>{<br/>  "dns": {<br/>    "dns_server_ip": "",<br/>    "enable": false<br/>  },<br/>  "nfs": {<br/>    "enable": false,<br/>    "fstype": "",<br/>    "nfs_client_path": "",<br/>    "nfs_server_path": "",<br/>    "opts": ""<br/>  },<br/>  "ntp": {<br/>    "enable": false,<br/>    "ntp_server_ip": ""<br/>  },<br/>  "squid": {<br/>    "enable": false,<br/>    "no_proxy_hosts": "",<br/>    "squid_server_ip_port": ""<br/>  }<br/>}</pre> | no |
 | <a name="input_pi_networks"></a> [pi\_networks](#input\_pi\_networks) | Existing list of private subnet ids to be attached to an instance. The first element will become the primary interface. Run 'ibmcloud pi networks' to list available private subnets. | <pre>list(<br/>    object({<br/>      name = string<br/>      id   = string<br/>      cidr = optional(string)<br/>      ip   = optional(string)<br/>    })<br/>  )</pre> | n/a | yes |
