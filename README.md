@@ -65,12 +65,12 @@ module "pi_instance" {
     pi_affinity                     = var.pi_affinity                 #(optional, default check vars)
     pi_anti_affinity                = var.pi_anti_affinity            #(optional, default check vars)
     pi_storage_config               = var.pi_storage_config           #(optional, default check vars)
-    pi_instance_init_linux          = var.pi_instance_init_linux      #(optional, default check vars)
-    pi_network_services_config      = var.pi_network_services_config  #(optional, default check vars)
     pi_user_tags                    = var.pi_user_tags                #(optional, default null)
     pi_user_data                    = var.pi_user_data                #(optional, default null)
-    ansible_vault_password          = var.ansible_vault_password      #(optional, default null)
     pi_license_repository_capacity  = var.pi_license_repository_capacity #(optional, default null)
+    pi_instance_init_linux          = var.pi_instance_init_linux      #(optional, default check vars)
+    pi_network_services_config      = var.pi_network_services_config  #(optional, default check vars)
+    ansible_vault_password          = var.ansible_vault_password      #(optional, default null)
 }
 ```
 
