@@ -63,12 +63,6 @@ variable "powervs_private_subnet_2" {
   }
 }
 
-variable "powervs_image_names" {
-  description = "List of Images to be imported into cloud account from catalog images."
-  type        = list(string)
-  default     = ["SLES15-SP5-SAP", "RHEL9-SP2-SAP"]
-}
-
 variable "powervs_user_tags" {
   description = "List of Tag names for IBM Cloud PowerVS instance and volumes. Can be set to null."
   type        = list(string)

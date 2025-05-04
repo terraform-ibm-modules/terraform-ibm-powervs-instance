@@ -14,7 +14,7 @@ It provisions the following infrastructure:
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.9.0 |
-| <a name="requirement_ibm"></a> [ibm](#requirement\_ibm) | =1.77.0 |
+| <a name="requirement_ibm"></a> [ibm](#requirement\_ibm) | =1.78.0 |
 
 ### Modules
 
@@ -26,7 +26,9 @@ It provisions the following infrastructure:
 
 ### Resources
 
-No resources.
+| Name | Type |
+|------|------|
+| [ibm_pi_catalog_images.catalog_images_ds](https://registry.terraform.io/providers/IBM-Cloud/ibm/1.78.0/docs/data-sources/pi_catalog_images) | data source |
 
 ### Inputs
 
@@ -35,7 +37,6 @@ No resources.
 | <a name="input_ibmcloud_api_key"></a> [ibmcloud\_api\_key](#input\_ibmcloud\_api\_key) | The IBM Cloud platform API key needed to deploy IAM enabled resources. | `string` | n/a | yes |
 | <a name="input_powervs_boot_image_storage_tier"></a> [powervs\_boot\_image\_storage\_tier](#input\_powervs\_boot\_image\_storage\_tier) | Storage type for server deployment.Possible values tier0, tier1 and tier3 | `string` | `"tier1"` | no |
 | <a name="input_powervs_cpu_proc_type"></a> [powervs\_cpu\_proc\_type](#input\_powervs\_cpu\_proc\_type) | The type of processor mode in which the VM will run with shared, capped or dedicated. Required when not creating SAP instances. Conflicts with 'powervs\_sap\_profile\_id'. | `string` | `null` | no |
-| <a name="input_powervs_image_names"></a> [powervs\_image\_names](#input\_powervs\_image\_names) | List of Images to be imported into cloud account from catalog images. | `list(string)` | <pre>[<br/>  "SLES15-SP5-SAP",<br/>  "RHEL9-SP2-SAP"<br/>]</pre> | no |
 | <a name="input_powervs_instance_name"></a> [powervs\_instance\_name](#input\_powervs\_instance\_name) | Name of instance which will be created. | `string` | `"pi"` | no |
 | <a name="input_powervs_memory_size"></a> [powervs\_memory\_size](#input\_powervs\_memory\_size) | The amount of memory that you want to assign to your instance in GB. Required when not creating SAP instances. Conflicts with 'powervs\_sap\_profile\_id'. | `string` | `null` | no |
 | <a name="input_powervs_number_of_processors"></a> [powervs\_number\_of\_processors](#input\_powervs\_number\_of\_processors) | The number of vCPUs to assign to the VM as visible within the guest Operating System. Required when not creating SAP instances. Conflicts with 'powervs\_sap\_profile\_id'. | `string` | `null` | no |
