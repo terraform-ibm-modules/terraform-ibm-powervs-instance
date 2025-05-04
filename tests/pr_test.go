@@ -28,6 +28,9 @@ func setupOptions(t *testing.T, prefix string, dir string, powervs_zone string) 
 		Prefix:        prefix,
 		ResourceGroup: resourceGroup,
 		Region:        powervs_zone,
+		ImplicitDestroy: []string{
+			"module.powervs_workspace.ibm_resource_instance.pi_workspace",
+		},
 	})
 
 	options.TerraformVars = map[string]interface{}{
