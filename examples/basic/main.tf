@@ -21,12 +21,11 @@ locals {
 module "powervs_workspace" {
   depends_on = [module.resource_group]
   source     = "terraform-ibm-modules/powervs-workspace/ibm"
-  version    = "2.5.0"
+  version    = "3.0.0"
 
   pi_zone                = var.powervs_zone
   pi_resource_group_name = module.resource_group.resource_group_name
   pi_workspace_name      = "${var.prefix}-${var.powervs_zone}-${var.powervs_workspace_name}"
-  pi_image_names         = []
   pi_ssh_public_key      = local.powervs_ssh_public_key
   pi_private_subnet_1    = var.powervs_private_subnet_1
   pi_private_subnet_2    = var.powervs_private_subnet_2
