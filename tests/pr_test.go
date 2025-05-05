@@ -28,6 +28,9 @@ func setupOptions(t *testing.T, prefix string, dir string, powervs_zone string) 
 		Prefix:        prefix,
 		ResourceGroup: resourceGroup,
 		Region:        powervs_zone,
+		ImplicitDestroy: []string{
+			"module.powervs_workspace.ibm_resource_instance.pi_workspace",
+		},
 	})
 
 	options.TerraformVars = map[string]interface{}{
@@ -42,7 +45,7 @@ func setupOptions(t *testing.T, prefix string, dir string, powervs_zone string) 
 func TestRunBranchExample(t *testing.T) {
 	t.Parallel()
 
-	options := setupOptions(t, "pib", completeExampleDir, "syd05")
+	options := setupOptions(t, "pib", completeExampleDir, "wdc06")
 
 	output, err := options.RunTestConsistency()
 	assert.Nil(t, err, "This should not have errored")
