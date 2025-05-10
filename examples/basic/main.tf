@@ -21,7 +21,7 @@ locals {
 module "powervs_workspace" {
   depends_on = [module.resource_group]
   source     = "terraform-ibm-modules/powervs-workspace/ibm"
-  version    = "3.0.0"
+  version    = "3.0.2"
 
   pi_zone                = var.powervs_zone
   pi_resource_group_name = module.resource_group.resource_group_name
