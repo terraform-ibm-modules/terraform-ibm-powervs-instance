@@ -45,7 +45,7 @@ func setupOptions(t *testing.T, prefix string, dir string, powervs_zone string) 
 func TestRunBranchExample(t *testing.T) {
 	t.Parallel()
 
-	options := setupOptions(t, "pib", completeExampleDir, "wdc06")
+	options := setupOptions(t, "pib", completeExampleDir, "mad04")
 
 	output, err := options.RunTestConsistency()
 	assert.Nil(t, err, "This should not have errored")
