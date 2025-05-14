@@ -14,7 +14,7 @@ It provisions the following infrastructure:
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.9.0 |
-| <a name="requirement_ibm"></a> [ibm](#requirement\_ibm) | =1.78.1 |
+| <a name="requirement_ibm"></a> [ibm](#requirement\_ibm) | =1.78.2 |
 
 ### Modules
 
@@ -28,7 +28,7 @@ It provisions the following infrastructure:
 
 | Name | Type |
 |------|------|
-| [ibm_pi_catalog_images.catalog_images_ds](https://registry.terraform.io/providers/IBM-Cloud/ibm/1.78.1/docs/data-sources/pi_catalog_images) | data source |
+| [ibm_pi_catalog_images.catalog_images_ds](https://registry.terraform.io/providers/IBM-Cloud/ibm/1.78.2/docs/data-sources/pi_catalog_images) | data source |
 
 ### Inputs
 
