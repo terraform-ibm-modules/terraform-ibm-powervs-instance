@@ -178,11 +178,16 @@ variable "pi_storage_config" {
 
   validation {
     condition = var.pi_storage_config != null ? (
-      alltrue([for config in var.pi_storage_config : (
-        (config.name != "" && config.count != "" && config.tier != "" && config.mount != "") || (config.name == "" && config.count == "" && config.tier == "" && config.mount == "")
-      )])
-    ) : var.pi_storage_config == null ? true : false
-    error_message = "One of the storage config has invalid value, probably an empty string'"
+      alltrue([
+        for config in var.pi_storage_config : (
+          (config.name != "" && config.count != "" && config.tier != "" && config.mount != "") ||
+          (config.name == "" && config.count == "" && config.tier == "" && config.mount == "")
+        )
+      ]) &&
+      length(distinct([for config in var.pi_storage_config : config.name])) == length(var.pi_storage_config)
+    ) : true
+
+    error_message = "One of the storage configs has an invalid value (e.g., an empty string), or duplicate 'name' values exist."
   }
 }
 
@@ -229,7 +234,7 @@ variable "pi_instance_init_linux" {
     bastion_host_ip    = ""
     ansible_host_or_ip = ""
     ssh_private_key    = <<-EOF
-EOF
+ EOF
   }
 
   validation {
