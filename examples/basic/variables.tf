@@ -42,24 +42,32 @@ variable "powervs_ssh_public_key" {
 variable "powervs_private_subnet_1" {
   description = "IBM Cloud PowerVS first private subnet name and cidr which will be created. Set value to null to not create this subnet."
   type = object({
-    name = string
-    cidr = string
+    name          = string
+    cidr          = string
+    advertise     = optional(string)
+    arp_broadcast = optional(string)
   })
   default = {
-    name = "sub_1"
-    cidr = "10.51.0.0/24"
+    name          = "sub_1"
+    cidr          = "10.51.0.0/24"
+    advertise     = "enable"
+    arp_broadcast = "disable"
   }
 }
 
 variable "powervs_private_subnet_2" {
   description = "IBM Cloud PowerVS second private subnet name and cidr which will be created. Set value to null to not create this subnet."
   type = object({
-    name = string
-    cidr = string
+    name          = string
+    cidr          = string
+    advertise     = optional(string)
+    arp_broadcast = optional(string)
   })
   default = {
-    name = "sub_2"
-    cidr = "10.53.0.0/24"
+    name          = "sub_2"
+    cidr          = "10.53.0.0/24"
+    advertise     = "enable"
+    arp_broadcast = "disable"
   }
 }
 
