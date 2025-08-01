@@ -11,7 +11,7 @@ locals {
         name     = "${vol.name}-${i}"
         size     = vol.size
         tier     = vol.tier
-        mount    = vol.mount
+        mount    = vol.mount != null ? vol.mount : ""
         pool     = can(vol.pool) ? vol.pool : null
         sharable = can(vol.sharable) ? vol.sharable : false
       }

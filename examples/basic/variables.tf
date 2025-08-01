@@ -142,7 +142,7 @@ variable "powervs_storage_config" {
     size     = string
     count    = string
     tier     = string
-    mount    = string
+    mount    = optional(string)
     pool     = optional(string)
     sharable = optional(bool)
   }))
