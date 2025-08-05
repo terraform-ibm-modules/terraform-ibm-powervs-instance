@@ -54,13 +54,13 @@ variable "pi_sap_profile_id" {
 }
 
 variable "pi_server_type" {
-  description = "The type of system on which to create the VM. Supported values are e980/s922/e1080/s1022. Required when not creating SAP instances. Conflicts with 'pi_sap_profile_id'."
+  description = "The type of system on which to create the VM. Supported values are e980/s922/s1022/e1050/e1080/s1022. Required when not creating SAP instances. Conflicts with 'pi_sap_profile_id'."
   type        = string
   default     = null
 
   validation {
-    condition     = var.pi_server_type == null ? true : contains(["e980", "s922", "e1080", "s1022"], var.pi_server_type) ? true : false
-    error_message = "The system must be one of 'e980', 's922', 'e1080', or 's1022'."
+    condition     = var.pi_server_type == null ? true : contains(["s922", "e980", "s1022", "e1050", "e1080", "s1122"], var.pi_server_type) ? true : false
+    error_message = "The system must be one of 's922', 'e980', 's1022', 'e1050', 'e1080', or 's1122'."
   }
 }
 
@@ -163,13 +163,13 @@ variable "pi_placement_group_id" {
 }
 
 variable "pi_storage_config" {
-  description = "File systems to be created and attached to PowerVS instance. 'size' is in GB. 'count' specify over how many storage volumes the file system will be striped. 'tier' specifies the storage tier in PowerVS workspace, 'mount' specifies the mount point on the OS. 'pool' specifies the volume pool where the volume will be created. 'sharable' specifies if volume can be shared across PVM instances."
+  description = "File systems to be created and attached to PowerVS instance. 'size' is in GB. 'count' specifies the number of storage volumes to be created for the file system. 'tier' specifies the storage tier in PowerVS workspace, 'mount' specifies the mount point on the OS. 'pool' specifies the volume pool where the volume will be created. 'sharable' specifies if volume can be shared across PVM instances."
   type = list(object({
     name     = string
     size     = string
     count    = string
     tier     = string
-    mount    = string
+    mount    = optional(string)
     pool     = optional(string)
     sharable = optional(bool)
   }))
@@ -180,8 +180,8 @@ variable "pi_storage_config" {
     condition = var.pi_storage_config != null ? (
       alltrue([
         for config in var.pi_storage_config : (
-          (config.name != "" && config.count != "" && config.tier != "" && config.mount != "") ||
-          (config.name == "" && config.count == "" && config.tier == "" && config.mount == "")
+          (config.name != "" && config.count != "" && config.tier != "" && (!contains(keys(config), "mount") || config.mount != "")) ||
+          (config.name == "" && config.count == "" && config.tier == "")
         )
       ]) &&
       length(distinct([for config in var.pi_storage_config : config.name])) == length(var.pi_storage_config)
@@ -291,5 +291,15 @@ variable "pi_network_services_config" {
   validation {
     condition     = var.pi_network_services_config == null ? true : !var.pi_network_services_config.ntp.enable || can(regex("^\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}$", var.pi_network_services_config.ntp.ntp_server_ip))
     error_message = "Enabling NTP requires ntp_server_ip to be a valid IPv4 address."
+  }
+}
+
+variable "pi_pin_policy" {
+  description = "Specifies the pinning policy for the PowerVS instance. Valid values: 'soft', 'hard', or 'none'. 'soft' allows auto-migration back to the original host, 'hard' restricts host movement, and 'none' applies no pinning. Default is 'none'."
+  type        = string
+  default     = null
+  validation {
+    condition     = var.pi_pin_policy == null ? true : contains(["soft", "hard", "none"], var.pi_pin_policy)
+    error_message = "The pin policy must be one of 'soft', 'hard' or 'none'."
   }
 }

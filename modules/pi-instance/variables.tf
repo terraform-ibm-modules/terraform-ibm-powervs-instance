@@ -105,13 +105,13 @@ variable "pi_placement_group_id" {
 }
 
 variable "pi_storage_config" {
-  description = "File systems to be created and attached to PowerVS instance. 'size' is in GB. 'count' specify over how many storage volumes the file system will be striped. 'tier' specifies the storage tier in PowerVS workspace, 'mount' specifies the mount point on the OS. 'pool' specifies the volume pool where the volume will be created. 'sharable' specifies if volume can be shared across PVM instances."
+  description = "File systems to be created and attached to PowerVS instance. 'size' is in GB. 'count' specifies the number of storage volumes to be created for the file system. 'tier' specifies the storage tier in PowerVS workspace, 'mount' specifies the mount point on the OS. 'pool' specifies the volume pool where the volume will be created. 'sharable' specifies if volume can be shared across PVM instances."
   type = list(object({
     name     = string
     size     = string
     count    = string
     tier     = string
-    mount    = string
+    mount    = optional(string)
     pool     = optional(string)
     sharable = optional(bool)
   }))
@@ -130,4 +130,9 @@ variable "pi_user_tags" {
 variable "pi_user_data" {
   description = "The user data cloud-init to pass to the instance during creation. It can be a base64 encoded or an unencoded string. If it is an unencoded string, the provider will encode it before it passing it down."
   type        = string
+}
+variable "pi_pin_policy" {
+  description = "Specifies the pinning policy for the PowerVS instance. Valid values: 'soft', 'hard', or 'none'. 'soft' allows auto-migration back to the original host, 'hard' restricts host movement, and 'none' applies no pinning. Default is 'none'."
+  type        = string
+  default     = null
 }

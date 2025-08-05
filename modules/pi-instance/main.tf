@@ -29,6 +29,7 @@ resource "ibm_pi_instance" "instance" {
   pi_volume_ids                  = var.pi_existing_volume_ids != null ? var.pi_existing_volume_ids : null
   pi_user_tags                   = var.pi_user_tags != null ? var.pi_user_tags : []
   pi_user_data                   = var.pi_user_data
+  pi_pin_policy                  = var.pi_pin_policy
 
   dynamic "pi_network" {
     for_each = var.pi_networks
