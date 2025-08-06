@@ -48,10 +48,8 @@ variable "powervs_private_subnet_1" {
     arp_broadcast = optional(string)
   })
   default = {
-    name          = "sub_1"
-    cidr          = "10.51.0.0/24"
-    advertise     = "enable"
-    arp_broadcast = "disable"
+    name = "sub_1"
+    cidr = "10.51.0.0/24"
   }
 }
 
@@ -64,10 +62,8 @@ variable "powervs_private_subnet_2" {
     arp_broadcast = optional(string)
   })
   default = {
-    name          = "sub_2"
-    cidr          = "10.53.0.0/24"
-    advertise     = "enable"
-    arp_broadcast = "disable"
+    name = "sub_2"
+    cidr = "10.53.0.0/24"
   }
 }
 
