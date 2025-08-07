@@ -105,13 +105,13 @@ variable "pi_placement_group_id" {
 }
 
 variable "pi_storage_config" {
-  description = "File systems to be created and attached to PowerVS instance. 'size' is in GB. 'count' specify over how many storage volumes the file system will be striped. 'tier' specifies the storage tier in PowerVS workspace, 'mount' specifies the mount point on the OS. 'pool' specifies the volume pool where the volume will be created. 'sharable' specifies if volume can be shared across PVM instances."
+  description = "Storage volumes to be created and attached to PowerVS instance. List of objects. 'size' is in GB. 'count' specify how many storage volumes of the same type are created. 'tier' specifies the storage tier in PowerVS workspace, 'mount' specifies the mount point on the OS (only if pi_instance_init_linux is enabled). 'pool' specifies the volume pool where the volume will be created. 'sharable' specifies if volume can be shared across PVM instances. If pi_instance_init_linux is enabled, all disks in one object are combined into one logical volume, a filesystem is created and mounted on the OS. If using AIX, disks are only created and attached to the PowerVS instance."
   type = list(object({
     name     = string
     size     = string
     count    = string
     tier     = string
-    mount    = string
+    mount    = optional(string)
     pool     = optional(string)
     sharable = optional(bool)
   }))
@@ -130,4 +130,9 @@ variable "pi_user_tags" {
 variable "pi_user_data" {
   description = "The user data cloud-init to pass to the instance during creation. It can be a base64 encoded or an unencoded string. If it is an unencoded string, the provider will encode it before it passing it down."
   type        = string
+}
+variable "pi_pin_policy" {
+  description = "Specifies the pinning policy for the PowerVS instance. Valid values: 'soft', 'hard', or 'none'. 'soft' allows auto-migration back to the original host, 'hard' restricts host movement, and 'none' applies no pinning. Default is 'none'."
+  type        = string
+  default     = null
 }

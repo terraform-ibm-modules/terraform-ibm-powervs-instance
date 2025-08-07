@@ -23,6 +23,7 @@ module "pi_instance" {
   pi_license_repository_capacity = var.pi_license_repository_capacity
   pi_user_tags                   = var.pi_user_tags != null ? var.pi_user_tags : []
   pi_user_data                   = var.pi_user_data
+  pi_pin_policy                  = var.pi_pin_policy
 }
 
 module "pi_instance_init_linux" {
