@@ -105,7 +105,7 @@ variable "pi_placement_group_id" {
 }
 
 variable "pi_storage_config" {
-  description = "File systems to be created and attached to PowerVS instance. 'size' is in GB. 'count' specifies the number of storage volumes to be created for the file system. 'tier' specifies the storage tier in PowerVS workspace, 'mount' specifies the mount point on the OS. 'pool' specifies the volume pool where the volume will be created. 'sharable' specifies if volume can be shared across PVM instances."
+  description = "Storage volumes to be created and attached to PowerVS instance. List of objects. 'size' is in GB. 'count' specify how many storage volumes of the same type are created. 'tier' specifies the storage tier in PowerVS workspace, 'mount' specifies the mount point on the OS (only if pi_instance_init_linux is enabled). 'pool' specifies the volume pool where the volume will be created. 'sharable' specifies if volume can be shared across PVM instances. If pi_instance_init_linux is enabled, all disks in one object are combined into one logical volume, a filesystem is created and mounted on the OS. If using AIX, disks are only created and attached to the PowerVS instance."
   type = list(object({
     name     = string
     size     = string
