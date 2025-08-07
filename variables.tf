@@ -184,10 +184,13 @@ variable "pi_storage_config" {
           (config.name == "" && config.count == "" && config.tier == "")
         )
       ]) &&
-      length(distinct([for config in var.pi_storage_config : config.name])) == length(var.pi_storage_config)
+      length(distinct([for config in var.pi_storage_config : config.name])) == length(var.pi_storage_config) &&
+      (var.pi_instance_init_linux.enable == false || alltrue([for config in var.pi_storage_config : (
+        contains(keys(config), "mount") && config.mount != null && config.mount != "")
+      ]))
     ) : true
 
-    error_message = "One of the storage configs has an invalid value (e.g., an empty string), or duplicate 'name' values exist."
+    error_message = "One of the storage configs has an invalid value (e.g., an empty string), or duplicate 'name' values exist or mount is missing if 'pi_instance_init_linux.enable' is true. Each storage config must have a non-empty 'name', 'count', and 'tier'. If 'mount' is specified, it must also be non-empty."
   }
 }
 
