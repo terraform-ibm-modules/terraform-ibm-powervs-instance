@@ -15,7 +15,6 @@
     * [pi-instance](./modules/pi-instance)
 * [Examples](./examples)
     * [Basic Power Virtual Server infrastructure with a Power Virtual Server instance](./examples/basic)
-    * [Basic Power Virtual Server instance with linux OS initialization](./examples/netweaver-instance)
     * [Basic Power Virtual Server instance with linux OS initialization](./examples/single-instance-linux)
 * [Contributing](#contributing)
 <!-- END OVERVIEW HOOK -->
@@ -55,6 +54,7 @@ module "pi_instance" {
     pi_pin_policy                   = var.pi_pin_policy               #(optional, default null)
     pi_sap_profile_id               = var.pi_sap_profile_id           #(optional, default null)
     pi_server_type                  = var.pi_server_type              #(optional, default null)
+    pi_deployment_target            = var.pi_deployment_target        #(optional, default null)
     pi_number_of_processors         = var.pi_number_of_processors     #(optional, default null)
     pi_memory_size                  = var.pi_memory_size              #(optional, default null)
     pi_cpu_proc_type                = var.pi_cpu_proc_type            #(optional, default check vars)
