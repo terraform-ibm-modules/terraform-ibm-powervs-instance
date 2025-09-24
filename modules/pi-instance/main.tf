@@ -12,12 +12,13 @@ resource "ibm_pi_instance" "instance" {
   pi_sys_type          = var.pi_server_type
   pi_proc_type         = var.pi_sap_profile_id != null ? null : var.pi_cpu_proc_type
   dynamic "pi_deployment_target" {
-    for_each = var.pi_deployment_target != null && length(var.pi_deployment_target) > 0 ? var.pi_deployment_target : []
+    for_each = length(coalesce(var.pi_deployment_target, [])) > 0 ? var.pi_deployment_target : []
     content {
       type = pi_deployment_target.value.type
       id   = pi_deployment_target.value.id
     }
   }
+
 
   pi_key_pair_name               = var.pi_ssh_public_key_name
   pi_health_status               = "OK"
