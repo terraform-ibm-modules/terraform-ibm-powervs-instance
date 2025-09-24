@@ -50,6 +50,16 @@ variable "pi_server_type" {
   type        = string
 }
 
+variable "pi_deployment_target" {
+  description = "The deployment of a dedicated host. Max items: 1, id is the uuid of the host group or host. type is the deployment target type, supported values are host and hostGroup"
+  type = list(object(
+    {
+      type = string
+      id   = string
+    }
+  ))
+}
+
 variable "pi_cpu_proc_type" {
   description = "The type of processor mode in which the VM will run with shared, capped or dedicated. Required when not creating SAP instances. Conflicts with 'pi_sap_profile_id'."
   type        = string

@@ -9,6 +9,7 @@ module "pi_instance" {
   pi_boot_image_storage_pool     = var.pi_boot_image_storage_pool
   pi_networks                    = var.pi_networks
   pi_sap_profile_id              = var.pi_sap_profile_id
+  pi_deployment_target           = var.pi_deployment_target
   pi_server_type                 = var.pi_server_type
   pi_cpu_proc_type               = var.pi_cpu_proc_type
   pi_number_of_processors        = var.pi_number_of_processors
