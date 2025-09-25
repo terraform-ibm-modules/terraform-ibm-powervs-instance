@@ -115,6 +115,16 @@ variable "pi_memory_size" {
   default     = null
 }
 
+variable "pi_pin_policy" {
+  description = "Specifies the pinning policy for the PowerVS instance. Valid values: 'soft', 'hard', or 'none'. 'soft' allows auto-migration back to the original host, 'hard' restricts host movement, and 'none' applies no pinning. Default is 'none'."
+  type        = string
+  default     = null
+  validation {
+    condition     = var.pi_pin_policy == null ? true : contains(["soft", "hard", "none"], var.pi_pin_policy)
+    error_message = "The pin policy must be one of 'soft', 'hard' or 'none'."
+  }
+}
+
 variable "pi_replicants" {
   description = "The number of instances that you want to provision with the same configuration. If this parameter is not set, 1 is used by default. The replication policy that you want to use, either affinity, anti-affinity or none. If this parameter is not set, none is used by default. pi_placement_group_id cannot be used when specifying pi_replicants"
   type = object({
@@ -277,11 +287,15 @@ variable "ansible_vault_password" {
   description = "Vault password to encrypt OS registration parameters. Only required with customer provided linux subscription (specified in pi_instance_init_linux.custom_os_registration). Password requirements: 15-100 characters and at least one uppercase letter, one lowercase letter, one number, and one special character. Allowed characters: A-Z, a-z, 0-9, !#$%&()*+-.:;<=>?@[]_{|}~."
   type        = string
   sensitive   = true
-  default     = null
+  default     = ""
 
   validation {
-    condition     = var.pi_instance_init_linux.custom_os_registration == null ? true : var.ansible_vault_password != null
+    condition     = var.pi_instance_init_linux.custom_os_registration == null ? true : var.ansible_vault_password != ""
     error_message = "Specifying custom_os_registration requires an ansible_vault_password so your credentials are stored securely."
+  }
+  validation {
+    condition     = length(var.ansible_vault_password) >= 0
+    error_message = "ansible_vault_password must be a string; null is not allowed. Use empty string \"\" if you want to disable vault usage."
   }
 }
 
@@ -321,15 +335,5 @@ variable "pi_network_services_config" {
   validation {
     condition     = var.pi_network_services_config == null ? true : !var.pi_network_services_config.ntp.enable || can(regex("^\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}$", var.pi_network_services_config.ntp.ntp_server_ip))
     error_message = "Enabling NTP requires ntp_server_ip to be a valid IPv4 address."
-  }
-}
-
-variable "pi_pin_policy" {
-  description = "Specifies the pinning policy for the PowerVS instance. Valid values: 'soft', 'hard', or 'none'. 'soft' allows auto-migration back to the original host, 'hard' restricts host movement, and 'none' applies no pinning. Default is 'none'."
-  type        = string
-  default     = null
-  validation {
-    condition     = var.pi_pin_policy == null ? true : contains(["soft", "hard", "none"], var.pi_pin_policy)
-    error_message = "The pin policy must be one of 'soft', 'hard' or 'none'."
   }
 }
