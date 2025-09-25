@@ -54,7 +54,7 @@ variable "pi_sap_profile_id" {
 }
 
 variable "pi_server_type" {
-  description = "The type of system on which to create the VM. Supported values are s922/e980/s1022/e1050/e1080/s1122/e1150/e1180. Required when not creating SAP instances. Conflicts with 'pi_sap_profile_id'."
+  description = "The type of system on which to create the VM. Supported values are s922/e980/s1022/e1050/e1080/s1122/e1150/e1180."
   type        = string
   default     = null
 
@@ -65,7 +65,7 @@ variable "pi_server_type" {
 }
 
 variable "pi_deployment_target" {
-  description = "The deployment of a dedicated host. Max items: 1, id is the uuid of the host group or host. type is the deployment target type, supported values are host and hostGroup"
+  description = "The deployment of a dedicated host. Max items: 1, 'id' is the uuid of the host group or host, 'type' is the deployment target type and supported values are host and hostGroup"
   type = list(object(
     {
       type = string
