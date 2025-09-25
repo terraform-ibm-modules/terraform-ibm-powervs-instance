@@ -72,7 +72,7 @@ module "pi_instance" {
     pi_license_repository_capacity  = var.pi_license_repository_capacity #(optional, default null)
     pi_instance_init_linux          = var.pi_instance_init_linux      #(optional, default check vars)
     pi_network_services_config      = var.pi_network_services_config  #(optional, default check vars)
-    ansible_vault_password          = var.ansible_vault_password      #(optional, default null)
+    ansible_vault_password          = var.ansible_vault_password      #(optional, default "")
 }
 ```
 
