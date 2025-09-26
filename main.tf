@@ -47,5 +47,5 @@ module "pi_instance_init_linux" {
   dst_inventory_file_name     = "${var.pi_instance_name}-instance-inventory"
   inventory_template_vars     = { "pi_instance_management_ip" : module.pi_instance.pi_instance_primary_ip }
 
-  ansible_vault_password = var.pi_instance_init_linux.custom_os_registration != null ? var.ansible_vault_password : null
+  ansible_vault_password = var.pi_instance_init_linux.custom_os_registration != "" ? var.ansible_vault_password : ""
 }

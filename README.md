@@ -72,7 +72,7 @@ module "pi_instance" {
     pi_license_repository_capacity  = var.pi_license_repository_capacity #(optional, default null)
     pi_instance_init_linux          = var.pi_instance_init_linux      #(optional, default check vars)
     pi_network_services_config      = var.pi_network_services_config  #(optional, default check vars)
-    ansible_vault_password          = var.ansible_vault_password      #(optional, default null)
+    ansible_vault_password          = var.ansible_vault_password      #(optional, default "")
 }
 ```
 
@@ -119,7 +119,7 @@ No resources.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_ansible_vault_password"></a> [ansible\_vault\_password](#input\_ansible\_vault\_password) | Vault password to encrypt OS registration parameters. Only required with customer provided linux subscription (specified in pi\_instance\_init\_linux.custom\_os\_registration). Password requirements: 15-100 characters and at least one uppercase letter, one lowercase letter, one number, and one special character. Allowed characters: A-Z, a-z, 0-9, !#$%&()*+-.:;<=>?@[]\_{\|}~. | `string` | `null` | no |
+| <a name="input_ansible_vault_password"></a> [ansible\_vault\_password](#input\_ansible\_vault\_password) | Vault password to encrypt OS registration parameters. Only required with customer provided linux subscription (specified in pi\_instance\_init\_linux.custom\_os\_registration). Password requirements: 15-100 characters and at least one uppercase letter, one lowercase letter, one number, and one special character. Allowed characters: A-Z, a-z, 0-9, !#$%&()*+-.:;<=>?@[]\_{\|}~. | `string` | `""` | no |
 | <a name="input_pi_affinity"></a> [pi\_affinity](#input\_pi\_affinity) | Defines affinity settings for instances or volumes. If requesting affinity, set this object with either one of 'affinity\_instance' or 'affinity\_volume'. Otherwise value must be null. 'affinity\_instance' specifies the name of the target PVM instance, while 'affinity\_volume' designates a volume to establish storage affinity. | <pre>object({<br/>    affinity_instance = optional(string)<br/>    affinity_volume   = optional(string)<br/>  })</pre> | `null` | no |
 | <a name="input_pi_affinity_policy"></a> [pi\_affinity\_policy](#input\_pi\_affinity\_policy) | Specifies the affinity policy for the PVM instance. Allowed values: 'affinity' or 'anti-affinity'. If set to 'affinity', provide the 'pi\_affinity' input. If set to 'anti-affinity', provide the 'pi\_anti\_affinity' input. This policy will be ignored if 'pi\_boot\_image\_storage\_pool' is specified. | `string` | `null` | no |
 | <a name="input_pi_anti_affinity"></a> [pi\_anti\_affinity](#input\_pi\_anti\_affinity) | Defines anti-affinity settings for instances or volumes. If requesting anti-affinity, set this object with either one of 'anti\_affinity\_instances' or 'anti\_affinity\_volumes'. Otherwise value must be null. 'anti\_affinity\_instances' is a list of PVM instance names to enforce anti-affinity, while 'anti\_affinity\_volumes' is a list of volumes to apply the storage anti-affinity policy. | <pre>object({<br/>    anti_affinity_instances = optional(list(string))<br/>    anti_affinity_volumes   = optional(list(string))<br/>  })</pre> | `null` | no |
