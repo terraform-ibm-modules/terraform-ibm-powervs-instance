@@ -90,7 +90,7 @@ main::install_packages() {
       done
     done
 
-    ansible-galaxy collection install -r '/root/.ansible/collections/ansible_collections/ibm/power_linux_sap/requirements.yml' --update
+    ansible-galaxy collection install -r '/root/.ansible/collections/ansible_collections/ibm/power_linux_sap/requirements.yml' --upgrade
     main::log_info "All packages installed successfully"
   fi
 
