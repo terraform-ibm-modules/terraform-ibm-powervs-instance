@@ -79,7 +79,7 @@ main::install_packages() {
     for collection in $GLOBAL_GALAXY_COLLECTIONS; do
       local count=0
       local max_count=3
-      while ! ansible-galaxy collection install "${collection}"; do
+      while ! ansible-galaxy collection install "${collection}" --upgrade; do
         count=$((count + 1))
         sleep 3
         # shellcheck disable=SC2317
