@@ -1,5 +1,10 @@
 # Basic Power Virtual Server infrastructure with a Power Virtual Server instance
 
+<!-- BEGIN SCHEMATICS DEPLOY HOOK -->
+<a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=powervs-instance-basic-example&repository=https://github.com/terraform-ibm-modules/terraform-ibm-powervs-instance/tree/main/examples/basic"><img src="https://img.shields.io/badge/Deploy%20with IBM%20Cloud%20Schematics-0f62fe?logo=ibm&logoColor=white&labelColor=0f62fe" alt="Deploy with IBM Cloud Schematics" style="height: 16px; vertical-align: text-bottom;"></a>
+<!-- END SCHEMATICS DEPLOY HOOK -->
+
+
 This example illustrates how to use the `powervs-workspace` &`powervs-instance` module.
 It provisions the following infrastructure:
 - Creates a [Resource group](https://github.com/terraform-ibm-modules/terraform-ibm-resource-group).
@@ -71,3 +76,7 @@ It provisions the following infrastructure:
 | <a name="output_pi_workspace_name"></a> [pi\_workspace\_name](#output\_pi\_workspace\_name) | PowerVS infrastructure workspace name. |
 | <a name="output_pi_zone"></a> [pi\_zone](#output\_pi\_zone) | Zone where PowerVS infrastructure is created. |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+
+<!-- BEGIN SCHEMATICS DEPLOY TIP HOOK -->
+:information_source: Ctrl/Cmd+Click or right-click on the Schematics deploy button to open in a new tab
+<!-- END SCHEMATICS DEPLOY TIP HOOK -->
