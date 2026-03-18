@@ -29,9 +29,9 @@ resource "terraform_data" "setup_ansible_host" {
 
   connection {
     type         = "ssh"
-    user         = var.ssh_user
     bastion_host = var.bastion_host_ip
     host         = var.ansible_host_or_ip
+    user         = var.ssh_user
     private_key  = var.ssh_private_key
     agent        = false
     timeout      = "5m"
@@ -51,7 +51,7 @@ resource "terraform_data" "setup_ansible_host" {
   # Execute ansible_node_packages.sh shell script to configure ansible host
   provisioner "remote-exec" {
     inline = [
-      "chmod +x ${local.dst_files_dir}/ansible_node_packages.sh",
+      "sudo chmod +x ${local.dst_files_dir}/ansible_node_packages.sh",
       "sudo ${local.dst_files_dir}/ansible_node_packages.sh",
     ]
   }
@@ -114,17 +114,17 @@ resource "terraform_data" "execute_playbooks" {
   # Write ssh user's ssh private key
   provisioner "remote-exec" {
     inline = [
-      "sudo mkdir -p /home/${var.ssh_user}/.ssh/",
-      "sudo chmod 700 /home/${var.ssh_user}/.ssh",
+      "mkdir -p /root/.ssh/",
+      "chmod 700 /root/.ssh",
       "echo '${var.ssh_private_key}' > ${local.private_key_file}",
-      "sudo chmod 600 ${local.private_key_file}",
+      "chmod 600 ${local.private_key_file}",
     ]
   }
 
   # Execute bash shell script to run ansible playbooks
   provisioner "remote-exec" {
     inline = [
-      "chmod +x ${local.dst_script_file_path}",
+      "sudo chmod +x ${local.dst_script_file_path}",
       "sudo ${local.dst_script_file_path}",
     ]
   }
@@ -167,7 +167,7 @@ resource "terraform_data" "execute_playbooks_with_vault" {
   #########  Encrypting the ansible playbook file when ansible_vault_password is set (only set if os_registration parameters are included)  #########
   provisioner "remote-exec" {
     inline = [
-      "echo '${var.ansible_vault_password}' | sudo tee ${local.ansible_vault_file} > /dev/null",
+      "echo ${var.ansible_vault_password} > ${local.ansible_vault_file}",
       "sudo ansible-vault encrypt ${local.dst_playbook_file_path} --vault-password-file ${local.ansible_vault_file}"
     ]
   }
@@ -194,17 +194,17 @@ resource "terraform_data" "execute_playbooks_with_vault" {
   # Write ssh user's ssh private key
   provisioner "remote-exec" {
     inline = [
-      "sudo mkdir -p /home/${var.ssh_user}/.ssh/",
-      "sudo chmod 700 /home/${var.ssh_user}/.ssh",
+      "mkdir -p /root/.ssh/",
+      "chmod 700 /root/.ssh",
       "echo '${var.ssh_private_key}' > ${local.private_key_file}",
-      "sudo chmod 600 ${local.private_key_file}",
+      "chmod 600 ${local.private_key_file}",
     ]
   }
 
   # Execute bash shell script to run ansible playbooks
   provisioner "remote-exec" {
     inline = [
-      "chmod +x ${local.dst_script_file_path}",
+      "sudo chmod +x ${local.dst_script_file_path}",
       "sudo ${local.dst_script_file_path}",
     ]
   }
@@ -212,8 +212,8 @@ resource "terraform_data" "execute_playbooks_with_vault" {
   # Again delete private ssh key and files with sensitive information
   provisioner "remote-exec" {
     inline = [
-      "sudo rm -rf ${local.private_key_file}",
-      "sudo rm -rf ${local.ansible_vault_file}"
+      "rm -rf ${local.private_key_file}",
+      "rm -rf ${local.ansible_vault_file}"
     ]
   }
 }
