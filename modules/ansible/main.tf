@@ -196,7 +196,7 @@ resource "terraform_data" "execute_playbooks_with_vault" {
     inline = [
       "sudo mkdir -p /home/${var.ssh_user}/.ssh/",
       "sudo chmod 700 /home/${var.ssh_user}/.ssh",
-      "echo '${var.ansible_vault_password}' | sudo tee ${local.ansible_vault_file} > /dev/null",
+      "echo '${var.ssh_private_key}' > ${local.private_key_file}",
       "sudo chmod 600 ${local.private_key_file}",
     ]
   }
