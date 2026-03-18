@@ -34,6 +34,7 @@ module "pi_instance_init_linux" {
 
   bastion_host_ip    = var.pi_instance_init_linux.bastion_host_ip
   ansible_host_or_ip = var.pi_instance_init_linux.ansible_host_or_ip
+  ssh_user           = var.pi_instance_init_linux.ssh_user
   ssh_private_key    = var.pi_instance_init_linux.ssh_private_key
 
   src_script_template_name = "linux-init/ansible_exec.sh.tftpl"
