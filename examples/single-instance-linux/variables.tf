@@ -137,13 +137,14 @@ variable "powervs_existing_volume_ids" {
 #####################################################
 
 variable "powervs_instance_init_linux" {
-  description = "Configures a PowerVS linux instance to have internet access by setting proxy on it, updates os and create filesystems using ansible collection [ibm.power_linux_sap collection](https://galaxy.ansible.com/ui/repo/published/ibm/power_linux_sap/). where 'proxy_host_or_ip_port' E.g., 10.10.10.4:3128 <ip:port>, 'bastion_host_ip' is public IP of bastion/jump host to access the private IP of created linux PowerVS instance."
+  description = "Configures a PowerVS linux instance to have internet access by setting proxy on it, updates os and create filesystems using ansible collection [ibm.power_linux_sap collection](https://galaxy.ansible.com/ui/repo/published/ibm/power_linux_sap/). where 'proxy_host_or_ip_port' E.g., 10.10.10.4:3128 <ip:port>, 'bastion_host_ip' is public IP of bastion/jump host to access the private IP of created linux PowerVS instance. 'ssh_user' is the SSH user for connecting to bastion and ansible hosts."
   sensitive   = true
   type = object(
     {
       enable             = bool
       bastion_host_ip    = string
       ansible_host_or_ip = string
+      ssh_user           = string
       ssh_private_key    = string
     }
   )
@@ -152,6 +153,7 @@ variable "powervs_instance_init_linux" {
     enable             = false
     bastion_host_ip    = ""
     ansible_host_or_ip = ""
+    ssh_user           = ""
     ssh_private_key    = <<-EOF
 EOF
   }
