@@ -9,7 +9,7 @@ ansible_vault_file=${ansible_vault_file}
 
 # Create ansible.cfg file
 ansible_playbook_name=$(basename $${ansible_playbook})
-echo -e "[defaults]\nhost_key_checking=False" | sudo tee ansible.cfg > /dev/null
+echo -e "[defaults]\nhost_key_checking=False" >ansible.cfg
 
 # Set Ansible environment
 export ANSIBLE_LOG_PATH=$${ansible_log_path}/$${ansible_playbook_name}.$(date "+%Y.%m.%d-%H.%M.%S").log
@@ -23,12 +23,12 @@ else
 fi
 
 if [ $? -ne 0 ]; then
-    sudo rm -rf $${ansible_private_key_file}
-    sudo rm -rf $${ansible_vault_file}
+    rm -rf $${ansible_private_key_file}
+    rm -rf $${ansible_vault_file}
     exit 1
 fi
 echo \"Playbook command successful\"
 
 # Delete sensitive keys
-sudo rm -rf $${ansible_private_key_file}
-sudo rm -rf $${ansible_vault_file}
+rm -rf $${ansible_private_key_file}
+rm -rf $${ansible_vault_file}
