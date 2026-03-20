@@ -254,14 +254,13 @@ variable "pi_user_data" {
 #####################################################
 
 variable "pi_instance_init_linux" {
-  description = "Configures a PowerVS linux instance to have internet access by setting proxy on it, updates os and create filesystems using ansible collection [ibm.power_linux_sap collection](https://galaxy.ansible.com/ui/repo/published/ibm/power_linux_sap/) where 'bastion_host_ip' is public IP of bastion/jump host to access the 'ansible_host_or_ip' private IP of ansible node. 'ssh_user' is the SSH user for connecting to bastion and ansible hosts. Additionally, specify whether IBM provided or customer provided linux subscription should be used. For IBM provided subscription leave custom_os_registration empty. For customer provided subscription set a username and a password inside custom_os_registration. Customer provided linux subscription requires the use of either an IBM provided image ending in BYOL or a custom image. The ansible host must have access to the power virtual server instance and ansible host OS must be RHEL distribution."
+  description = "Configures a PowerVS linux instance to have internet access by setting proxy on it, updates os and create filesystems using ansible collection [ibm.power_linux_sap collection](https://galaxy.ansible.com/ui/repo/published/ibm/power_linux_sap/) where 'bastion_host_ip' is public IP of bastion/jump host to access the 'ansible_host_or_ip' private IP of ansible node. Additionally, specify whether IBM provided or customer provided linux subscription should be used. For IBM provided subscription leave custom_os_registration empty. For customer provided subscription set a username and a password inside custom_os_registration. Customer provided linux subscription requires the use of either an IBM provided image ending in BYOL or a custom image. The ansible host must have access to the power virtual server instance and ansible host OS must be RHEL distribution."
   sensitive   = true
   type = object(
     {
       enable             = bool
       bastion_host_ip    = string
       ansible_host_or_ip = string
-      ssh_user           = string
       ssh_private_key    = string
       custom_os_registration = optional(object({
         username = string
@@ -274,13 +273,12 @@ variable "pi_instance_init_linux" {
     enable             = false
     bastion_host_ip    = ""
     ansible_host_or_ip = ""
-    ssh_user           = ""
     ssh_private_key    = <<-EOF
  EOF
   }
 
   validation {
-    condition     = var.pi_instance_init_linux != null ? var.pi_instance_init_linux.enable ? var.pi_instance_init_linux.bastion_host_ip != "" && var.pi_instance_init_linux.bastion_host_ip != null && var.pi_instance_init_linux.ansible_host_or_ip != "" && var.pi_instance_init_linux.ansible_host_or_ip != null && var.pi_instance_init_linux.ssh_user != "" && var.pi_instance_init_linux.ssh_user != null && var.pi_instance_init_linux.ssh_private_key != "" && var.pi_instance_init_linux.ssh_private_key != null ? true : false : true : true
+    condition     = var.pi_instance_init_linux != null ? var.pi_instance_init_linux.enable ? var.pi_instance_init_linux.bastion_host_ip != "" && var.pi_instance_init_linux.bastion_host_ip != null && var.pi_instance_init_linux.ansible_host_or_ip != "" && var.pi_instance_init_linux.ansible_host_or_ip != null && var.pi_instance_init_linux.ssh_private_key != "" && var.pi_instance_init_linux.ssh_private_key != null ? true : false : true : true
     error_message = "If 'enable' is true, then all attributes of 'pi_instance_init_linux' must be provided."
   }
 }
