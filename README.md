@@ -10,14 +10,28 @@
 
 <!-- BEGIN OVERVIEW HOOK -->
 ## Overview
-* [terraform-ibm-powervs-instance](#terraform-ibm-powervs-instance)
-* [Submodules](./modules)
-    * [pi-instance](./modules/pi-instance)
-* [Examples](./examples)
-:information_source: Ctrl/Cmd+Click or right-click on the Schematics deploy button to open in a new tab
-    * <a href="./examples/basic">Basic Power Virtual Server infrastructure with a Power Virtual Server instance</a> <a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=powervs-instance-basic-example&repository=https://github.com/terraform-ibm-modules/terraform-ibm-powervs-instance/tree/main/examples/basic"><img src="https://img.shields.io/badge/Deploy%20with IBM%20Cloud%20Schematics-0f62fe?logo=ibm&logoColor=white&labelColor=0f62fe" alt="Deploy with IBM Cloud Schematics" style="height: 16px; vertical-align: text-bottom; margin-left: 5px;"></a>
-    * <a href="./examples/single-instance-linux">Basic Power Virtual Server instance with linux OS initialization</a> <a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=powervs-instance-single-instance-linux-example&repository=https://github.com/terraform-ibm-modules/terraform-ibm-powervs-instance/tree/main/examples/single-instance-linux"><img src="https://img.shields.io/badge/Deploy%20with IBM%20Cloud%20Schematics-0f62fe?logo=ibm&logoColor=white&labelColor=0f62fe" alt="Deploy with IBM Cloud Schematics" style="height: 16px; vertical-align: text-bottom; margin-left: 5px;"></a>
-* [Contributing](#contributing)
+<ul>
+  <li><a href="#terraform-ibm-powervs-instance">terraform-ibm-powervs-instance</a></li>
+  <li><a href="./modules">Submodules</a>
+    <ul>
+      <li><a href="./modules/pi-instance">pi-instance</a></li>
+    </ul>
+  </li>
+  <li><a href="./examples">Examples</a>
+    <ul>
+      <li>
+        <a href="./examples/basic">Basic Power Virtual Server infrastructure with a Power Virtual Server instance</a>
+        <a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=powervs-instance-basic-example&repository=https://github.com/terraform-ibm-modules/terraform-ibm-powervs-instance/tree/main/examples/basic"><img src="https://img.shields.io/badge/Deploy%20with%20IBM%20Cloud%20Schematics-0f62fe?style=flat&logo=ibm&logoColor=white&labelColor=0f62fe" alt="Deploy with IBM Cloud Schematics" style="height: 16px; vertical-align: text-bottom; margin-left: 5px;"></a>
+      </li>
+      <li>
+        <a href="./examples/single-instance-linux">Basic Power Virtual Server instance with linux OS initialization</a>
+        <a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=powervs-instance-single-instance-linux-example&repository=https://github.com/terraform-ibm-modules/terraform-ibm-powervs-instance/tree/main/examples/single-instance-linux"><img src="https://img.shields.io/badge/Deploy%20with%20IBM%20Cloud%20Schematics-0f62fe?style=flat&logo=ibm&logoColor=white&labelColor=0f62fe" alt="Deploy with IBM Cloud Schematics" style="height: 16px; vertical-align: text-bottom; margin-left: 5px;"></a>
+      </li>
+    </ul>
+    ℹ️ Ctrl/Cmd+Click or right-click on the Schematics deploy button to open in a new tab.
+  </li>
+  <li><a href="#contributing">Contributing</a></li>
+</ul>
 <!-- END OVERVIEW HOOK -->
 
 ## Summary

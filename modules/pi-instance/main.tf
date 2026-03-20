@@ -63,12 +63,12 @@ resource "ibm_pi_instance" "instance" {
 data "ibm_pi_instance_ip" "instance_primary_ip_ds" {
   depends_on           = [ibm_pi_instance.instance]
   pi_network_name      = var.pi_networks[0].name
-  pi_instance_name     = ibm_pi_instance.instance.pi_instance_name
+  pi_instance_id       = ibm_pi_instance.instance.instance_id
   pi_cloud_instance_id = var.pi_workspace_guid
 }
 
 data "ibm_pi_instance" "instance_ips_ds" {
   depends_on           = [ibm_pi_instance.instance]
-  pi_instance_name     = ibm_pi_instance.instance.pi_instance_name
+  pi_instance_id       = ibm_pi_instance.instance.instance_id
   pi_cloud_instance_id = var.pi_workspace_guid
 }
