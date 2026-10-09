@@ -32,10 +32,11 @@ variable "pi_networks" {
   description = "Existing list of private subnet ids to be attached to an instance. The first element will become the primary interface. Run 'ibmcloud pi networks' to list available private subnets."
   type = list(
     object({
-      name = string
-      id   = string
-      cidr = optional(string)
-      ip   = optional(string)
+      name   = string
+      id     = string
+      cidr   = optional(string)
+      ip     = optional(string)
+      nsg_id = optional(string)
     })
   )
 }
