@@ -37,7 +37,7 @@ module "powervs_instance" {
 ### Requirements
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.9.0 |
 | <a name="requirement_ibm"></a> [ibm](#requirement\_ibm) | >= 1.81.0 |
 
@@ -48,7 +48,7 @@ No modules.
 ### Resources
 
 | Name | Type |
-|------|------|
+| ---- | ---- |
 | [ibm_pi_instance.instance](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/pi_instance) | resource |
 | [ibm_pi_volume.create_volume](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/pi_volume) | resource |
 | [ibm_pi_volume_attach.instance_volumes_attach](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/pi_volume_attach) | resource |
@@ -58,7 +58,7 @@ No modules.
 ### Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
+| ---- | ----------- | ---- | ------- | :------: |
 | <a name="input_pi_affinity"></a> [pi\_affinity](#input\_pi\_affinity) | Defines affinity settings for instances or volumes. If requesting affinity, either 'affinity\_instance' or 'affinity\_volume' must be provided. 'affinity\_instance' specifies the name of the target PVM instance, while 'affinity\_volume' designates a volume to establish storage affinity. | <pre>object({<br/>    affinity_instance = string<br/>    affinity_volume   = string<br/>  })</pre> | n/a | yes |
 | <a name="input_pi_affinity_policy"></a> [pi\_affinity\_policy](#input\_pi\_affinity\_policy) | Specifies the affinity policy for the PVM instance. Allowed values: 'affinity' or 'anti-affinity'. If set to 'affinity', provide the 'pi\_affinity' input. If set to 'anti-affinity', provide the 'pi\_anti\_affinity' input. This policy will be ignored if 'pi\_boot\_image\_storage\_pool' is specified. | `string` | n/a | yes |
 | <a name="input_pi_anti_affinity"></a> [pi\_anti\_affinity](#input\_pi\_anti\_affinity) | Defines anti-affinity settings for instances or volumes. If requesting anti-affinity, either 'anti\_affinity\_instances' or 'anti\_affinity\_volumes' must be provided. 'anti\_affinity\_instances' is a list of PVM instance names to enforce anti-affinity, while 'anti\_affinity\_volumes' is a list of volumes to apply the storage anti-affinity policy. | <pre>object({<br/>    anti_affinity_instances = list(string)<br/>    anti_affinity_volumes   = list(string)<br/>  })</pre> | n/a | yes |
@@ -87,7 +87,7 @@ No modules.
 ### Outputs
 
 | Name | Description |
-|------|-------------|
+| ---- | ----------- |
 | <a name="output_pi_instance_id"></a> [pi\_instance\_id](#output\_pi\_instance\_id) | he unique identifier of the instance. The ID is composed of <power\_instance\_id>/<instance\_id>. |
 | <a name="output_pi_instance_instance_id"></a> [pi\_instance\_instance\_id](#output\_pi\_instance\_instance\_id) | The unique identifier of PowerVS instance. |
 | <a name="output_pi_instance_name"></a> [pi\_instance\_name](#output\_pi\_instance\_name) | Name of PowerVS instance. |
