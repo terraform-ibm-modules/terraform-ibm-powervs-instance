@@ -42,8 +42,9 @@ resource "ibm_pi_instance" "instance" {
   dynamic "pi_network" {
     for_each = var.pi_networks
     content {
-      network_id = pi_network.value.id
-      ip_address = pi_network.value.ip != null && pi_network.value.ip != "" ? pi_network.value.ip : null
+      network_id                 = pi_network.value.id
+      ip_address                 = pi_network.value.ip != null && pi_network.value.ip != "" ? pi_network.value.ip : null
+      network_security_group_ids = pi_network.value.nsg_id != null ? [pi_network.value.nsg_id] : null
     }
   }
 
